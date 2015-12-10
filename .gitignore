@@ -1,0 +1,8 @@
+.DS_Store
+# We don't put media files on GitHub
+*.mp4
+*.ogv
+*.webm
+*.mp3
+*.wav
+*.ogg
