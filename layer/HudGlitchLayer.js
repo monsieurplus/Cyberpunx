@@ -4,7 +4,7 @@ var HudGlitchLayer = function() {
 	var _context;
 
 	// Local variables
-	var self = this;
+	var _this = this;
 	var _glitchParams = {
 		quantity : 0, // Maximum amount of moved area per glitched frame (max 100)
 		probability : 0, // Probability for a frame to be glitched (%)
@@ -65,7 +65,7 @@ var HudGlitchLayer = function() {
 	this.setParams = function(params) {
 		for (var paramName in params) {
 			if (params.hasOwnProperty(paramName)) {
-				self.setParam(paramName, params[paramName]);
+				_this.setParam(paramName, params[paramName]);
 			}
 		}
 	};

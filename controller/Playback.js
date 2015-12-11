@@ -213,5 +213,9 @@ var Playback = function(video) {
 		_whenPreviousPosition = position;
 	};
 
+	this.progress = function(callback) {
+		_video.addEventListener("progress", callback);
+	};
+
 	_init();
 }
