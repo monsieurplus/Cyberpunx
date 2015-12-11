@@ -33,12 +33,10 @@ var GlitchLayer = function() {
 			else {
 				// If the glitch display duration is over
 				if ((_glitchStart + _glitchDuration) <= now) {
-					console.debug("reset glitch");
 					_resetGlitch();
 				}
 				// Else the glitch must be displayed
 				else {
-					console.debug("display glitch");
 					_context.putImageData(_glitchImage, 0, 0);
 				}
 			}

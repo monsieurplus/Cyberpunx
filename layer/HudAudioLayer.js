@@ -15,7 +15,7 @@ var HudAudioLayer = function() {
 		
 		// Create the Analyser
 		_audioAnalyser = _audioContext.createAnalyser();
-		_audioAnalyser.fftSize = 32;
+		_audioAnalyser.fftSize = 128;
 
 		// Prepare audioData array
 		_audioBufferLength = _audioAnalyser.frequencyBinCount;

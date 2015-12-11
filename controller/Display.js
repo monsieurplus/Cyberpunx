@@ -81,7 +81,7 @@ var Display = function() {
 	 * Erase the surface of the <canvas>
 	 */
 	this.clear = function() {
-		_context.clearRect(0, 0, _canvas.width, _canvas.width);
+		_context.clearRect(0, 0, _canvas.width, _canvas.height);
 	};
 
 	/**

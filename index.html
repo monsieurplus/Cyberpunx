@@ -61,15 +61,22 @@
 			noiseLayer.setActive(false);
 			display.addLayer("noise", noiseLayer);
 
+			/*
 			var glitchLayer = new GlitchLayer();
 			glitchLayer.setActive(false);
 			display.addLayer("glitch", glitchLayer);
+			*/
 			
 			// Glitches
 			/*window.setInterval(function() {
-				var duration = 200 + Math.floor(Math.random() * 800);
-				glitchLayer.glitch(1, duration);
-			}, 3000);*/
+				var duration = 10 + Math.floor(Math.random() * 250);
+				videoLayer.addGlitch({
+					amount     : 1,
+					seed       : 1,
+					iterations : 3,
+					quality    : 90
+				}, duration);
+			}, 1000);*/
 
 			// Display loop and FPS counter handling
 			var fps = 0;
