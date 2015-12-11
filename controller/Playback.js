@@ -14,22 +14,33 @@ var Playback = function(video) {
 	var _whenArray = [];
 	var _whenPreviousPosition;
 
+	// "Progress" functionnality variables
+	var _progressArray = [];
+
 	var _init = function() {
 		// Initialize progress eventLister
-		_video.addEventListener("progress", _progressHandler);
+		window.setInterval(_timeHandler, 50);
+		//_video.addEventListener("progress", _progressHandler); // Not fired often enough
 	};
 
 	/**
 	 * Called everytime the video "progress" event is fired
 	 */
-	var _progressHandler = function() {
+	var _timeHandler = function() {
+		if (_this.isPaused()) {
+			return false;
+		}
+
 		var position = _this.getPosition();
 
 		// Loops handling
-		_loopProgressHandler(position);
+		_loopHandler(position);
 
 		// "When" handling
-		_whenProgressHandler(position);
+		_whenHandler(position);
+
+		// "Progress" handling
+		_progressHandler(position);
 	};
 
 	/**
@@ -167,7 +178,7 @@ var Playback = function(video) {
 	 * Called by the _progressHandler function
 	 * Handle loops
 	 */
-	var _loopProgressHandler = function(position) {
+	var _loopHandler = function(position) {
 		// Loops handling
 		if (_loopActive) {
 			if (position > _loopEnd) {
@@ -195,7 +206,7 @@ var Playback = function(video) {
 	 * Called by the _progressHandler function
 	 * Handle "when", video timed events
 	 */
-	var _whenProgressHandler = function(position) {
+	var _whenHandler = function(position) {
 		if (typeof _whenPreviousPosition !== "undefined") {
 			// Going through all the planned events
 			for (var whenPosition in _whenArray) {
@@ -214,8 +225,14 @@ var Playback = function(video) {
 	};
 
 	this.progress = function(callback) {
-		_video.addEventListener("progress", callback);
+		_progressArray.push(callback);
 	};
+
+	var _progressHandler = function(position) {
+		for (var i = 0; i < _progressArray.length; i++) {
+			_progressArray[i](position);
+		}
+	}
 
 	_init();
 }

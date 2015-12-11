@@ -163,7 +163,7 @@ var VideoLayer = function() {
 	};
 
 	this.resetFilter = function() {
-		_filter = "none";
+		this.setFilter("none");
 	};
 
 	this.getFilter = function() {

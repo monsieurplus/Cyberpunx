@@ -191,13 +191,18 @@
 		/* Timed events scripting */
 		document.addEventListener("DOMContentLoaded", function() {
 			var timeCounter = document.getElementById("time-counter");
-			playback.progress(function() {
-				timeCounter.innerHTML = Math.round(playback.getPosition() * 100) / 100;
+			playback.progress(function(position) {
+				timeCounter.innerHTML = Math.round(position * 100) / 100;
 			})
 
 			playback.when(12, function() {
 				display.getLayer("hudFilter").setActive(true);
 			});
+
+			playback.when(42, function() {
+				display.getLayer("hudFilter").setActive(false);
+				display.getLayer("video").resetFilter();
+			})
 		});
 		</script>
 		
