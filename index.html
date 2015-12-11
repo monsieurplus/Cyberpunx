@@ -58,6 +58,10 @@
 			display.addLayer("hudFilter", hudFilterLayer);
 
 			var hudGlitchLayer = new HudGlitchLayer();
+			hudGlitchLayer.setParam("quantity", 1);
+			hudGlitchLayer.setParam("probability", 1);
+			hudGlitchLayer.setParam("width", 10);
+			hudGlitchLayer.setParam("height", 10);
 			display.addLayer("hudGlitch", hudGlitchLayer);
 
 			var noiseLayer = new NoiseLayer();

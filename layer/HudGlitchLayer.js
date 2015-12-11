@@ -4,6 +4,13 @@ var HudGlitchLayer = function() {
 	var _context;
 
 	// Local variables
+	var self = this;
+	var _glitchParams = {
+		quantity : 0, // Maximum amount of moved area per glitched frame (max 100)
+		probability : 0, // Probability for a frame to be glitched (%)
+		width : 0, // Maximum moved area width (% of the viewport width)
+		height : 0 // Maximum moved area height (% of the viewport height)
+	};
 
 	var _init = function() {
 		// HERE Initialization of the layer
@@ -13,23 +20,53 @@ var HudGlitchLayer = function() {
 	 * REQUIRED
 	 */
 	this.draw = function() {
-		var randomBool = Math.random() * 100;
-		if (randomBool < 80) {
+		if (_glitchParams.probability === 0 || _glitchParams.quantity === 0 || _glitchParams.width === 0 || _glitchParams.height === 0) {
 			return false;
 		}
 
+		var randomProb = Math.ceil(Math.random() * 100);
+		if (randomProb > _glitchParams.probability) {
+			return false;
+		}
+
+		console.debug("hud glitch " + randomProb);
+
 		// HERE Drawing process of the layer
-		var glitchNumber = Math.floor(Math.random() * 10);
+		var glitchNumber = Math.ceil(Math.random() * _glitchParams.quantity);
 		for (var i=0; i < glitchNumber; i++) {
 			var xSource = Math.random() * _viewportDimension.width;
 			var ySource = Math.random() * _viewportDimension.height;
-			var wSource = Math.random() * _viewportDimension.width / 10;
-			var hSource = Math.random() * _viewportDimension.height / 10;
+			var wSource = Math.random() * _viewportDimension.width * (_glitchParams.width / 100);
+			var hSource = Math.random() * _viewportDimension.height * (_glitchParams.height / 100);
 			var xTarget = Math.random() * _viewportDimension.width;
 			var yTarget = Math.random() * _viewportDimension.height;
 
 			var extract = _context.getImageData(xSource, ySource, wSource, hSource);
 			_context.putImageData(extract, xTarget, yTarget);
+		}
+	};
+
+	var _checkParamName = function(paramName) {
+		return (paramName === "quantity" || paramName === "probability" || paramName === "width" || paramName === "height");
+	};
+
+	var _checkParamValue = function(paramValue) {
+		return (typeof paramValue === "number" && paramValue >= 0 && paramValue <= 100);
+	};
+
+	this.setParam = function(name, value) {
+		if (!_checkParamName(name) || !_checkParamValue(value)) {
+			return false;
+		}
+
+		_glitchParams[name] = value;
+	};
+
+	this.setParams = function(params) {
+		for (var paramName in params) {
+			if (params.hasOwnProperty(paramName)) {
+				self.setParam(paramName, params[paramName]);
+			}
 		}
 	};
 
