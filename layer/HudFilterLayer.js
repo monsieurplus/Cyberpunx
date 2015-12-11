@@ -24,8 +24,8 @@ var HudFilterLayer = function() {
 				button.y,
 				button.width,
 				button.height,
-				Math.floor(button.width / 100), // border
-				Math.floor(button.height / 2), // fontSize
+				Math.ceil(button.width / 100), // border
+				Math.ceil(button.height / 1.5), // fontSize
 				button.selected
 			);
 		}
