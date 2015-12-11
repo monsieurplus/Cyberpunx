@@ -12,9 +12,9 @@
 		<script type="text/javascript" src="./layer/HudLogoLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudAudioLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudFilterLayer.js"></script>
+		<script type="text/javascript" src="./layer/HudGlitchLayer.js"></script>
 		<script type="text/javascript" src="./layer/NoiseLayer.js"></script>
-		<script type="text/javascript" src="./layer/GlitchLayer.js"></script>
-		<script type="text/javascript" src="./layer/TestLayer.js"></script>
+
 
 		<!-- Layers initiliazing -->
 		<script type="text/javascript">
@@ -56,6 +56,9 @@
 			var hudFilterLayer = new HudFilterLayer();
 			//hudFilterLayer.setActive(false);
 			display.addLayer("hudFilter", hudFilterLayer);
+
+			var hudGlitchLayer = new HudGlitchLayer();
+			display.addLayer("hudGlitch", hudGlitchLayer);
 
 			var noiseLayer = new NoiseLayer();
 			noiseLayer.setActive(false);
