@@ -10,13 +10,14 @@
 
 		<script type="text/javascript" src="./layer/VideoLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudLogoLayer.js"></script>
+		<script type="text/javascript" src="./layer/HudClockLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudAudioLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudFilterLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudGlitchLayer.js"></script>
 		<script type="text/javascript" src="./layer/NoiseLayer.js"></script>
 
 		<script type="text/javascript">
-		/* Layers initializing */
+		/* Layers init */
 
 		// Globals
 		var playback, display;
@@ -45,6 +46,10 @@
 			var hudLogoLayer = new HudLogoLayer();
 			//hudLogoLayer.setActive(false);
 			display.addLayer("hudLogo", hudLogoLayer);
+
+			// Create and insert HudClockLayer
+			var hudClockLayer = new HudClockLayer();
+			display.addLayer("hudClock", hudClockLayer);
 
 			// Create and insert HudAudioLayer
 			var hudAudioLayer = new HudAudioLayer();
