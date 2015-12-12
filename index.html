@@ -10,14 +10,15 @@
 
 		<script type="text/javascript" src="./layer/VideoLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudLogoLayer.js"></script>
+		<script type="text/javascript" src="./layer/HudClockLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudAudioLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudFilterLayer.js"></script>
+		<script type="text/javascript" src="./layer/HudGlitchLayer.js"></script>
 		<script type="text/javascript" src="./layer/NoiseLayer.js"></script>
-		<script type="text/javascript" src="./layer/GlitchLayer.js"></script>
-		<script type="text/javascript" src="./layer/TestLayer.js"></script>
 
-		<!-- Layers initiliazing -->
 		<script type="text/javascript">
+		/* Layers init */
+
 		// Globals
 		var playback, display;
 
@@ -46,6 +47,10 @@
 			//hudLogoLayer.setActive(false);
 			display.addLayer("hudLogo", hudLogoLayer);
 
+			// Create and insert HudClockLayer
+			var hudClockLayer = new HudClockLayer();
+			display.addLayer("hudClock", hudClockLayer);
+
 			// Create and insert HudAudioLayer
 			var hudAudioLayer = new HudAudioLayer();
 			hudAudioLayer.setMedia(video);
@@ -54,20 +59,21 @@
 
 			// Create and insert HudFilterLayer
 			var hudFilterLayer = new HudFilterLayer();
-			//hudFilterLayer.setActive(false);
+			hudFilterLayer.setActive(false);
 			display.addLayer("hudFilter", hudFilterLayer);
+
+			var hudGlitchLayer = new HudGlitchLayer();
+			hudGlitchLayer.setParam("quantity", 1);
+			hudGlitchLayer.setParam("probability", 1);
+			hudGlitchLayer.setParam("width", 10);
+			hudGlitchLayer.setParam("height", 10);
+			display.addLayer("hudGlitch", hudGlitchLayer);
 
 			var noiseLayer = new NoiseLayer();
 			noiseLayer.setActive(false);
 			display.addLayer("noise", noiseLayer);
 
-			/*
-			var glitchLayer = new GlitchLayer();
-			glitchLayer.setActive(false);
-			display.addLayer("glitch", glitchLayer);
-			*/
-			
-			// Glitches
+			// Video glitches example
 			/*window.setInterval(function() {
 				var duration = 10 + Math.floor(Math.random() * 250);
 				videoLayer.addGlitch({
@@ -105,8 +111,8 @@
 		});
 		</script>
 
-		<!-- Window resizing handling -->
 		<script type="text/javascript">
+		/* Window resizing handling */
 		document.addEventListener('DOMContentLoaded', function() {
 			// window.resize event can fire quite fast, so we wait for the final resize to do something
 			var resizeTimeout = null;
@@ -140,6 +146,7 @@
 
 		<!-- HUD filter buttons initiliazing -->
 		<script type="text/javascript">
+		/* HUD filter button scripting */
 		document.addEventListener('DOMContentLoaded', function() {
 			var hudFilterLayer = display.getLayer("hudFilter");
 			var videoLayer = display.getLayer("video");
@@ -184,6 +191,25 @@
 			});	
 		});
 		</script>
+
+		<script type="text/javascript">
+		/* Timed events scripting */
+		document.addEventListener("DOMContentLoaded", function() {
+			var timeCounter = document.getElementById("time-counter");
+			playback.progress(function(position) {
+				timeCounter.innerHTML = Math.round(position * 100) / 100;
+			})
+
+			playback.when(12, function() {
+				display.getLayer("hudFilter").setActive(true);
+			});
+
+			playback.when(42, function() {
+				display.getLayer("hudFilter").setActive(false);
+				display.getLayer("video").resetFilter();
+			})
+		});
+		</script>
 		
 		<style type="text/css">
 			html, body {
@@ -193,8 +219,6 @@
 
 				background-color : black;
 			}
-
-			#fps-counter { color:white; position:absolute; top:0; right:0; z-index:2; }
 			#canvas-container canvas { position:absolute; top:0; left:0; z-index:1; }
 			
 			#video-container {
@@ -246,7 +270,8 @@
 		</style>
 	</head>
 	<body>
-		<div id="fps-counter" style="position:absolute"></div>
+		<div id="fps-counter" style="position:absolute;top:0;right:0;color:white;z-index:2"></div>
+		<div id="time-counter" style="position:absolute;top:0;left:0;color:white;z-index:2"></div>
 		<div id="video-container"></div>
 		<div id="canvas-container"></div>
 	</body>
