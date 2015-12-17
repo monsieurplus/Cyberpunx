@@ -13,6 +13,8 @@ var VideoLayer = function() {
 	var _glitchDurations = [];
 	var _glitchParams;
 
+	var _copyVideo = false; // Says if the video image has to be copied to the canvas
+
 	var _init = function() {
 		_container = document.getElementById("video-container");
 	};
@@ -149,6 +151,11 @@ var VideoLayer = function() {
 		if (_glitchImage) {
 			_context.putImageData(_glitchImage, 0, 0);
 		}
+		else {
+			if (_copyVideo) {
+				_drawVideo();
+			}
+		}
 	};
 
 	this.setFilter = function(filterName) {
@@ -170,6 +177,14 @@ var VideoLayer = function() {
 		return {
 			'name' : _filter
 		};
+	};
+
+	this.enableVideoCopy = function() {
+		_copyVideo = true;
+	};
+
+	this.disableVideoCopy = function() {
+		_copyVideo = false;
 	};
 
 	this.setViewportDimension = function(dimension) {

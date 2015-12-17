@@ -173,12 +173,12 @@ var Display = function() {
 	/**
 	 * Draw all the active layers in the <canvas>
 	 */
-	this.draw = function() {
+	this.draw = function(timeSinceLastDraw) {
 		var layer;
 		for (var i=0; i < _layers.length; i++) {
 			layer = _layers[i];
 			if (layer.isActive()) {
-				layer.draw();
+				layer.draw(timeSinceLastDraw);
 			}
 		}
 	};

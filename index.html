@@ -13,6 +13,8 @@
 		<script type="text/javascript" src="./layer/HudClockLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudAudioLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudFilterLayer.js"></script>
+		<script type="text/javascript" src="./layer/HudSpeech.js"></script>
+		<script type="text/javascript" src="./layer/InvasionGame.js"></script>
 		<script type="text/javascript" src="./layer/HudGlitchLayer.js"></script>
 		<script type="text/javascript" src="./layer/NoiseLayer.js"></script>
 
@@ -25,8 +27,9 @@
 		document.addEventListener('DOMContentLoaded', function() {
 			// Create the video (it's not inserted into the page)
 			var video = document.createElement("video");
-			video.src = "./resource/video/cyberpunk2077.mp4";
+			//video.src = "./resource/video/cyberpunk2077.mp4";
 			//video.src = "./resource/video/bbb.mp4";
+			video.src = "./resource/video/punk-the-system.mp4";
 			video.loop = true;
 			video.preload = "auto";
 
@@ -57,16 +60,41 @@
 			//hudAudioLayer.setActive(false);
 			display.addLayer("hudAudio", hudAudioLayer);
 
-			// Create and insert HudFilterLayer
+			// Create and insert HudFilterLayer (filter buttons)
 			var hudFilterLayer = new HudFilterLayer();
 			hudFilterLayer.setActive(false);
 			display.addLayer("hudFilter", hudFilterLayer);
+
+			// Create and insert the doctor speech
+			var drSpeech = new HudSpeech();
+			drSpeech.setSpriteImage("./resource/image/dr-speech-sprites.jpg");
+			drSpeech.setSpriteSize(480, 270);
+			drSpeech.setDisplayPosition({
+				left : 20,
+				bottom : 200
+			});
+			var animation = [];
+			for (var i = 0; i < 50; i++) {
+				animation.push({
+					index : i,
+					duration : 100
+				});
+			}
+			drSpeech.setActive(true);
+			drSpeech.setAnimation(animation);
+			drSpeech.setDisplaySize(240, 135);
+			display.addLayer("drSpeech", drSpeech);
+
+			var invasionGame = new InvasionGame();
+			invasionGame.setActive(true);
+			display.addLayer("invasionGame", invasionGame);
 
 			var hudGlitchLayer = new HudGlitchLayer();
 			hudGlitchLayer.setParam("quantity", 1);
 			hudGlitchLayer.setParam("probability", 1);
 			hudGlitchLayer.setParam("width", 10);
 			hudGlitchLayer.setParam("height", 10);
+			hudGlitchLayer.setActive(false);
 			display.addLayer("hudGlitch", hudGlitchLayer);
 
 			var noiseLayer = new NoiseLayer();
@@ -87,16 +115,17 @@
 			// Display loop and FPS counter handling
 			var fps = 0;
 			var fpsCounter = document.getElementById("fps-counter");
-			var fpsMax = 30;
+			var fpsMax = 100;
 			var fpsMaxLastDraw = 0;
 			var fpsMaxMinDelay = 1000/fpsMax;
 
 			function displayLoop(time) {
-				if ((time - fpsMaxLastDraw) >= fpsMaxMinDelay) {
+				var timeSinceLastDraw = time - fpsMaxLastDraw; // Time since last draw
+				if (timeSinceLastDraw >= fpsMaxMinDelay) {
 					fpsMaxLastDraw = time;
 
 					display.clear();
-					display.draw();
+					display.draw(timeSinceLastDraw);
 					fps++;
 				}
 
@@ -200,8 +229,13 @@
 				timeCounter.innerHTML = Math.round(position * 100) / 100;
 			})
 
-			playback.when(12, function() {
+			playback.when(37, function() {
 				display.getLayer("hudFilter").setActive(true);
+
+				var drSpeechLayer = display.getLayer("drSpeech");
+				drSpeechLayer.setActive(true);
+				drSpeechLayer.reset();
+				drSpeechLayer.play();
 			});
 
 			playback.when(42, function() {
