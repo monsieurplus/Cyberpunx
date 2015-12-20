@@ -14,6 +14,7 @@
 		<script type="text/javascript" src="./layer/HudAudioLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudFilterLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudSpeech.js"></script>
+		<script type="text/javascript" src="./layer/AnimatedSprite.js"></script>
 		<script type="text/javascript" src="./layer/InvasionGame.js"></script>
 		<script type="text/javascript" src="./layer/HudGlitchLayer.js"></script>
 		<script type="text/javascript" src="./layer/NoiseLayer.js"></script>
@@ -35,7 +36,7 @@
 
 			// Create the video playback controller
 			playback = new Playback(video);
-			playback.seek(235);
+			playback.seek(0);
 			playback.play();
 
 			// Create the Display controller (it will handle the layers)
@@ -48,17 +49,18 @@
 			
 			// Create and insert HudLogoLayer
 			var hudLogoLayer = new HudLogoLayer();
-			//hudLogoLayer.setActive(false);
+			hudLogoLayer.setActive(false);
 			display.addLayer("hudLogo", hudLogoLayer);
 
 			// Create and insert HudClockLayer
 			var hudClockLayer = new HudClockLayer();
+			hudClockLayer.setActive(false);
 			display.addLayer("hudClock", hudClockLayer);
 
 			// Create and insert HudAudioLayer
 			var hudAudioLayer = new HudAudioLayer();
 			hudAudioLayer.setMedia(video);
-			//hudAudioLayer.setActive(false);
+			hudAudioLayer.setActive(false);
 			display.addLayer("hudAudio", hudAudioLayer);
 
 			// Create and insert HudFilterLayer (filter buttons)
@@ -67,7 +69,8 @@
 			display.addLayer("hudFilter", hudFilterLayer);
 
 			// Create and insert the doctor speech
-			var drSpeech = new HudSpeech();
+			/* var drSpeech = new HudSpeech();
+			drSpeech.setActive(false);
 			drSpeech.setSpriteImage("./resource/image/dr-speech-sprites.jpg");
 			drSpeech.setSpriteSize(480, 270);
 			drSpeech.setDisplayPosition({
@@ -81,10 +84,9 @@
 					duration : 100
 				});
 			}
-			drSpeech.setActive(true);
 			drSpeech.setAnimation(animation);
 			drSpeech.setDisplaySize(240, 135);
-			display.addLayer("drSpeech", drSpeech);
+			display.addLayer("drSpeech", drSpeech);*/
 
 			var invasionGame = new InvasionGame();
 			invasionGame.setActive(false);
@@ -229,7 +231,13 @@
 			var timeCounter = document.getElementById("time-counter");
 			playback.progress(function(position) {
 				timeCounter.innerHTML = Math.round(position * 100) / 100;
-			})
+			});
+
+			var setActiveHud = function(active) {
+				display.getLayer("hudClock").setActive(active);
+				display.getLayer("hudAudio").setActive(active);
+				display.getLayer("hudLogo").setActive(active);
+			};
 
 			// Scene 1 : Hospital : Awakening
 			// Scene 2 : Home : Discovery of the implant
@@ -241,22 +249,30 @@
 
 			// Scene 1 : Begginning
 			playback.when(2.35, function() {
+				setActiveHud(true);
+
 				display.getLayer("hudClock").setTime("08:35:54");
 			});
 
 			// Scene 1 : End
-			playback.when(34.9, function() {});
+			playback.when(34.9, function() {
+				setActiveHud(false);
+			});
 
 			// Scene 2 : Begginning
 			playback.when(37, function() {
+				setActiveHud(true);
+
 				display.getLayer("hudClock").setTime("11:13:41");
 
 				display.getLayer("hudFilter").setActive(true);
 
+				/*
 				var drSpeechLayer = display.getLayer("drSpeech");
 				drSpeechLayer.setActive(true);
 				drSpeechLayer.reset();
 				drSpeechLayer.play();
+				*/
 			});
 
 			// Scene 2 : Ta gueule le roux
@@ -272,10 +288,14 @@
 			playback.when(90, function() {});
 
 			// Scene 2 : End
-			playback.when(113, function() {});
+			playback.when(113, function() {
+				setActiveHud(false);
+			});
 
 			// Scene 3 : Beggining
 			playback.when(116, function() {
+				setActiveHud(true);
+
 				display.getLayer("hudClock").setTime("19:04:09");
 			});
 
@@ -286,18 +306,26 @@
 			playback.when(190, function() {});
 
 			// Scene 3 : End
-			playback.when(205, function() {});			
+			playback.when(205, function() {
+				setActiveHud(false);
+			});			
 
 			// Scene 4 : Beginning
 			playback.when(207, function() {
+				setActiveHud(true);
+
 				display.getLayer("hudClock").setTime("23:05:30");
 			});
 
 			// Scene 4 : End
-			playback.when(234, function() {});
+			playback.when(234, function() {
+				setActiveHud(true);
+			});
 
 			// Scene 5 : Begin
 			playback.when(236, function() {
+				setActiveHud(true);
+
 				display.getLayer("hudClock").setTime("03:00:37");
 
 				var invasionGame = display.getLayer("invasionGame");
@@ -305,7 +333,7 @@
 				invasionGame.setAttackerSpeed(5);
 				invasionGame.setAttackerDelay(2000);
 				invasionGame.setAttackerStrength(1);
-				invasionGame.setAttackerColor("#6AFF0B");
+				invasionGame.setAttackerColor("green");
 
 				invasionGame.setFailureCallback(function() {
 					// Jump to scene 7
@@ -322,7 +350,7 @@
 				invasionGame.setAttackerSpeed(7.5);
 				invasionGame.setAttackerDelay(1500);
 				invasionGame.setAttackerStrength(2);
-				invasionGame.setAttackerColor("cyan");
+				invasionGame.setAttackerColor("blue");
 			});
 
 			playback.when(256, function() {
@@ -331,6 +359,7 @@
 				invasionGame.setAttackerSpeed(10);
 				invasionGame.setAttackerDelay(1000);
 				invasionGame.setAttackerStrength(2);
+				invasionGame.setAttackerColor("blue");
 			});
 
 			playback.when(266, function() {
@@ -353,11 +382,15 @@
 
 			// Scene 5 : End
 			playback.when(290, function() {
+				setActiveHud(false);
+
 				display.getLayer("invasionGame").setActive(false);
 			});
 
 			// Scene 6 : Beginning
 			playback.when(293, function() {
+				setActiveHud(true);
+
 				display.getLayer("hudClock").setTime("03:35:12");
 			});
 
@@ -368,10 +401,14 @@
 			playback.when(324, function() {});
 
 			// Scene 6 : End
-			playback.when(329, function() {});
+			playback.when(329, function() {
+				setActiveHud(false);
+			});
 
 			// Scene 7 : Beggining
 			playback.when(331, function() {
+				setActiveHud(true);
+
 				display.getLayer("hudClock").setTime("03:35:12");
 			});
 
@@ -379,7 +416,9 @@
 			playback.when(349 , function() {});
 
 			// Scene 7 : End
-			playback.when(418, function() {});
+			playback.when(418, function() {
+				setActiveHud(false);
+			});
 		});
 		</script>
 		

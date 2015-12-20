@@ -1,4 +1,4 @@
-var HudSpeech = function() {
+var AnimatedSprite = function() {
 	var _active = true;
 	var _viewportDimension;
 	var _context;
@@ -12,19 +12,60 @@ var HudSpeech = function() {
 	var _displayHeight;
 	var _displayPosition = {};
 
+	var _animations = {}; // Name indexed animations
+	/* {
+		standing : [
+			{
+				sprite : 0,
+				duration : 100
+			},
+			{
+				sprite : 1,
+				duration : 100
+			}
+		],
+		walking : [
+			...
+		]
+	} */
+	var _animationPaused = true;
+	var _animationCurrent = false; // Name of the current animation
+	var _animationCurrentStepIndex = 0; // Current animation displayed step
+	var _animationCurrentStepStart = 0; // Current step start microtime
+	/*
 	var _animationArray = []; // Array telling which sprite to display at which time
 	var _animationCurrent = 0; // Current displayed step
 	var _animationStart; // Time when the current step has begun display
 	var _animationPaused = true;
+	*/
 
 	var _init = function() {
 		// HERE Initialization of the layer
+	};
+
+	this.setSpriteSize = function(width, height) {
+		_spriteWidth = width;
+		_spriteHeight = height;
+	};
+
+	this.setSpriteImage = function(url) {
+		_spriteImage.src = url;
+	};
+
+	this.setDisplaySize = function(width, height) {
+		_displayWidth = width;
+		_displayHeight = height;
+	};
+
+	this.setDisplayPosition = function(position) {
+		_displayPosition = position;
 	};
 
 	/**
 	 * REQUIRED
 	 */
 	this.draw = function() {
+		/*
 		if (_animationArray.length === 0) {
 			return false;
 		}
@@ -49,11 +90,34 @@ var HudSpeech = function() {
 
 		if (_animationCurrent >= _animationArray.length) {
 			return false;
+		}*/
+		// If no animation is the current one OR the current one doesn't exist
+		if (!_animationCurrent || !_animations[_animationCurrent]) {
+			return false;
 		}
+
+		// Get the current animation
+		var currentAnimation = _animations[_animationCurrent];
+		
+
+		// Check if the current step is still the good one
+		var now = new Date().getTime();
+		if (_animationCurrentStepStart + currentAnimation[_animationCurrentStepIndex].duration < now) {
+			_animationCurrentStepStart = new Date().getTime();
+
+			// Increment _animationCurrentStepIndex
+			_animationCurrentStepIndex++;
+			if (_animationCurrentStepIndex > currentAnimation.length - 1) {
+				// Loop the animation
+				_animationCurrentStepIndex = 0;
+			}
+		}
+
+		var currentStep = currentAnimation[_animationCurrentStepIndex];
 
 		// Compute draw coordinates
 		var sourceX = 0;
-		var sourceY = current.index * _spriteHeight;
+		var sourceY = currentStep.sprite * _spriteHeight;
 		var sourceW = _spriteWidth;
 		var sourceH = _spriteHeight;
 
@@ -87,10 +151,6 @@ var HudSpeech = function() {
 			targetY = Math.ceil(_viewportDimension.height / 2 - _displayHeight / 2);
 		}
 
-		// Change the way things are drawn into canvas
-		var oldCompositeOperation = _context.globalCompositeOperation;
-		_context.globalCompositeOperation = 'lighter';
-
 		// Display the sprite
 		_context.drawImage(
 			_spriteImage,
@@ -99,44 +159,24 @@ var HudSpeech = function() {
 			targetX, targetY,
 			targetW, targetH
 		);
-
-		// Reset the way things are drawn into canvas
-		_context.globalCompositeOperation = oldCompositeOperation;
 	};
 
-	this.play = function() {
-		_animationPaused = false;
+	this.addAnimation = function(name, steps) {
+		_animations[name] = steps;
+	};
+
+	this.playAnimation = function(name) {
+		_animationCurrent = name;
+		_animationCurrentStep = 0;
+		_animationCurrentStepStart = new Date().getTime();
 	};
 
 	this.pause = function() {
 		_animationPaused = true;
 	};
-
-	this.reset = function() {
-		_animationCurrent = 0;
-	};
-
-	this.setAnimation = function(animation) {
-		_animationArray = animation;
-	};
-
-	this.setSpriteSize = function(width, height) {
-		_spriteWidth = width;
-		_spriteHeight = height;
-	};
-
-	this.setSpriteImage = function(url) {
-		_spriteImage.src = url;
-	};
-
-	this.setDisplaySize = function(width, height) {
-		_displayWidth = width;
-		_displayHeight = height;
-	};
-
-	this.setDisplayPosition = function(position) {
-		_displayPosition = position;
-	};
+	this.unpause = function() {
+		_animationPause = false;
+	}
 
 	/**
 	 * REQUIRED
