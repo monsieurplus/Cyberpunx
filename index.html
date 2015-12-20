@@ -300,11 +300,55 @@
 			playback.when(236, function() {
 				display.getLayer("hudClock").setTime("03:00:37");
 
-				display.getLayer("invasionGame").setActive(true);
-				display.getLayer("invasionGame").setFailureCallback(function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(5);
+				invasionGame.setAttackerSpeed(5);
+				invasionGame.setAttackerDelay(2000);
+				invasionGame.setAttackerStrength(1);
+				invasionGame.setAttackerColor("#6AFF0B");
+
+				invasionGame.setFailureCallback(function() {
 					// Jump to scene 7
-					playback.seek(329);
+					invasionGame.setActive(false);
+					playback.seek(330);
 				});
+
+				invasionGame.setActive(true);
+			});
+
+			playback.when(246, function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(5);
+				invasionGame.setAttackerSpeed(7.5);
+				invasionGame.setAttackerDelay(1500);
+				invasionGame.setAttackerStrength(2);
+				invasionGame.setAttackerColor("cyan");
+			});
+
+			playback.when(256, function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(5);
+				invasionGame.setAttackerSpeed(10);
+				invasionGame.setAttackerDelay(1000);
+				invasionGame.setAttackerStrength(2);
+			});
+
+			playback.when(266, function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(10);
+				invasionGame.setAttackerSpeed(12.5);
+				invasionGame.setAttackerDelay(500);
+				invasionGame.setAttackerStrength(5);
+				invasionGame.setAttackerColor("red");
+			});
+
+			playback.when(276, function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(10);
+				invasionGame.setAttackerSpeed(15);
+				invasionGame.setAttackerDelay(250);
+				invasionGame.setAttackerStrength(5);
+				invasionGame.setAttackerColor("red");
 			});
 
 			// Scene 5 : End

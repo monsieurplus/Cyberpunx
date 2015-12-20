@@ -17,13 +17,17 @@ var InvasionGame = function() {
 		x : 0, // in % of screen W
 		y : 0, // in % of screen H
 		size : 0, // in % of screen W
-		speed : 0 // in % of screen W per sec
+		speed : 0, // in % of screen W per sec
+		strenght : 0 // number of HP removed by this attacker
+		tick : 0/1 // used for the blinking effect
 	} */
 	var _attackerPopEnabled = true;
 	var _attackerMoveEnable = true;
 
 	var _attackerSpeed = 5;
 	var _attackerSize = 5;
+	var _attackerStrength = 1;
+	var _attackerColor = "#6AFF0B";
 	var _attackerDelay = 2000;
 	var _attackerLastPop = 0;
 
@@ -58,7 +62,7 @@ var InvasionGame = function() {
 			var attackerIndex = successfulAttackers[i];
 
 			// Remove health from brain
-			_processAttackerSuccess();
+			_processAttackerSuccess(i);
 
 			// Remove attacker from list
 			_removeAttacker(attackerIndex);
@@ -122,6 +126,8 @@ var InvasionGame = function() {
 				x : popX, y : popY,
 				size : _attackerSize,
 				speed : _attackerSpeed,
+				strength : _attackerStrength,
+				color : _attackerColor,
 				tick : 0
 			});
 
@@ -165,28 +171,38 @@ var InvasionGame = function() {
 		return (distance < (attacker.size + _brainWidthPercent / 4));
 	};
 
-	var _processAttackerSuccess = function() {
+	var _processAttackerSuccess = function(index) {
+		var attacker = _attackers[index];
+
 		// Search for a letter to replace
-		var replaced = false;
+		//var replaced = false;
 		for (var i = 0; i < _brainAscii.length; i++) {
 			for (var j = 0; j < _brainAscii[i].length; j++) {
 				var letter = _brainAscii[i][j];
+
+				// Check is the char can be replaced
 				if (letter !== " " && letter !== "0" && letter != "1") {
+					// Replace the char by "0" or "1"
 					var replacement = [0,1][Math.floor(Math.random() * 2)];
 					_brainAscii[i] = _stringReplaceCharAt(_brainAscii[i], j, replacement);
+
+					// Brain HP and attacker strength decreased
 					_brainHealth--;
-					replaced = true;
-					break;
+					attacker.strength--;
+
+					if (attacker.strength <= 0) {
+						break;
+					}
 				}
 			}
 
-			if (replaced === true) {
+			if (attacker.strength <= 0) {
 				break;
 			}
 		}
 
 		// If the brain has been processed without finding a char to replace, then its health is zero	
-		if (!replaced) {
+		if (attacker.strength > 0) {
 			_brainHealth = 0;
 		}
 	};
@@ -332,7 +348,7 @@ var InvasionGame = function() {
 			var size = attacker.size + _viewportDimension.width * 0.01;
 
 			if (attacker.tick) {
-				_context.fillStyle = "#6AFF0B";
+				_context.fillStyle = attacker.color;
 				attacker.tick = 0;
 			}
 			else {
@@ -371,8 +387,16 @@ var InvasionGame = function() {
 		_attackerSize = size;
 	};
 
+	this.setAttackerStrength = function(strength) {
+		_attackerStrength = strength;
+	};
+
 	this.setAttackerDelay = function(delay) {
 		_attackerDelay = delay;
+	};
+
+	this.setAttackerColor = function(color) {
+		_attackerColor = color;
 	};
 
 	this.setFailureCallback = function(callback) {
