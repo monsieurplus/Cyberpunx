@@ -240,13 +240,17 @@
 			// Scene 7 : Home : Good citizen End
 
 			// Scene 1 : Begginning
-			playback.when(2.35, function() {});
+			playback.when(2.35, function() {
+				display.getLayer("hudClock").setTime("08:35:54");
+			});
 
 			// Scene 1 : End
 			playback.when(34.9, function() {});
 
 			// Scene 2 : Begginning
 			playback.when(37, function() {
+				display.getLayer("hudClock").setTime("11:13:41");
+
 				display.getLayer("hudFilter").setActive(true);
 
 				var drSpeechLayer = display.getLayer("drSpeech");
@@ -271,7 +275,9 @@
 			playback.when(113, function() {});
 
 			// Scene 3 : Beggining
-			playback.when(116, function() {});
+			playback.when(116, function() {
+				display.getLayer("hudClock").setTime("19:04:09");
+			});
 
 			// Scene 3 : Music starts
 			playback.when(143, function() {});
@@ -283,14 +289,22 @@
 			playback.when(205, function() {});			
 
 			// Scene 4 : Beginning
-			playback.when(207, function() {});
+			playback.when(207, function() {
+				display.getLayer("hudClock").setTime("23:05:30");
+			});
 
 			// Scene 4 : End
 			playback.when(234, function() {});
 
 			// Scene 5 : Begin
 			playback.when(236, function() {
+				display.getLayer("hudClock").setTime("03:00:37");
+
 				display.getLayer("invasionGame").setActive(true);
+				display.getLayer("invasionGame").setFailureCallback(function() {
+					// Jump to scene 7
+					playback.seek(329);
+				});
 			});
 
 			// Scene 5 : End
@@ -299,7 +313,9 @@
 			});
 
 			// Scene 6 : Beginning
-			playback.when(293, function() {});
+			playback.when(293, function() {
+				display.getLayer("hudClock").setTime("03:35:12");
+			});
 
 			// Scene 6 : First grip to remove the implant
 			playback.when(310, function() {});
@@ -311,7 +327,9 @@
 			playback.when(329, function() {});
 
 			// Scene 7 : Beggining
-			playback.when(331, function() {});
+			playback.when(331, function() {
+				display.getLayer("hudClock").setTime("03:35:12");
+			});
 
 			// Scene 7 : change of light
 			playback.when(349 , function() {});
