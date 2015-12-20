@@ -32,7 +32,7 @@ var Display = function() {
 		_context = _canvas.getContext("2d");
 
 		// Listen to the click event
-		_canvas.addEventListener("click", _clickHandler);
+		_canvas.addEventListener("mousedown", _clickHandler);
 	};
 
 	/**

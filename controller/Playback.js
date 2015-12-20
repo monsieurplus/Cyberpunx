@@ -124,8 +124,9 @@ var Playback = function(video) {
 	 * @params {number} position Video position (in seconds)
 	 */
 	this.seek = function(position) {
-		// TODO move playback to position
 		_video.currentTime = position;
+		_whenPreviousPosition = position;
+		_timeHandler();
 	};
 
 	/**

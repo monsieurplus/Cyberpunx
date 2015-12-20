@@ -35,6 +35,7 @@
 
 			// Create the video playback controller
 			playback = new Playback(video);
+			playback.seek(235);
 			playback.play();
 
 			// Create the Display controller (it will handle the layers)
@@ -86,7 +87,7 @@
 			display.addLayer("drSpeech", drSpeech);
 
 			var invasionGame = new InvasionGame();
-			invasionGame.setActive(true);
+			invasionGame.setActive(false);
 			display.addLayer("invasionGame", invasionGame);
 
 			var hudGlitchLayer = new HudGlitchLayer();
@@ -115,7 +116,7 @@
 			// Display loop and FPS counter handling
 			var fps = 0;
 			var fpsCounter = document.getElementById("fps-counter");
-			var fpsMax = 100;
+			var fpsMax = 30;
 			var fpsMaxLastDraw = 0;
 			var fpsMaxMinDelay = 1000/fpsMax;
 
@@ -224,11 +225,27 @@
 		<script type="text/javascript">
 		/* Timed events scripting */
 		document.addEventListener("DOMContentLoaded", function() {
+			// Displays a video time counter
 			var timeCounter = document.getElementById("time-counter");
 			playback.progress(function(position) {
 				timeCounter.innerHTML = Math.round(position * 100) / 100;
 			})
 
+			// Scene 1 : Hospital : Awakening
+			// Scene 2 : Home : Discovery of the implant
+			// Scene 3 : Studio
+			// Scene 4 : Home : Shelter
+			// Scene 5 : Home : Attack of the implant
+			// Scene 6 : Home : Punk End
+			// Scene 7 : Home : Good citizen End
+
+			// Scene 1 : Begginning
+			playback.when(2.35, function() {});
+
+			// Scene 1 : End
+			playback.when(34.9, function() {});
+
+			// Scene 2 : Begginning
 			playback.when(37, function() {
 				display.getLayer("hudFilter").setActive(true);
 
@@ -238,10 +255,69 @@
 				drSpeechLayer.play();
 			});
 
-			playback.when(42, function() {
+			// Scene 2 : Ta gueule le roux
+			playback.when(75, function() {
 				display.getLayer("hudFilter").setActive(false);
 				display.getLayer("video").resetFilter();
-			})
+			});
+
+			// Scene 2 : Music interruption
+			playback.when(85, function() {});
+
+			// Scene 2 : Putti speech begins
+			playback.when(90, function() {});
+
+			// Scene 2 : End
+			playback.when(113, function() {});
+
+			// Scene 3 : Beggining
+			playback.when(116, function() {});
+
+			// Scene 3 : Music starts
+			playback.when(143, function() {});
+
+			// Scene 3 : Music end
+			playback.when(190, function() {});
+
+			// Scene 3 : End
+			playback.when(205, function() {});			
+
+			// Scene 4 : Beginning
+			playback.when(207, function() {});
+
+			// Scene 4 : End
+			playback.when(234, function() {});
+
+			// Scene 5 : Begin
+			playback.when(236, function() {
+				display.getLayer("invasionGame").setActive(true);
+			});
+
+			// Scene 5 : End
+			playback.when(290, function() {
+				display.getLayer("invasionGame").setActive(false);
+			});
+
+			// Scene 6 : Beginning
+			playback.when(293, function() {});
+
+			// Scene 6 : First grip to remove the implant
+			playback.when(310, function() {});
+
+			// Scene 6 : Implant on the ground
+			playback.when(324, function() {});
+
+			// Scene 6 : End
+			playback.when(329, function() {});
+
+			// Scene 7 : Beggining
+			playback.when(331, function() {});
+
+			// Scene 7 : change of light
+			playback.when(349 , function() {});
+
+			// Scene 7 : End
+			playback.when(418, function() {});
 		});
 		</script>
 		
