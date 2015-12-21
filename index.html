@@ -13,6 +13,8 @@
 		<script type="text/javascript" src="./layer/HudClockLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudAudioLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudFilterLayer.js"></script>
+		<script type="text/javascript" src="./layer/AnimatedSprite.js"></script>
+		<script type="text/javascript" src="./layer/InvasionGame.js"></script>
 		<script type="text/javascript" src="./layer/HudGlitchLayer.js"></script>
 		<script type="text/javascript" src="./layer/NoiseLayer.js"></script>
 
@@ -25,13 +27,15 @@
 		document.addEventListener('DOMContentLoaded', function() {
 			// Create the video (it's not inserted into the page)
 			var video = document.createElement("video");
-			video.src = "./resource/video/cyberpunk2077.mp4";
+			//video.src = "./resource/video/cyberpunk2077.mp4";
 			//video.src = "./resource/video/bbb.mp4";
+			video.src = "./resource/video/punk-the-system.mp4";
 			video.loop = true;
 			video.preload = "auto";
 
 			// Create the video playback controller
 			playback = new Playback(video);
+			playback.seek(0);
 			playback.play();
 
 			// Create the Display controller (it will handle the layers)
@@ -44,29 +48,57 @@
 			
 			// Create and insert HudLogoLayer
 			var hudLogoLayer = new HudLogoLayer();
-			//hudLogoLayer.setActive(false);
+			hudLogoLayer.setActive(false);
 			display.addLayer("hudLogo", hudLogoLayer);
 
 			// Create and insert HudClockLayer
 			var hudClockLayer = new HudClockLayer();
+			hudClockLayer.setActive(false);
 			display.addLayer("hudClock", hudClockLayer);
 
 			// Create and insert HudAudioLayer
 			var hudAudioLayer = new HudAudioLayer();
 			hudAudioLayer.setMedia(video);
-			//hudAudioLayer.setActive(false);
+			hudAudioLayer.setActive(false);
 			display.addLayer("hudAudio", hudAudioLayer);
 
-			// Create and insert HudFilterLayer
+			// Create and insert HudFilterLayer (filter buttons)
 			var hudFilterLayer = new HudFilterLayer();
 			hudFilterLayer.setActive(false);
 			display.addLayer("hudFilter", hudFilterLayer);
+
+			// Create and insert the doctor speech
+			var drSpeech = new AnimatedSprite();
+			drSpeech.setActive(false);
+			drSpeech.setSpriteImage("./resource/image/dr-speech-sprites.jpg");
+			drSpeech.setSpriteSize(480, 270);
+			drSpeech.setDisplayPosition({
+				left : 20,
+				bottom : 200
+			});
+			drSpeech.setDisplaySize(240, 135);
+			drSpeech.addAnimation("speak", [
+				{ sprite : 0, duration : 100 },
+				{ sprite : 1, duration : 100 },
+				{ sprite : 2, duration : 100 }
+			]);
+			drSpeech.addAnimation("scratch", [
+				{ sprite : 0, duration : 100 },
+				{ sprite : 1, duration : 100 },
+				{ sprite : 2, duration : 100 }
+			]);
+			display.addLayer("drSpeech", drSpeech);
+
+			var invasionGame = new InvasionGame();
+			invasionGame.setActive(false);
+			display.addLayer("invasionGame", invasionGame);
 
 			var hudGlitchLayer = new HudGlitchLayer();
 			hudGlitchLayer.setParam("quantity", 1);
 			hudGlitchLayer.setParam("probability", 1);
 			hudGlitchLayer.setParam("width", 10);
 			hudGlitchLayer.setParam("height", 10);
+			hudGlitchLayer.setActive(false);
 			display.addLayer("hudGlitch", hudGlitchLayer);
 
 			var noiseLayer = new NoiseLayer();
@@ -92,11 +124,12 @@
 			var fpsMaxMinDelay = 1000/fpsMax;
 
 			function displayLoop(time) {
-				if ((time - fpsMaxLastDraw) >= fpsMaxMinDelay) {
+				var timeSinceLastDraw = time - fpsMaxLastDraw; // Time since last draw
+				if (timeSinceLastDraw >= fpsMaxMinDelay) {
 					fpsMaxLastDraw = time;
 
 					display.clear();
-					display.draw();
+					display.draw(timeSinceLastDraw);
 					fps++;
 				}
 
@@ -195,19 +228,199 @@
 		<script type="text/javascript">
 		/* Timed events scripting */
 		document.addEventListener("DOMContentLoaded", function() {
+			// Displays a video time counter
 			var timeCounter = document.getElementById("time-counter");
 			playback.progress(function(position) {
 				timeCounter.innerHTML = Math.round(position * 100) / 100;
-			})
-
-			playback.when(12, function() {
-				display.getLayer("hudFilter").setActive(true);
 			});
 
-			playback.when(42, function() {
+			var setActiveHud = function(active) {
+				display.getLayer("hudClock").setActive(active);
+				display.getLayer("hudAudio").setActive(active);
+				display.getLayer("hudLogo").setActive(active);
+			};
+
+			// Scene 1 : Hospital : Awakening
+			// Scene 2 : Home : Discovery of the implant
+			// Scene 3 : Studio
+			// Scene 4 : Home : Shelter
+			// Scene 5 : Home : Attack of the implant
+			// Scene 6 : Home : Punk End
+			// Scene 7 : Home : Good citizen End
+
+			// Scene 1 : Begginning
+			playback.when(2.35, function() {
+				setActiveHud(true);
+
+				display.getLayer("hudClock").setTime("08:35:54");
+			});
+
+			// Scene 1 : End
+			playback.when(34.9, function() {
+				setActiveHud(false);
+			});
+
+			// Scene 2 : Begginning
+			playback.when(37, function() {
+				setActiveHud(true);
+
+				display.getLayer("hudClock").setTime("11:13:41");
+
+				display.getLayer("hudFilter").setActive(true);
+
+				var drSpeech = display.getLayer("drSpeech");
+				drSpeech.setActive(true);
+				drSpeech.playAnimation("speak");
+			});
+
+			// Scene 2 : Ta gueule le roux
+			playback.when(75, function() {
+				// Stop the filters
 				display.getLayer("hudFilter").setActive(false);
 				display.getLayer("video").resetFilter();
-			})
+
+				// Stop the doctor
+				display.getLayer("drSpeech").setActive(false);
+			});
+
+			// Scene 2 : Music interruption
+			playback.when(85, function() {});
+
+			// Scene 2 : Putti speech begins
+			playback.when(90, function() {});
+
+			// Scene 2 : End
+			playback.when(113, function() {
+				setActiveHud(false);
+			});
+
+			// Scene 3 : Beggining
+			playback.when(116, function() {
+				setActiveHud(true);
+
+				display.getLayer("hudClock").setTime("19:04:09");
+			});
+
+			// Scene 3 : Music starts
+			playback.when(143, function() {});
+
+			// Scene 3 : Music end
+			playback.when(190, function() {});
+
+			// Scene 3 : End
+			playback.when(205, function() {
+				setActiveHud(false);
+			});			
+
+			// Scene 4 : Beginning
+			playback.when(207, function() {
+				setActiveHud(true);
+
+				display.getLayer("hudClock").setTime("23:05:30");
+			});
+
+			// Scene 4 : End
+			playback.when(234, function() {
+				setActiveHud(true);
+			});
+
+			// Scene 5 : Begin
+			playback.when(236, function() {
+				setActiveHud(true);
+
+				display.getLayer("hudClock").setTime("03:00:37");
+
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(5);
+				invasionGame.setAttackerSpeed(5);
+				invasionGame.setAttackerDelay(2000);
+				invasionGame.setAttackerStrength(1);
+				invasionGame.setAttackerColor("green");
+
+				invasionGame.setFailureCallback(function() {
+					// Jump to scene 7
+					invasionGame.setActive(false);
+					playback.seek(330);
+				});
+
+				invasionGame.setActive(true);
+			});
+
+			playback.when(246, function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(5);
+				invasionGame.setAttackerSpeed(7.5);
+				invasionGame.setAttackerDelay(1500);
+				invasionGame.setAttackerStrength(2);
+				invasionGame.setAttackerColor("blue");
+			});
+
+			playback.when(256, function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(5);
+				invasionGame.setAttackerSpeed(10);
+				invasionGame.setAttackerDelay(1000);
+				invasionGame.setAttackerStrength(2);
+				invasionGame.setAttackerColor("blue");
+			});
+
+			playback.when(266, function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(10);
+				invasionGame.setAttackerSpeed(12.5);
+				invasionGame.setAttackerDelay(500);
+				invasionGame.setAttackerStrength(5);
+				invasionGame.setAttackerColor("red");
+			});
+
+			playback.when(276, function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(10);
+				invasionGame.setAttackerSpeed(15);
+				invasionGame.setAttackerDelay(250);
+				invasionGame.setAttackerStrength(5);
+				invasionGame.setAttackerColor("red");
+			});
+
+			// Scene 5 : End
+			playback.when(290, function() {
+				setActiveHud(false);
+
+				display.getLayer("invasionGame").setActive(false);
+			});
+
+			// Scene 6 : Beginning
+			playback.when(293, function() {
+				setActiveHud(true);
+
+				display.getLayer("hudClock").setTime("03:35:12");
+			});
+
+			// Scene 6 : First grip to remove the implant
+			playback.when(310, function() {});
+
+			// Scene 6 : Implant on the ground
+			playback.when(324, function() {});
+
+			// Scene 6 : End
+			playback.when(329, function() {
+				setActiveHud(false);
+			});
+
+			// Scene 7 : Beggining
+			playback.when(331, function() {
+				setActiveHud(true);
+
+				display.getLayer("hudClock").setTime("03:35:12");
+			});
+
+			// Scene 7 : change of light
+			playback.when(349 , function() {});
+
+			// Scene 7 : End
+			playback.when(418, function() {
+				setActiveHud(false);
+			});
 		});
 		</script>
 		

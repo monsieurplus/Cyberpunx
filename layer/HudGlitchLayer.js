@@ -29,8 +29,6 @@ var HudGlitchLayer = function() {
 			return false;
 		}
 
-		console.debug("hud glitch " + randomProb);
-
 		// HERE Drawing process of the layer
 		var glitchNumber = Math.ceil(Math.random() * _glitchParams.quantity);
 		for (var i=0; i < glitchNumber; i++) {

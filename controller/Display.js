@@ -32,7 +32,7 @@ var Display = function() {
 		_context = _canvas.getContext("2d");
 
 		// Listen to the click event
-		_canvas.addEventListener("click", _clickHandler);
+		_canvas.addEventListener("mousedown", _clickHandler);
 	};
 
 	/**
@@ -173,12 +173,12 @@ var Display = function() {
 	/**
 	 * Draw all the active layers in the <canvas>
 	 */
-	this.draw = function() {
+	this.draw = function(timeSinceLastDraw) {
 		var layer;
 		for (var i=0; i < _layers.length; i++) {
 			layer = _layers[i];
 			if (layer.isActive()) {
-				layer.draw();
+				layer.draw(timeSinceLastDraw);
 			}
 		}
 	};
