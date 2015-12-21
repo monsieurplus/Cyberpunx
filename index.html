@@ -13,7 +13,6 @@
 		<script type="text/javascript" src="./layer/HudClockLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudAudioLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudFilterLayer.js"></script>
-		<script type="text/javascript" src="./layer/HudSpeech.js"></script>
 		<script type="text/javascript" src="./layer/AnimatedSprite.js"></script>
 		<script type="text/javascript" src="./layer/InvasionGame.js"></script>
 		<script type="text/javascript" src="./layer/HudGlitchLayer.js"></script>
@@ -69,7 +68,7 @@
 			display.addLayer("hudFilter", hudFilterLayer);
 
 			// Create and insert the doctor speech
-			/* var drSpeech = new HudSpeech();
+			var drSpeech = new AnimatedSprite();
 			drSpeech.setActive(false);
 			drSpeech.setSpriteImage("./resource/image/dr-speech-sprites.jpg");
 			drSpeech.setSpriteSize(480, 270);
@@ -77,16 +76,18 @@
 				left : 20,
 				bottom : 200
 			});
-			var animation = [];
-			for (var i = 0; i < 50; i++) {
-				animation.push({
-					index : i,
-					duration : 100
-				});
-			}
-			drSpeech.setAnimation(animation);
 			drSpeech.setDisplaySize(240, 135);
-			display.addLayer("drSpeech", drSpeech);*/
+			drSpeech.addAnimation("speak", [
+				{ sprite : 0, duration : 100 },
+				{ sprite : 1, duration : 100 },
+				{ sprite : 2, duration : 100 }
+			]);
+			drSpeech.addAnimation("scratch", [
+				{ sprite : 0, duration : 100 },
+				{ sprite : 1, duration : 100 },
+				{ sprite : 2, duration : 100 }
+			]);
+			display.addLayer("drSpeech", drSpeech);
 
 			var invasionGame = new InvasionGame();
 			invasionGame.setActive(false);
@@ -267,18 +268,19 @@
 
 				display.getLayer("hudFilter").setActive(true);
 
-				/*
-				var drSpeechLayer = display.getLayer("drSpeech");
-				drSpeechLayer.setActive(true);
-				drSpeechLayer.reset();
-				drSpeechLayer.play();
-				*/
+				var drSpeech = display.getLayer("drSpeech");
+				drSpeech.setActive(true);
+				drSpeech.playAnimation("speak");
 			});
 
 			// Scene 2 : Ta gueule le roux
 			playback.when(75, function() {
+				// Stop the filters
 				display.getLayer("hudFilter").setActive(false);
 				display.getLayer("video").resetFilter();
+
+				// Stop the doctor
+				display.getLayer("drSpeech").setActive(false);
 			});
 
 			// Scene 2 : Music interruption

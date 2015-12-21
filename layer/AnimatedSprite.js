@@ -65,32 +65,6 @@ var AnimatedSprite = function() {
 	 * REQUIRED
 	 */
 	this.draw = function() {
-		/*
-		if (_animationArray.length === 0) {
-			return false;
-		}
-
-		if (_animationPaused) {
-			return false;
-		}
-
-		// Get current sprite infos
-		var current = _animationArray[_animationCurrent];
-
-		if (!current) {
-			return false;
-		}
-
-		// Check if the current sprite is still the good one
-		var now = new Date().getTime();
-		if (_animationStart + current.duration < now || !_animationStart) {
-			_animationStart = new Date().getTime();
-			_animationCurrent++;
-		}
-
-		if (_animationCurrent >= _animationArray.length) {
-			return false;
-		}*/
 		// If no animation is the current one OR the current one doesn't exist
 		if (!_animationCurrent || !_animations[_animationCurrent]) {
 			return false;
@@ -98,7 +72,6 @@ var AnimatedSprite = function() {
 
 		// Get the current animation
 		var currentAnimation = _animations[_animationCurrent];
-		
 
 		// Check if the current step is still the good one
 		var now = new Date().getTime();
@@ -169,6 +142,12 @@ var AnimatedSprite = function() {
 		_animationCurrent = name;
 		_animationCurrentStep = 0;
 		_animationCurrentStepStart = new Date().getTime();
+	};
+
+	this.stopAnimation = function() {
+		_animationCurrent = false;
+		_animationCurrentStep = 0;
+		_animationCurrentStepStart = 0;
 	};
 
 	this.pause = function() {
