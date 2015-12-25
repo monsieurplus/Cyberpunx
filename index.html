@@ -3,7 +3,8 @@
 	<head>
 		<title>PUTTI UNLIMITED</title>
 
-		<link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css' />
+		<!-- <link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css' /> -->
+		<link href='./resource/font/VT323.css' rel='stylesheet' type='text/css' />
 
 		<script type="text/javascript" src="./controller/Playback.js"></script>
 		<script type="text/javascript" src="./controller/Display.js"></script>
@@ -25,18 +26,28 @@
 		var playback, display;
 
 		document.addEventListener('DOMContentLoaded', function() {
+			console.debug("layers init");
+
 			// Create the video (it's not inserted into the page)
 			var video = document.createElement("video");
 			//video.src = "./resource/video/cyberpunk2077.mp4";
 			//video.src = "./resource/video/bbb.mp4";
-			video.src = "./resource/video/punk-the-system.mp4";
-			video.loop = true;
+			//video.src = "./resource/video/punk-the-system.mp4";
+			video.loop = "loop";
 			video.preload = "auto";
+
+			var videoSourceMp4 = document.createElement("source");
+			videoSourceMp4.src = "./resource/video/punk-the-system.mp4";
+			videoSourceMp4.type = "video/mp4";
+			video.appendChild(videoSourceMp4)
 
 			// Create the video playback controller
 			playback = new Playback(video);
-			playback.seek(0);
-			playback.play();
+			setTimeout(function() {
+				playback.seek(0);
+				playback.play();
+			}, 500);
+			
 
 			// Create the Display controller (it will handle the layers)
 			display = new Display();
@@ -147,6 +158,8 @@
 		<script type="text/javascript">
 		/* Window resizing handling */
 		document.addEventListener('DOMContentLoaded', function() {
+			console.debug("resize event");
+
 			// window.resize event can fire quite fast, so we wait for the final resize to do something
 			var resizeTimeout = null;
 
@@ -181,6 +194,8 @@
 		<script type="text/javascript">
 		/* HUD filter button scripting */
 		document.addEventListener('DOMContentLoaded', function() {
+			console.debug("filter buttons");
+
 			var hudFilterLayer = display.getLayer("hudFilter");
 			var videoLayer = display.getLayer("video");
 

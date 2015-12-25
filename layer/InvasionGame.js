@@ -4,13 +4,10 @@ var InvasionGame = function() {
 	var _context;
 
 	// Local variables
-	var _brainImage;
 	var _brainAscii = [];
 	var _brainHealth = 100;
-	var _brainImageWidth = 179;
-	var _brainImageHeight = 150;
-	var _brainWidthPercent = 20;
-	var _brainDrawX, _brainDrawY, _brainDrawW, _brainDrawH; // TODO
+	//var _brainWidthPercent = 20;
+	//var _brainDrawX, _brainDrawY, _brainDrawW, _brainDrawH; // TODO
 
 	var _attackers = [];
 	/* {
@@ -35,8 +32,6 @@ var InvasionGame = function() {
 
 	var _init = function() {
 		// HERE Initialization of the layer
-		_brainImage = new Image();
-		_brainImage.src = "./resource/image/brain.png";
 	};
 
 	/**

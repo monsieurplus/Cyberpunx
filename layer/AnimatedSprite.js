@@ -32,12 +32,6 @@ var AnimatedSprite = function() {
 	var _animationCurrent = false; // Name of the current animation
 	var _animationCurrentStepIndex = 0; // Current animation displayed step
 	var _animationCurrentStepStart = 0; // Current step start microtime
-	/*
-	var _animationArray = []; // Array telling which sprite to display at which time
-	var _animationCurrent = 0; // Current displayed step
-	var _animationStart; // Time when the current step has begun display
-	var _animationPaused = true;
-	*/
 
 	var _init = function() {
 		// HERE Initialization of the layer
