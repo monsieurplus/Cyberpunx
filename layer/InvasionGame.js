@@ -5,8 +5,8 @@ var InvasionGame = function() {
 
 	// Local variables
 	var _brainAscii = [];
-	var _brainHealth = 100;
-	//var _brainWidthPercent = 20;
+	var _brainHealth;
+	var _brainWidth;
 	//var _brainDrawX, _brainDrawY, _brainDrawW, _brainDrawH; // TODO
 
 	var _attackers = [];
@@ -161,9 +161,10 @@ var InvasionGame = function() {
 		var distanceX = 50 - attacker.x;
 		var distanceY = 50 - attacker.y;
 		var distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
+		var brainWidthPercent = (_brainWidth / _viewportDimension.width) * 100;
 
 		// Check collision
-		return (distance < (attacker.size + _brainWidthPercent / 4));
+		return (distance < (attacker.size + brainWidthPercent / 4));
 	};
 
 	var _processAttackerSuccess = function(index) {
@@ -263,18 +264,6 @@ var InvasionGame = function() {
 	};
 
 	var _drawBrain = function() {
-		// Brain drawing
-		/*var drawW = _viewportDimension.width / (100 / _brainWidthPercent);
-		var drawH = (drawW * _brainImageHeight) / _brainImageWidth;
-		var drawX = Math.floor(_viewportDimension.width / 2 - drawW / 2);
-		var drawY = Math.floor(_viewportDimension.height / 2 - drawH / 2);
-
-		_context.drawImage(
-			_brainImage,
-			drawX, drawY,
-			drawW, drawH
-		);*/
-
 		// Brain Drawing positions
 		var startX = 0;
 		var startY = 0;
@@ -294,6 +283,9 @@ var InvasionGame = function() {
 
 		startX = Math.ceil((_viewportDimension.width - ((maxX * charW + (maxX - 1) * marginW))) / 2);
 		startY = Math.ceil((_viewportDimension.height - ((maxY * charH + (maxY - 1) * marginH))) / 2);
+
+		// Register the brain's width
+		_brainWidth = maxX * charW + (maxX - 1) * marginW;
 
 		var colorTable = {
 			"0" : "white",

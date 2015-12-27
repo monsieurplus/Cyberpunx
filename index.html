@@ -44,7 +44,7 @@
 			// Create the video playback controller
 			playback = new Playback(video);
 			setTimeout(function() {
-				playback.seek(0);
+				playback.seek(235);
 				playback.play();
 			}, 500);
 			
@@ -276,20 +276,23 @@
 			});
 
 			// Scene 2 : Begginning
-			playback.when(37, function() {
+			playback.when(37.5, function() {
 				setActiveHud(true);
 
 				display.getLayer("hudClock").setTime("11:13:41");
 
 				display.getLayer("hudFilter").setActive(true);
+			});
 
+			// Scene 2 : Dr. speech start
+			playback.when(43, function() {
 				var drSpeech = display.getLayer("drSpeech");
 				drSpeech.setActive(true);
 				drSpeech.playAnimation("speak");
 			});
 
-			// Scene 2 : Ta gueule le roux
-			playback.when(75, function() {
+			// Scene 2 : Dr speech end
+			playback.when(76, function() {
 				// Stop the filters
 				display.getLayer("hudFilter").setActive(false);
 				display.getLayer("video").resetFilter();
@@ -305,40 +308,92 @@
 			playback.when(90, function() {});
 
 			// Scene 2 : End
-			playback.when(113, function() {
+			playback.when(120, function() {
 				setActiveHud(false);
 			});
 
 			// Scene 3 : Beggining
-			playback.when(116, function() {
+			playback.when(122.5, function() {
 				setActiveHud(true);
 
 				display.getLayer("hudClock").setTime("19:04:09");
 			});
 
 			// Scene 3 : Music starts
-			playback.when(143, function() {});
+			playback.when(150, function() {});
+
+			// Scene 3 : Censorship start
+			playback.when(165, function() {});
 
 			// Scene 3 : Music end
-			playback.when(190, function() {});
+			playback.when(198, function() {});
 
 			// Scene 3 : End
-			playback.when(205, function() {
+			playback.when(210, function() {
 				setActiveHud(false);
 			});			
 
 			// Scene 4 : Beginning
-			playback.when(207, function() {
+			playback.when(213, function() {
 				setActiveHud(true);
 
 				display.getLayer("hudClock").setTime("23:05:30");
 			});
 
 			// Scene 4 : End
-			playback.when(234, function() {
+			playback.when(240, function() {
+				setActiveHud(false);
+				display.getLayer("hudClock").setTime("03:00:37");
+			});
+
+			// Scene 5 : Implant boot
+			playback.when(246, function() {
 				setActiveHud(true);
 			});
 
+			// Scene 5 : Update start
+			playback.when(249, function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(5);
+				invasionGame.setAttackerSpeed(5);
+				invasionGame.setAttackerDelay(2000);
+				invasionGame.setAttackerStrength(1);
+				invasionGame.setAttackerColor("green");
+
+				invasionGame.setFailureCallback(function() {
+					// Jump to scene 7
+					invasionGame.setActive(false);
+					playback.seek(382);
+				});
+			});
+
+			// Scene 5 : Awakening
+			playback.when(255, function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(5);
+				invasionGame.setAttackerSpeed(7.5);
+				invasionGame.setAttackerDelay(1500);
+				invasionGame.setAttackerStrength(2);
+				invasionGame.setAttackerColor("blue");
+			});
+
+			playback.when(275, function() {
+				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setAttackerSize(10);
+				invasionGame.setAttackerSpeed(12.5);
+				invasionGame.setAttackerDelay(500);
+				invasionGame.setAttackerStrength(5);
+				invasionGame.setAttackerColor("red");
+			});
+
+			// Scene 5 : End
+			playback.when(309, function() {
+				setActiveHud(false);
+
+				display.getLayer("invasionGame").setActive(false);
+			});
+
+			/*
 			// Scene 5 : Begin
 			playback.when(236, function() {
 				setActiveHud(true);
@@ -403,38 +458,52 @@
 
 				display.getLayer("invasionGame").setActive(false);
 			});
+			*/
 
 			// Scene 6 : Beginning
-			playback.when(293, function() {
+			playback.when(311, function() {
 				setActiveHud(true);
 
 				display.getLayer("hudClock").setTime("03:35:12");
 			});
 
 			// Scene 6 : First grip to remove the implant
-			playback.when(310, function() {});
+			playback.when(338, function() {});
 
 			// Scene 6 : Implant on the ground
-			playback.when(324, function() {});
+			playback.when(344, function() {});
 
-			// Scene 6 : End
-			playback.when(329, function() {
+			// Scene 6 : Credits start
+			playback.when(347, function() {
 				setActiveHud(false);
 			});
 
+			// Scene 6 : Credits end
+			playback.when(380, function() {
+				playback.pause();
+			});
+
 			// Scene 7 : Beggining
-			playback.when(331, function() {
+			playback.when(382, function() {
 				setActiveHud(true);
 
 				display.getLayer("hudClock").setTime("03:35:12");
 			});
 
 			// Scene 7 : change of light
-			playback.when(349 , function() {});
+			playback.when(398, function() {});
 
-			// Scene 7 : End
-			playback.when(418, function() {
+			// Scene 7 : music volume increase
+			playback.when(455, function() {});
+
+			// Scene 7 : Credits start
+			playback.when(470, function() {
 				setActiveHud(false);
+			});
+
+			// Scene 7 : Credits end
+			playback.when(498, function() {
+				playback.pause();
 			});
 		});
 		</script>
@@ -447,7 +516,7 @@
 
 				background-color : black;
 			}
-			#canvas-container canvas { position:absolute; top:0; left:0; z-index:1; }
+			#canvas-container canvas { position:absolute; top:0; left:0; z-index:1; opacity:0.75 ; }
 			
 			#video-container {
 				position:absolute;
@@ -473,20 +542,20 @@
 				background-color : red;
 			}
 			.filter-terminator video {
-				-webkit-filter : opacity(0.75) grayscale(1);
-				filter : opacity(0.75) grayscale(1);
+				-webkit-filter : opacity(0.75) grayscale(1) brightness(4);
+				filter : opacity(0.75) grayscale(1) brightness(4);
 			}
 			.filter-predator video {
-				-webkit-filter : saturate(5) contrast(10);
-				filter : saturate(5) contrast(10);
+				-webkit-filter : brightness(2) saturate(5) contrast(5);
+				filter : brightness(2) saturate(5) contrast(5);
 			}
 			.filter-brightness video{
-				-webkit-filter : brightness(2);
-				filter : brightness(2);
+				-webkit-filter : brightness(4);
+				filter : brightness(4);
 			}
 			.filter-contrast video{
-				-webkit-filter : contrast(2);
-				filter : contrast(2);
+				-webkit-filter : brightness(2) contrast(2);
+				filter : brightness(2) contrast(2);
 			}
 			.filter-invert video{
 				-webkit-filter : invert(1);
