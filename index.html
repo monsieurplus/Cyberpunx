@@ -16,6 +16,7 @@
 		<script type="text/javascript" src="./layer/HudFilterLayer.js"></script>
 		<script type="text/javascript" src="./layer/AnimatedSprite.js"></script>
 		<script type="text/javascript" src="./layer/InvasionGame.js"></script>
+		<script type="text/javascript" src="./layer/AlertMessage.js"></script>
 		<script type="text/javascript" src="./layer/HudGlitchLayer.js"></script>
 		<script type="text/javascript" src="./layer/NoiseLayer.js"></script>
 
@@ -41,7 +42,7 @@
 			// Create the video playback controller
 			playback = new Playback(video);
 			setTimeout(function() {
-				playback.seek(235);
+				playback.seek(245);
 				playback.play();
 			}, 500);
 			
@@ -85,15 +86,51 @@
 				bottom : 200
 			});
 			drSpeech.setDisplaySize(240, 135);
-			drSpeech.addAnimation("speak", [
-				{ sprite : 0, duration : 100 },
-				{ sprite : 1, duration : 100 },
-				{ sprite : 2, duration : 100 }
+			drSpeech.addAnimation("speak-close", [
+				{ sprite :  0, duration : 100 },
+				{ sprite :  1, duration : 100 },
+				{ sprite :  2, duration : 100 },
+				{ sprite :  4, duration : 100 }
 			]);
-			drSpeech.addAnimation("scratch", [
-				{ sprite : 0, duration : 100 },
-				{ sprite : 1, duration : 100 },
-				{ sprite : 2, duration : 100 }
+			drSpeech.addAnimation("speak-far", [
+				{ sprite :  9, duration : 100 },
+				{ sprite : 10, duration : 100 },
+				{ sprite : 11, duration : 100 },
+				{ sprite : 18, duration : 100 },
+				{ sprite : 20, duration : 100 }
+			]);
+			drSpeech.addAnimation("speak-very-far", [
+				{ sprite : 55, duration : 100 },
+				{ sprite : 57, duration : 100 }
+			]);
+			drSpeech.addAnimation("idle", [
+				//{ sprite : 25, duration : 100 },
+				//{ sprite :  9, duration : 100 },
+				//{ sprite :  8, duration : 100 }
+				{ sprite :  4, duration : 250 },
+				{ sprite :  2, duration : 250 },
+			]);
+			drSpeech.addAnimation("scratch-front", [
+				{ sprite : 28, duration : 100 },
+				{ sprite : 43, duration : 100 },
+				{ sprite : 50, duration : 100 },
+				{ sprite : 54, duration : 100 },
+				{ sprite : 56, duration : 100 }
+			]);
+			drSpeech.addAnimation("scratch-ear", [
+				{ sprite : 15, duration : 100 },
+				{ sprite : 48, duration : 100 },
+				{ sprite : 53, duration : 100 }
+			]);
+			drSpeech.addAnimation("speak-right", [
+				{ sprite : 24, duration : 100 },
+				{ sprite : 26, duration : 100 },
+				{ sprite : 30, duration : 100 },
+				{ sprite : 32, duration : 100 },
+				{ sprite : 12, duration : 100 },
+				{ sprite : 13, duration : 100 },
+				{ sprite : 16, duration : 100 },
+				{ sprite : 17, duration : 100 }
 			]);
 			display.addLayer("drSpeech", drSpeech);
 
@@ -101,12 +138,16 @@
 			invasionGame.setActive(false);
 			display.addLayer("invasionGame", invasionGame);
 
+			var alertMessage = new AlertMessage();
+			alertMessage.setActive(false);
+			display.addLayer("alertMessage", alertMessage);
+
 			var hudGlitchLayer = new HudGlitchLayer();
 			hudGlitchLayer.setParam("quantity", 1);
-			hudGlitchLayer.setParam("probability", 1);
+			hudGlitchLayer.setParam("probability", 10);
 			hudGlitchLayer.setParam("width", 10);
 			hudGlitchLayer.setParam("height", 10);
-			hudGlitchLayer.setActive(false);
+			//hudGlitchLayer.setActive(false);
 			display.addLayer("hudGlitch", hudGlitchLayer);
 
 			var noiseLayer = new NoiseLayer();
@@ -191,8 +232,6 @@
 		<script type="text/javascript">
 		/* HUD filter button scripting */
 		document.addEventListener('DOMContentLoaded', function() {
-			console.debug("filter buttons");
-
 			var hudFilterLayer = display.getLayer("hudFilter");
 			var videoLayer = display.getLayer("video");
 
@@ -273,7 +312,7 @@
 			});
 
 			// Scene 2 : Begginning
-			playback.when(37.5, function() {
+			playback.when(37, function() {
 				setActiveHud(true);
 
 				display.getLayer("hudClock").setTime("11:13:41");
@@ -285,7 +324,22 @@
 			playback.when(43, function() {
 				var drSpeech = display.getLayer("drSpeech");
 				drSpeech.setActive(true);
-				drSpeech.playAnimation("speak");
+				drSpeech.playAnimation("speak-close");
+			});
+			playback.when(45, function() {
+				display.getLayer("drSpeech").playAnimation("scratch-front");
+			});
+			playback.when(48, function() {
+				display.getLayer("drSpeech").playAnimation("speak-far");
+			});
+			playback.when(52, function() {
+				display.getLayer("drSpeech").playAnimation("scratch-ear");
+			});
+			playback.when(55, function() {
+				display.getLayer("drSpeech").playAnimation("speak-right");
+			});
+			playback.when(57, function() {
+				display.getLayer("drSpeech").playAnimation("idle");
 			});
 
 			// Scene 2 : Dr speech end
@@ -299,13 +353,21 @@
 			});
 
 			// Scene 2 : Music interruption
-			playback.when(85, function() {});
+			playback.when(85, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("ALLOCUTION PRESIDENTIELLE OBLIGATOIRE");
+				alertMessage.setColor("#6AFF0B");
+				alertMessage.setBlinkSpeed(500);
+				alertMessage.setActive(true);
+			});
 
 			// Scene 2 : Putti speech begins
 			playback.when(90, function() {});
 
 			// Scene 2 : End
 			playback.when(120, function() {
+				display.getLayer("alertMessage").setActive(false);
+
 				setActiveHud(false);
 			});
 
@@ -320,10 +382,18 @@
 			playback.when(150, function() {});
 
 			// Scene 3 : Censorship start
-			playback.when(165, function() {});
+			playback.when(165, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("CONTENU PROHIBE DETECTE");
+				alertMessage.setColor("#6AFF0B");
+				alertMessage.setBlinkSpeed(250);
+				alertMessage.setActive(true);
+			});
 
 			// Scene 3 : Music end
-			playback.when(198, function() {});
+			playback.when(198, function() {
+				display.getLayer("alertMessage").setActive(false);
+			});
 
 			// Scene 3 : End
 			playback.when(210, function() {
@@ -350,12 +420,19 @@
 
 			// Scene 5 : Update start
 			playback.when(249, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("MISE A JOUR EN COURS");
+				alertMessage.setColor("#6AFF0B");
+				alertMessage.setBlinkSpeed(500);
+				alertMessage.setActive(true);
+
 				var invasionGame = display.getLayer("invasionGame");
+				invasionGame.setActive(true);
 				invasionGame.setAttackerSize(5);
 				invasionGame.setAttackerSpeed(5);
 				invasionGame.setAttackerDelay(2000);
 				invasionGame.setAttackerStrength(1);
-				invasionGame.setAttackerColor("green");
+				invasionGame.setAttackerColor("#6AFF0B");
 
 				invasionGame.setFailureCallback(function() {
 					// Jump to scene 7
@@ -366,6 +443,10 @@
 
 			// Scene 5 : Awakening
 			playback.when(255, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setColor("blue");
+				alertMessage.setBlinkSpeed(250);
+
 				var invasionGame = display.getLayer("invasionGame");
 				invasionGame.setAttackerSize(5);
 				invasionGame.setAttackerSpeed(7.5);
@@ -375,6 +456,10 @@
 			});
 
 			playback.when(275, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(100);
+
 				var invasionGame = display.getLayer("invasionGame");
 				invasionGame.setAttackerSize(10);
 				invasionGame.setAttackerSpeed(12.5);
@@ -386,7 +471,7 @@
 			// Scene 5 : End
 			playback.when(309, function() {
 				setActiveHud(false);
-
+				display.getLayer("alertMessage").setActive(false);
 				display.getLayer("invasionGame").setActive(false);
 			});
 
@@ -461,17 +546,114 @@
 			playback.when(311, function() {
 				setActiveHud(true);
 
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("ECHEC CRITIQUE");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(100);
+				alertMessage.setActive(true);
+
 				display.getLayer("hudClock").setTime("03:35:12");
 			});
 
 			// Scene 6 : First grip to remove the implant
-			playback.when(338, function() {});
+			playback.when(338, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("INTERFACE DEFAILLANTE");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(100);
+				alertMessage.setActive(true);
+			});
+			playback.when(338.5, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("CONNEXION INCOMPLETE");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(250);
+				alertMessage.setActive(true);
+			});
+			playback.when(339, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("BIOSONDE DEFECTUEUSE");
+				alertMessage.setColor("magenta");
+				alertMessage.setBlinkSpeed(100);
+				alertMessage.setActive(true);
+			});
+			playback.when(339.5, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("NIVEAU ENERGIE CRITIQUE");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(250);
+				alertMessage.setActive(true);
+			});
+
+			playback.when(340, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("INTERFACE DEFAILLANTE");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(100);
+				alertMessage.setActive(true);
+			});
+			playback.when(340.5, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("CONNEXION INCOMPLETE");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(250);
+				alertMessage.setActive(true);
+			});
+			playback.when(341, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("BIOSONDE DEFECTUEUSE");
+				alertMessage.setColor("magenta");
+				alertMessage.setBlinkSpeed(100);
+				alertMessage.setActive(true);
+			});
+			playback.when(341.5, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("NIVEAU ENERGIE CRITIQUE");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(250);
+				alertMessage.setActive(true);
+			});
+			playback.when(342, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("INTERFACE DEFAILLANTE");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(100);
+				alertMessage.setActive(true);
+			});
+			playback.when(342.5, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("CONNEXION INCOMPLETE");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(250);
+				alertMessage.setActive(true);
+			});
+			playback.when(343, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("BIOSONDE DEFECTUEUSE");
+				alertMessage.setColor("magenta");
+				alertMessage.setBlinkSpeed(100);
+				alertMessage.setActive(true);
+			});
+			playback.when(343.5, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("NIVEAU ENERGIE CRITIQUE");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(250);
+				alertMessage.setActive(true);
+			});
 
 			// Scene 6 : Implant on the ground
-			playback.when(344, function() {});
+			playback.when(344, function() {
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage("ORGANISME HOTE INTROUVABLE");
+				alertMessage.setColor("red");
+				alertMessage.setBlinkSpeed(100);
+				alertMessage.setActive(true);
+			});
 
 			// Scene 6 : Credits start
 			playback.when(347, function() {
+				display.getLayer("alertMessage").setActive(false);
 				setActiveHud(false);
 			});
 

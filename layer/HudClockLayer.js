@@ -70,10 +70,6 @@ var HudClockLayer = function() {
 	 * REQUIRED
 	 */
 	this.draw = function() {
-		// Change the way things are drawn into canvas
-		var oldCompositeOperation = _context.globalCompositeOperation;
-		_context.globalCompositeOperation = 'lighter';
-
 		// Time styling
 		var fontSize = Math.ceil(_viewportDimension.width / 50);
 		_context.fillStyle = "#6AFF0B";
@@ -84,8 +80,6 @@ var HudClockLayer = function() {
 
 		// Draw time text
 		_context.fillText(this.getTime(), _viewportDimension.width - 20, 20);
-
-		_context.globalCompositeOperation = oldCompositeOperation;
 	};
 
 	/**

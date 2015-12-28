@@ -47,10 +47,6 @@ var HudFilterLayer = function() {
 			return false;
 		}
 
-		// Change the way things are drawn into canvas
-		var oldCompositeOperation = _context.globalCompositeOperation;
-		_context.globalCompositeOperation = 'lighter';
-
 		// Button color
 		_context.fillStyle = "#6AFF0B";
 		_context.strokeStyle = "#6AFF0B";
@@ -82,8 +78,6 @@ var HudFilterLayer = function() {
 		else {
 			_context.fillText(name, (x + width/2), (y + height/2));
 		}
-
-		_context.globalCompositeOperation = oldCompositeOperation;
 	};
 
 	/**

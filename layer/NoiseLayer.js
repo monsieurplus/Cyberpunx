@@ -42,10 +42,6 @@ var NoiseLayer = function() {
 			return false;
 		}
 
-		// Change the way things are drawn into canvas
-		var oldCompositeOperation = _context.globalCompositeOperation;
-		_context.globalCompositeOperation = 'lighter';
-
 		var startX = - Math.floor(Math.random() * image.width);
 		var startY = - Math.floor(Math.random() * image.height);
 
@@ -54,9 +50,6 @@ var NoiseLayer = function() {
 				_context.drawImage(_noiseImage, x, y, image.width, image.height);
 			}
 		}
-
-		// Reset globalCompositeOperation to previous value
-		_context.globalCompositeOperation = oldCompositeOperation;
 	}
 
 

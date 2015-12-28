@@ -44,10 +44,6 @@ var HudAudioLayer = function() {
 		// Get the audio data
 		_audioAnalyser.getByteTimeDomainData(_audioData);
 
-		// Change the way things are drawn into canvas
-		var oldCompositeOperation = _context.globalCompositeOperation;
-		_context.globalCompositeOperation = 'lighter';
-
 		// Draw the spectrum
 		_context.fillStyle = "#6AFF0B";
 
@@ -64,8 +60,6 @@ var HudAudioLayer = function() {
 			// Draw frequency bar
 			_context.fillRect(i * spectrumBarWidth + 20, topMargin + 128 - (volume/2), spectrumBarWidth, volume);
 		}
-
-		_context.globalCompositeOperation = oldCompositeOperation;
 	};
 
 	/**

@@ -133,15 +133,22 @@ var AnimatedSprite = function() {
 	};
 
 	this.playAnimation = function(name) {
+		// Check if the animation exists
+		if (!_animations[name]) {
+			return false;
+		}
+
 		_animationCurrent = name;
 		_animationCurrentStep = 0;
 		_animationCurrentStepStart = new Date().getTime();
+		_animationCurrentStepIndex = 0;
 	};
 
 	this.stopAnimation = function() {
 		_animationCurrent = false;
 		_animationCurrentStep = 0;
 		_animationCurrentStepStart = 0;
+		_animationCurrentStepIndex = 0;
 	};
 
 	this.pause = function() {

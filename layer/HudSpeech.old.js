@@ -87,10 +87,6 @@ var HudSpeech = function() {
 			targetY = Math.ceil(_viewportDimension.height / 2 - _displayHeight / 2);
 		}
 
-		// Change the way things are drawn into canvas
-		var oldCompositeOperation = _context.globalCompositeOperation;
-		_context.globalCompositeOperation = 'lighter';
-
 		// Display the sprite
 		_context.drawImage(
 			_spriteImage,
@@ -99,9 +95,6 @@ var HudSpeech = function() {
 			targetX, targetY,
 			targetW, targetH
 		);
-
-		// Reset the way things are drawn into canvas
-		_context.globalCompositeOperation = oldCompositeOperation;
 	};
 
 	this.play = function() {
