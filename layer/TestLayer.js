@@ -12,10 +12,6 @@ var TestLayer = function() {
 	};
 
 	this.draw = function() {
-		// Change the way things are drawn into canvas
-		var oldCompositonOperation = _context.globalCompositeOperation;
-		_context.globalCompositeOperation = 'lighter';
-
 		// Draw the logo
 		var drawWidth = 265;
 		var drawHeight = 184;
@@ -26,9 +22,6 @@ var TestLayer = function() {
 		_context.textAlign = "center";
 		_context.fillStyle = "#6AFF0B";
 		_context.fillText("PUTTI OMNI-SCIENCE", _viewportDimension.width/2, 100);
-
-		// Reset the way things are drawn into canvas
-		_context.globalCompositeOperation = oldCompositonOperation;
 	};
 
 	this.setContext = function(context) {

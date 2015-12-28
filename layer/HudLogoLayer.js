@@ -15,14 +15,7 @@ var HudLogoLayer = function() {
 	 * REQUIRED
 	 */
 	this.draw = function() {
-		// Change the way things are drawn into canvas
-		var oldCompositeOperation = _context.globalCompositeOperation;
-		_context.globalCompositeOperation = 'lighter';
-
 		// Draw the logo
-		//var drawWidth = _image.width;
-		//var drawHeight = _image.height;
-
 		var drawWidth = _viewportDimension.width / 5;
 		var drawHeight = (drawWidth * _image.height) / _image.width;
 
@@ -33,9 +26,6 @@ var HudLogoLayer = function() {
 			drawWidth,
 			drawHeight
 		);
-
-		// Reset the way things are drawn into canvas
-		_context.globalCompositeOperation = oldCompositeOperation;
 	};
 
 	/**
