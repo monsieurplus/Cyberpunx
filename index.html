@@ -27,8 +27,6 @@
 		var playback, display;
 
 		document.addEventListener('DOMContentLoaded', function() {
-			console.debug("layers init");
-
 			// Create the video (it's not inserted into the page)
 			var video = document.createElement("video");
 			//video.loop = "loop";
@@ -42,7 +40,7 @@
 			// Create the video playback controller
 			playback = new Playback(video);
 			setTimeout(function() {
-				playback.seek(245);
+				playback.seek(0);
 				playback.play();
 			}, 500);
 			
@@ -196,8 +194,6 @@
 		<script type="text/javascript">
 		/* Window resizing handling */
 		document.addEventListener('DOMContentLoaded', function() {
-			console.debug("resize event");
-
 			// window.resize event can fire quite fast, so we wait for the final resize to do something
 			var resizeTimeout = null;
 
@@ -475,73 +471,6 @@
 				display.getLayer("invasionGame").setActive(false);
 			});
 
-			/*
-			// Scene 5 : Begin
-			playback.when(236, function() {
-				setActiveHud(true);
-
-				display.getLayer("hudClock").setTime("03:00:37");
-
-				var invasionGame = display.getLayer("invasionGame");
-				invasionGame.setAttackerSize(5);
-				invasionGame.setAttackerSpeed(5);
-				invasionGame.setAttackerDelay(2000);
-				invasionGame.setAttackerStrength(1);
-				invasionGame.setAttackerColor("green");
-
-				invasionGame.setFailureCallback(function() {
-					// Jump to scene 7
-					invasionGame.setActive(false);
-					playback.seek(330);
-				});
-
-				invasionGame.setActive(true);
-			});
-
-			playback.when(246, function() {
-				var invasionGame = display.getLayer("invasionGame");
-				invasionGame.setAttackerSize(5);
-				invasionGame.setAttackerSpeed(7.5);
-				invasionGame.setAttackerDelay(1500);
-				invasionGame.setAttackerStrength(2);
-				invasionGame.setAttackerColor("blue");
-			});
-
-			playback.when(256, function() {
-				var invasionGame = display.getLayer("invasionGame");
-				invasionGame.setAttackerSize(5);
-				invasionGame.setAttackerSpeed(10);
-				invasionGame.setAttackerDelay(1000);
-				invasionGame.setAttackerStrength(2);
-				invasionGame.setAttackerColor("blue");
-			});
-
-			playback.when(266, function() {
-				var invasionGame = display.getLayer("invasionGame");
-				invasionGame.setAttackerSize(10);
-				invasionGame.setAttackerSpeed(12.5);
-				invasionGame.setAttackerDelay(500);
-				invasionGame.setAttackerStrength(5);
-				invasionGame.setAttackerColor("red");
-			});
-
-			playback.when(276, function() {
-				var invasionGame = display.getLayer("invasionGame");
-				invasionGame.setAttackerSize(10);
-				invasionGame.setAttackerSpeed(15);
-				invasionGame.setAttackerDelay(250);
-				invasionGame.setAttackerStrength(5);
-				invasionGame.setAttackerColor("red");
-			});
-
-			// Scene 5 : End
-			playback.when(290, function() {
-				setActiveHud(false);
-
-				display.getLayer("invasionGame").setActive(false);
-			});
-			*/
-
 			// Scene 6 : Beginning
 			playback.when(311, function() {
 				setActiveHud(true);
@@ -552,94 +481,138 @@
 				alertMessage.setBlinkSpeed(100);
 				alertMessage.setActive(true);
 
+				var hudGlitch = display.getLayer("hudGlitch");
+				hudGlitch.setActive(true);
+				hudGlitch.setParam("quantity", 4);
+				hudGlitch.setParam("probability", 25);
+				hudGlitch.setParam("width", 10);
+				hudGlitch.setParam("height", 10);
+
 				display.getLayer("hudClock").setTime("03:35:12");
 			});
 
+			var generateGlitch = function() {
+				var duration = 10 + Math.floor(Math.random() * 250);
+				display.getLayer("video").addGlitch({
+					amount     : 5,
+					seed       : 5,
+					iterations : 5,
+					quality    : 75
+				}, duration);
+			};
+
+			var changeMessage = function() {
+				var messages = [
+					"INTERFACE DEFAILLANTE",
+					"CONNEXION INCOMPLETE",
+					"BIOSONDE DEFECTUEUSE",
+					"NIVEAU ENERGIE CRITIQUE",
+					"MENACE EXTERIEURE DETECTEE",
+					"ANCRAGE NEURONAL ENDOMMAGE",
+					"FONCTION NORMALISATRICE COMPROMISE",
+					"ANCRAGE CRANIEN DEFAILLANT",
+					"IMPLANTATION NERVEUSE INCORRECTE"
+				];
+
+				var colors = ["red", "magenta", "pink", "fushia", "white"];
+
+				var alertMessage = display.getLayer("alertMessage");
+				alertMessage.setMessage(messages[Math.floor(Math.random() * messages.length)]);
+				alertMessage.setColor(colors[Math.floor(Math.random() * colors.length)]);
+				alertMessage.setBlinkSpeed(50 + Math.random() * 200);
+				alertMessage.setActive(true);
+			};
+
 			// Scene 6 : First grip to remove the implant
-			playback.when(338, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("INTERFACE DEFAILLANTE");
-				alertMessage.setColor("red");
-				alertMessage.setBlinkSpeed(100);
-				alertMessage.setActive(true);
+			playback.when(329, function() {
+				changeMessage();
+
+				generateGlitch();
+
+				var hudGlitch = display.getLayer("hudGlitch");
+				hudGlitch.setActive(true);
+				hudGlitch.setParam("quantity", 10);
+				hudGlitch.setParam("probability", 50);
+				hudGlitch.setParam("width", 10);
+				hudGlitch.setParam("height", 10);
 			});
-			playback.when(338.5, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("CONNEXION INCOMPLETE");
-				alertMessage.setColor("red");
-				alertMessage.setBlinkSpeed(250);
-				alertMessage.setActive(true);
+			playback.when(330, function() {
+				changeMessage();
+				generateGlitch();
 			});
-			playback.when(339, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("BIOSONDE DEFECTUEUSE");
-				alertMessage.setColor("magenta");
-				alertMessage.setBlinkSpeed(100);
-				alertMessage.setActive(true);
+			playback.when(331, function() {
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
 			});
-			playback.when(339.5, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("NIVEAU ENERGIE CRITIQUE");
-				alertMessage.setColor("red");
-				alertMessage.setBlinkSpeed(250);
-				alertMessage.setActive(true);
+			playback.when(332, function() {
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
 			});
 
+			playback.when(333, function() {
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
+			});
+			playback.when(334, function() {
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
+			});
+			playback.when(335, function() {
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
+			});
+			playback.when(336, function() {
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
+			});
+			playback.when(337, function() {
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
+
+				var hudGlitch = display.getLayer("hudGlitch");
+				hudGlitch.setActive(true);
+				hudGlitch.setParam("quantity", 50);
+				hudGlitch.setParam("probability", 75);
+				hudGlitch.setParam("width", 10);
+				hudGlitch.setParam("height", 10);
+			});
+			playback.when(338, function() {
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
+			});
+			playback.when(339, function() {
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
+			});
 			playback.when(340, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("INTERFACE DEFAILLANTE");
-				alertMessage.setColor("red");
-				alertMessage.setBlinkSpeed(100);
-				alertMessage.setActive(true);
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
 			});
-			playback.when(340.5, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("CONNEXION INCOMPLETE");
-				alertMessage.setColor("red");
-				alertMessage.setBlinkSpeed(250);
-				alertMessage.setActive(true);
-			});
+
 			playback.when(341, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("BIOSONDE DEFECTUEUSE");
-				alertMessage.setColor("magenta");
-				alertMessage.setBlinkSpeed(100);
-				alertMessage.setActive(true);
-			});
-			playback.when(341.5, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("NIVEAU ENERGIE CRITIQUE");
-				alertMessage.setColor("red");
-				alertMessage.setBlinkSpeed(250);
-				alertMessage.setActive(true);
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
 			});
 			playback.when(342, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("INTERFACE DEFAILLANTE");
-				alertMessage.setColor("red");
-				alertMessage.setBlinkSpeed(100);
-				alertMessage.setActive(true);
-			});
-			playback.when(342.5, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("CONNEXION INCOMPLETE");
-				alertMessage.setColor("red");
-				alertMessage.setBlinkSpeed(250);
-				alertMessage.setActive(true);
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
 			});
 			playback.when(343, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("BIOSONDE DEFECTUEUSE");
-				alertMessage.setColor("magenta");
-				alertMessage.setBlinkSpeed(100);
-				alertMessage.setActive(true);
-			});
-			playback.when(343.5, function() {
-				var alertMessage = display.getLayer("alertMessage");
-				alertMessage.setMessage("NIVEAU ENERGIE CRITIQUE");
-				alertMessage.setColor("red");
-				alertMessage.setBlinkSpeed(250);
-				alertMessage.setActive(true);
+				changeMessage();
+				generateGlitch();
+				generateGlitch();
 			});
 
 			// Scene 6 : Implant on the ground
@@ -649,10 +622,17 @@
 				alertMessage.setColor("red");
 				alertMessage.setBlinkSpeed(100);
 				alertMessage.setActive(true);
+
+				var hudGlitch = display.getLayer("hudGlitch");
+				hudGlitch.setActive(true);
+				hudGlitch.setParam("quantity", 50);
+				hudGlitch.setParam("probability", 100);
+				hudGlitch.setParam("width", 20);
+				hudGlitch.setParam("height", 20);
 			});
 
 			// Scene 6 : Credits start
-			playback.when(347, function() {
+			playback.when(347.5, function() {
 				display.getLayer("alertMessage").setActive(false);
 				setActiveHud(false);
 			});
