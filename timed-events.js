@@ -157,7 +157,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		invasionGame.setFailureCallback(function() {
 			// Jump to scene 7
-			invasionGame.setActive(false);
+			display.getLayer("invasionGame").setActive(false);
+			display.getLayer("alertMessage").setActive(false);
 			playback.seek(382);
 		});
 	});
@@ -370,7 +371,6 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Scene 7 : Beggining
 	playback.when(382, function() {
 		setActiveHud(true);
-
 		display.getLayer("hudClock").setTime("03:35:12");
 	});
 
@@ -386,7 +386,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Scene 7 : Credits end
-	playback.when(498, function() {
+	playback.when(502, function() {
 		playback.pause();
 	});
 });
