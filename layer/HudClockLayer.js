@@ -7,9 +7,25 @@ var HudClockLayer = function() {
 	var _time = new Date(); // Javascript Date object
 	var _timeStart = new Date().getTime();
 
+	var _fontSize = 2; // In percents of the screen width
+	var _fontColor = "#6AFF0B";
+	var _displayPosition = {};
+
 	var _init = function() {
 		// HERE Initialization of the layer
 	};
+
+	this.setFontSize = function(fontSize) {
+		_fontSize = fontSize;
+	};
+
+	this.setFontColor = function(fontColor) {
+		_fontColor = fontColor;
+	};
+
+	this.setDisplayPosition = function(position) {
+		_displayPosition = position;
+	}
 
 	var _resetTimeStart = function() {
 		_timeStart = new Date().getTime();
@@ -70,16 +86,48 @@ var HudClockLayer = function() {
 	 * REQUIRED
 	 */
 	this.draw = function() {
-		// Time styling
-		var fontSize = Math.ceil(_viewportDimension.width / 50);
-		_context.fillStyle = "#6AFF0B";
-		_context.strokeStyle = "#6AFF0B";
+		// Font size and text position
+		var fontSize = _viewportDimension.width / 100 * _fontSize;
+		var targetX, targetY;
+
+		// Positionned from left
+		if (typeof _displayPosition.left !== "undefined") {
+			targetX = _displayPosition.left / 100 * _viewportDimension.width;
+			_context.textAlign = "left";
+		}
+		// Positionned from right
+		else if (typeof _displayPosition.right !== "undefined") {
+			targetX = _viewportDimension.width - (_displayPosition.right / 100 * _viewportDimension.width);
+			_context.textAlign = "right";
+		}
+		// Horizontally centered
+		else {
+			targetX = _viewportDimension.width / 2;
+			_context.textAlign = "center";
+		}
+		
+		// Positionned from top
+		if (typeof _displayPosition.top !== "undefined") {
+			targetY = _displayPosition.top / 100 * _viewportDimension.height;
+			_context.textBaseline = "top";
+		}
+		// Positionned from bottom
+		else if (typeof _displayPosition.bottom !== "undefined") {
+			targetY = _viewportDimension.height - (_displayPosition.bottom / 100 * _viewportDimension.height);
+			_context.textBaseline = "bottom";
+		}
+		// Vertically centered
+		else {
+			targetY = _viewportDimension.height / 2;
+			_context.textBaseline = "middle";
+		}
+
+		// Text style
+		_context.fillStyle = _fontColor;
 		_context.font = fontSize + "px VT323, monospace";
-		_context.textAlign = "right";
-		_context.textBaseline = "middle";
 
 		// Draw time text
-		_context.fillText(this.getTime(), _viewportDimension.width - 20, 20);
+		_context.fillText(this.getTime(), targetX, targetY);
 	};
 
 	/**

@@ -47,9 +47,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	display.addLayer("hudLogo", hudLogo);
 
 	// Create and insert HUD clock
-	var hudClockLayer = new HudClockLayer();
-	hudClockLayer.setActive(false);
-	display.addLayer("hudClock", hudClockLayer);
+	var hudClock = new HudClockLayer();
+	hudClock.setActive(false);
+	hudClock.setFontSize(2);
+	hudClock.setDisplayPosition({ top : 2, right : 2 });
+	display.addLayer("hudClock", hudClock);
 
 	// Create and insert HudAudioLayer
 	var hudAudioLayer = new HudAudioLayer();
