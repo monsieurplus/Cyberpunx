@@ -57,10 +57,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	drSpeech.setSpriteImage("./resource/image/dr-speech-sprites.jpg");
 	drSpeech.setSpriteSize(480, 270);
 	drSpeech.setDisplayPosition({
-		left : 20,
-		bottom : 200
+		left : 2,
+		bottom : 20
 	});
-	drSpeech.setDisplaySize(240, 135);
+	drSpeech.setDisplayWidth(20);
 	drSpeech.addAnimation("speak-close", [
 		{ sprite :  0, duration : 100 },
 		{ sprite :  1, duration : 100 },
@@ -120,10 +120,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	var instruction = new AnimatedSprite();
 	instruction.setSpriteImage("./resource/image/instructions.png");
 	instruction.setSpriteSize(512, 512);
-	instruction.setDisplaySize(128, 128);
+	instruction.setDisplayWidth(10);
 	instruction.setDisplayPosition({
-		left : 600,
-		bottom : 20
+		bottom : 2
 	});
 	instruction.addAnimation("click", [
 		{ sprite : 0, duration : 500 },
