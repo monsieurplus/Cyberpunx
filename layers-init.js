@@ -35,12 +35,18 @@ document.addEventListener('DOMContentLoaded', function() {
 	vignette.setActive(false);
 	display.addLayer("vignette", vignette);
 	
-	// Create and insert HudLogoLayer
-	var hudLogoLayer = new HudLogoLayer();
-	hudLogoLayer.setActive(false);
-	display.addLayer("hudLogo", hudLogoLayer);
+	// Create and insert HUD logo
+	var hudLogo = new AnimatedSprite();
+	hudLogo.setActive(false);
+	hudLogo.setSpriteImage("./resource/image/hud-logo-putti.png");
+	hudLogo.setSpriteSize(625, 289);
+	hudLogo.setDisplayPosition({ right : 2, bottom : 2 });
+	hudLogo.setDisplayWidth(20);
+	hudLogo.addAnimation("default", [{ sprite : 0, duration : 10000 }]);
+	hudLogo.playAnimation("default");
+	display.addLayer("hudLogo", hudLogo);
 
-	// Create and insert HudClockLayer
+	// Create and insert HUD clock
 	var hudClockLayer = new HudClockLayer();
 	hudClockLayer.setActive(false);
 	display.addLayer("hudClock", hudClockLayer);
@@ -61,10 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	drSpeech.setActive(false);
 	drSpeech.setSpriteImage("./resource/image/dr-speech-sprites.jpg");
 	drSpeech.setSpriteSize(480, 270);
-	drSpeech.setDisplayPosition({
-		left : 2,
-		bottom : 20
-	});
+	drSpeech.setDisplayPosition({ left : 2, bottom : 20 });
 	drSpeech.setDisplayWidth(20);
 	drSpeech.addAnimation("speak-close", [
 		{ sprite :  0, duration : 100 },
@@ -126,9 +129,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	instruction.setSpriteImage("./resource/image/instructions.png");
 	instruction.setSpriteSize(512, 512);
 	instruction.setDisplayWidth(10);
-	instruction.setDisplayPosition({
-		bottom : 2
-	});
+	instruction.setDisplayPosition({ bottom : 2 });
 	instruction.addAnimation("click", [
 		{ sprite : 0, duration : 500 },
 		{ sprite : 1, duration : 500 },
@@ -143,17 +144,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	var noiseLayer = new NoiseLayer();
 	noiseLayer.setActive(false);
 	display.addLayer("noise", noiseLayer);
-
-	// Video glitches example
-	/*window.setInterval(function() {
-		var duration = 10 + Math.floor(Math.random() * 250);
-		videoLayer.addGlitch({
-			amount     : 1,
-			seed       : 1,
-			iterations : 3,
-			quality    : 90
-		}, duration);
-	}, 1000);*/
 
 	// Display loop and FPS counter handling
 	var fps = 0;
