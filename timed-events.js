@@ -100,7 +100,10 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Scene 3 : Music starts
-	playback.when(150, function() {});
+	playback.when(150, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.setActive(true);
+	});
 
 	// Scene 3 : Censorship start
 	playback.when(165, function() {
@@ -114,6 +117,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Scene 3 : Music end
 	playback.when(198, function() {
 		display.getLayer("alertMessage").setActive(false);
+		display.getLayer("karaokeGame").setActive(false);
 	});
 
 	// Scene 3 : End

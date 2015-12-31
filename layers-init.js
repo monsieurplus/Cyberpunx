@@ -113,6 +113,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	invasionGame.setActive(false);
 	display.addLayer("invasionGame", invasionGame);
 
+	var karaokeGame = new karaokeGame();
+	karaokeGame.setActive(false);
+	display.addLayer("karaokeGame", karaokeGame);
+
 	var alertMessage = new AlertMessage();
 	alertMessage.setActive(false);
 	display.addLayer("alertMessage", alertMessage);
