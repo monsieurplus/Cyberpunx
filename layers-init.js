@@ -29,6 +29,11 @@ document.addEventListener('DOMContentLoaded', function() {
 	var videoLayer = new VideoLayer();
 	videoLayer.setVideo(video);
 	display.addLayer("video", videoLayer);
+
+	// Create and insert the Vignette Layer
+	var vignette = new VignetteLayer();
+	vignette.setActive(false);
+	display.addLayer("vignette", vignette);
 	
 	// Create and insert HudLogoLayer
 	var hudLogoLayer = new HudLogoLayer();

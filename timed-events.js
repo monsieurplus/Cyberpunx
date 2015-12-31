@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		display.getLayer("hudClock").setActive(active);
 		display.getLayer("hudAudio").setActive(active);
 		display.getLayer("hudLogo").setActive(active);
+		display.getLayer("vignette").setActive(active);
 	};
 
 	// Scene 1 : Hospital : Awakening
@@ -27,9 +28,9 @@ document.addEventListener("DOMContentLoaded", function() {
 		// Default HUD glitch is not null
 		var hudGlitch = display.getLayer("hudGlitch");
 		hudGlitch.setParam("quantity", 1);
-		hudGlitch.setParam("probability", 10);
-		hudGlitch.setParam("width", 10);
-		hudGlitch.setParam("height", 10);
+		hudGlitch.setParam("probability", 2);
+		hudGlitch.setParam("width", 5);
+		hudGlitch.setParam("height", 5);
 
 		display.getLayer("hudClock").setTime("08:35:54");
 	});
@@ -44,8 +45,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		setActiveHud(true);
 
 		display.getLayer("hudClock").setTime("11:13:41");
-
-		display.getLayer("hudFilter").setActive(true);
 	});
 
 	// Scene 2 : Dr. speech start
@@ -60,6 +59,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(48, function() {
 		display.getLayer("drSpeech").playAnimation("speak-far");
 	});
+
+	// Little monkey !!!
+	playback.when(50, function() {
+		display.getLayer("hudFilter").setActive(true);
+	});
+
 	playback.when(52, function() {
 		display.getLayer("drSpeech").playAnimation("scratch-ear");
 	});
