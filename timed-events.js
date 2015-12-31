@@ -90,12 +90,15 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Scene 2 : Putti speech begins
-	playback.when(90, function() {});
+	playback.when(90, function() {
+		display.getLayer("instruction").setActive(true);
+		display.getLayer("instruction").playAnimation("click");
+	});
 
 	// Scene 2 : End
 	playback.when(120, function() {
 		display.getLayer("alertMessage").setActive(false);
-
+		display.getLayer("instruction").setActive(false);
 		setActiveHud(false);
 	});
 
@@ -113,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(165, function() {
 		var alertMessage = display.getLayer("alertMessage");
 		alertMessage.setMessage("CONTENU PROHIBE DETECTE");
-		alertMessage.setColor("#6AFF0B");
+		alertMessage.setColor("red");
 		alertMessage.setBlinkSpeed(250);
 		alertMessage.setActive(true);
 	});
@@ -166,8 +169,12 @@ document.addEventListener("DOMContentLoaded", function() {
 			// Jump to scene 7
 			display.getLayer("invasionGame").setActive(false);
 			display.getLayer("alertMessage").setActive(false);
+			display.getLayer("instruction").setActive(false);
 			playback.seek(382);
 		});
+
+		display.getLayer("instruction").playAnimation("click");
+		display.getLayer("instruction").setActive(true);
 	});
 
 	// Scene 5 : Awakening
@@ -202,6 +209,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		setActiveHud(false);
 		display.getLayer("alertMessage").setActive(false);
 		display.getLayer("invasionGame").setActive(false);
+		display.getLayer("instruction").setActive(false);
 	});
 
 	// Scene 6 : Beginning

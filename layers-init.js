@@ -117,6 +117,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	alertMessage.setActive(false);
 	display.addLayer("alertMessage", alertMessage);
 
+	var instruction = new AnimatedSprite();
+	instruction.setSpriteImage("./resource/image/instructions.png");
+	instruction.setSpriteSize(512, 512);
+	instruction.setDisplaySize(128, 128);
+	instruction.setDisplayPosition({
+		left : 600,
+		bottom : 20
+	});
+	instruction.addAnimation("click", [
+		{ sprite : 0, duration : 500 },
+		{ sprite : 1, duration : 500 },
+	]);
+	instruction.setActive(false);
+	display.addLayer("instruction", instruction);
+
 	var hudGlitchLayer = new HudGlitchLayer();
 	//hudGlitchLayer.setActive(false);
 	display.addLayer("hudGlitch", hudGlitchLayer);
