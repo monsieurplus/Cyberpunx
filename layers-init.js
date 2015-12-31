@@ -117,12 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	alertMessage.setActive(false);
 	display.addLayer("alertMessage", alertMessage);
 
-	// Default HUD glitches are not null
 	var hudGlitchLayer = new HudGlitchLayer();
-	hudGlitchLayer.setParam("quantity", 1);
-	hudGlitchLayer.setParam("probability", 10);
-	hudGlitchLayer.setParam("width", 10);
-	hudGlitchLayer.setParam("height", 10);
 	//hudGlitchLayer.setActive(false);
 	display.addLayer("hudGlitch", hudGlitchLayer);
 

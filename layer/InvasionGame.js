@@ -89,31 +89,28 @@ var InvasionGame = function() {
 		if (_attackerLastPop + _attackerDelay < now) {
 			// Random pop place
 			var popPlace = Math.floor(Math.random() * 4);
-			var popX, popY;
+			var popX = Math.random() * 100;
+			var popY = Math.random() * 100;
 
 			switch (popPlace) {
-				// Upper left
+				// Top
 				case 0:
-					popX = 0;
-					popY = Math.random() * 50;
+					popY = 0
 				break;
 
-				// Top left
+				// Right
 				case 1:
-					popX = Math.random() * 50;
-					popY = 0;
-				break;
-
-				// Top right
-				case 2:
-					popX = 50 + Math.random() * 50;
-					popY = 0;
-				break;
-
-				// Upper right
-				case 3:
 					popX = 100;
-					popY = Math.random() * 50;
+				break;
+
+				// Bottom
+				case 2:
+					popY = 100;
+				break;
+
+				// Left
+				case 3:
+					popX = 0;
 				break;
 			}
 			

@@ -24,6 +24,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(2.35, function() {
 		setActiveHud(true);
 
+		// Default HUD glitch is not null
+		var hudGlitch = display.getLayer("hudGlitch");
+		hudGlitch.setParam("quantity", 1);
+		hudGlitch.setParam("probability", 10);
+		hudGlitch.setParam("width", 10);
+		hudGlitch.setParam("height", 10);
+
 		display.getLayer("hudClock").setTime("08:35:54");
 	});
 
@@ -150,8 +157,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setActive(true);
 		invasionGame.setAttackerSize(5);
-		invasionGame.setAttackerSpeed(5);
-		invasionGame.setAttackerDelay(2000);
+		invasionGame.setAttackerSpeed(7.5);
+		invasionGame.setAttackerDelay(1000);
 		invasionGame.setAttackerStrength(1);
 		invasionGame.setAttackerColor("#6AFF0B");
 
@@ -171,8 +178,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setAttackerSize(5);
-		invasionGame.setAttackerSpeed(7.5);
-		invasionGame.setAttackerDelay(1500);
+		invasionGame.setAttackerSpeed(10);
+		invasionGame.setAttackerDelay(750);
 		invasionGame.setAttackerStrength(2);
 		invasionGame.setAttackerColor("blue");
 	});
@@ -184,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setAttackerSize(10);
-		invasionGame.setAttackerSpeed(12.5);
+		invasionGame.setAttackerSpeed(15);
 		invasionGame.setAttackerDelay(500);
 		invasionGame.setAttackerStrength(5);
 		invasionGame.setAttackerColor("red");
