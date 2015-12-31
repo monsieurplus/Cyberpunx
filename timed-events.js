@@ -384,7 +384,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Scene 6 : Credits end
-	playback.when(380, function() {
+	playback.when(379.5, function() {
 		playback.pause();
 	});
 
