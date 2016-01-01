@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	hudAudio.setDisplayRatio(0.5);
 	display.addLayer("hudAudio", hudAudio);
 
-	// Create and insert HudFilterLayer (filter buttons)
-	var hudFilter = new HudFilterLayer();
+	// Create and insert filter button
+	var hudFilter = new ButtonGroup();
 	hudFilter.setDisplayWidth(50);
 	hudFilter.setDisplayRatio(0.2);
 	hudFilter.setDisplayPosition({ bottom : 2 });
@@ -98,6 +98,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	var hudGlitchLayer = new HudGlitchLayer();
 	display.addLayer("hudGlitch", hudGlitchLayer);
+
+	var endMenu = new ButtonGroup();
+	endMenu.setDisplayWidth(100);
+	endMenu.setDisplayRatio(0.5);
+	endMenu.setDisplayPosition({});
+	display.addLayer("endMenu", endMenu);
 
 	/*var noiseLayer = new NoiseLayer();
 	display.addLayer("noise", noiseLayer);*/

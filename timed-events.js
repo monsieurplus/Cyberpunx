@@ -399,6 +399,8 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Scene 6 : Credits end
 	playback.when(379.5, function() {
 		playback.pause();
+
+		display.getLayer("endMenu").setActive(true);
 	});
 
 	// Scene 7 : Beggining
@@ -421,5 +423,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Scene 7 : Credits end
 	playback.when(502, function() {
 		playback.pause();
+
+		display.getLayer("endMenu").setActive(true);
 	});
 });
