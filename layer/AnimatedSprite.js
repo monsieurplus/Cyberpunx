@@ -1,5 +1,5 @@
 var AnimatedSprite = function() {
-	var _active = true;
+	var _active = false;
 	var _viewportDimension;
 	var _context;
 
@@ -8,8 +8,7 @@ var AnimatedSprite = function() {
 	var _spriteWidth;
 	var _spriteHeight;
 
-	var _displayWidth;
-	var _displayHeight;
+	var _displayWidth; // Percents of the screen width
 	var _displayPosition = {};
 
 	var _animations = {}; // Name indexed animations
@@ -46,11 +45,19 @@ var AnimatedSprite = function() {
 		_spriteImage.src = url;
 	};
 
-	this.setDisplaySize = function(width, height) {
-		_displayWidth = width;
-		_displayHeight = height;
+	this.setDisplayWidth = function(percentWidth) {
+		_displayWidth = percentWidth;
 	};
 
+	/**
+	 * Defines where the sprite has to be displayed
+	 * @params {object} position Object containing horizontal and vertical position (in percents)
+	 *                  position.top
+	 *                  position.bottom
+	 *                  position.left
+	 *                  position.right
+	 * If no property is set for vertical or horizontal position the element will be centered
+	 */
 	this.setDisplayPosition = function(position) {
 		_displayPosition = position;
 	};
@@ -89,33 +96,33 @@ var AnimatedSprite = function() {
 		var sourceH = _spriteHeight;
 
 		var targetX, targetY;
-		var targetW = _displayWidth;
-		var targetH = _displayHeight;
+		var targetW = (_displayWidth / 100) * _viewportDimension.width;
+		var targetH = (targetW * sourceH) / sourceW;
 
 		// Positionned from left
 		if (typeof _displayPosition.left !== "undefined") {
-			targetX = _displayPosition.left;
+			targetX = _displayPosition.left / 100 * _viewportDimension.width;
 		}
 		// Positionned from right
 		else if (typeof _displayPosition.right !== "undefined") {
-			targetX = _viewportDimension.width - _displayPosition.right - _displayWidth;
+			targetX = _viewportDimension.width - (_displayPosition.right / 100 * _viewportDimension.width) - targetW;
 		}
 		// Horizontally centered
 		else {
-			targetX = Math.ceil(_viewportDimension.width / 2 - _displayWidth / 2);
+			targetX = Math.ceil(_viewportDimension.width / 2 - targetW / 2);
 		}
 
 		// Positionned from top
 		if (typeof _displayPosition.top !== "undefined") {
-			targetY = _displayPosition.top;
+			targetY = _displayPosition.top / 100 * _viewportDimension.height;
 		}
 		// Positionned from bottom
 		else if (typeof _displayPosition.bottom !== "undefined") {
-			targetY = _viewportDimension.height - _displayPosition.bottom - _displayHeight;
+			targetY = _viewportDimension.height - (_displayPosition.bottom / 100 * _viewportDimension.height) - targetH;
 		}
 		// Vertically centered
 		else {
-			targetY = Math.ceil(_viewportDimension.height / 2 - _displayHeight / 2);
+			targetY = Math.ceil(_viewportDimension.height / 2 - targetH / 2);
 		}
 
 		// Display the sprite

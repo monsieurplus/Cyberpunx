@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		display.getLayer("hudClock").setActive(active);
 		display.getLayer("hudAudio").setActive(active);
 		display.getLayer("hudLogo").setActive(active);
+		display.getLayer("vignette").setActive(active);
 	};
 
 	// Scene 1 : Hospital : Awakening
@@ -24,6 +25,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(2.35, function() {
 		setActiveHud(true);
 
+		// Default HUD glitch is not null
+		var hudGlitch = display.getLayer("hudGlitch");
+		hudGlitch.setParam("quantity", 1);
+		hudGlitch.setParam("probability", 2);
+		hudGlitch.setParam("width", 5);
+		hudGlitch.setParam("height", 5);
+
 		display.getLayer("hudClock").setTime("08:35:54");
 	});
 
@@ -37,8 +45,6 @@ document.addEventListener("DOMContentLoaded", function() {
 		setActiveHud(true);
 
 		display.getLayer("hudClock").setTime("11:13:41");
-
-		display.getLayer("hudFilter").setActive(true);
 	});
 
 	// Scene 2 : Dr. speech start
@@ -53,6 +59,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(48, function() {
 		display.getLayer("drSpeech").playAnimation("speak-far");
 	});
+
+	// Little monkey !!!
+	playback.when(50, function() {
+		display.getLayer("hudFilter").setActive(true);
+	});
+
 	playback.when(52, function() {
 		display.getLayer("drSpeech").playAnimation("scratch-ear");
 	});
@@ -83,12 +95,15 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Scene 2 : Putti speech begins
-	playback.when(90, function() {});
+	playback.when(90, function() {
+		display.getLayer("instruction").setActive(true);
+		display.getLayer("instruction").playAnimation("click");
+	});
 
 	// Scene 2 : End
 	playback.when(120, function() {
 		display.getLayer("alertMessage").setActive(false);
-
+		display.getLayer("instruction").setActive(false);
 		setActiveHud(false);
 	});
 
@@ -106,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(165, function() {
 		var alertMessage = display.getLayer("alertMessage");
 		alertMessage.setMessage("CONTENU PROHIBE DETECTE");
-		alertMessage.setColor("#6AFF0B");
+		alertMessage.setColor("red");
 		alertMessage.setBlinkSpeed(250);
 		alertMessage.setActive(true);
 	});
@@ -150,16 +165,21 @@ document.addEventListener("DOMContentLoaded", function() {
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setActive(true);
 		invasionGame.setAttackerSize(5);
-		invasionGame.setAttackerSpeed(5);
-		invasionGame.setAttackerDelay(2000);
+		invasionGame.setAttackerSpeed(7.5);
+		invasionGame.setAttackerDelay(1000);
 		invasionGame.setAttackerStrength(1);
 		invasionGame.setAttackerColor("#6AFF0B");
 
 		invasionGame.setFailureCallback(function() {
 			// Jump to scene 7
-			invasionGame.setActive(false);
+			display.getLayer("invasionGame").setActive(false);
+			display.getLayer("alertMessage").setActive(false);
+			display.getLayer("instruction").setActive(false);
 			playback.seek(382);
 		});
+
+		display.getLayer("instruction").playAnimation("click");
+		display.getLayer("instruction").setActive(true);
 	});
 
 	// Scene 5 : Awakening
@@ -170,8 +190,8 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setAttackerSize(5);
-		invasionGame.setAttackerSpeed(7.5);
-		invasionGame.setAttackerDelay(1500);
+		invasionGame.setAttackerSpeed(10);
+		invasionGame.setAttackerDelay(750);
 		invasionGame.setAttackerStrength(2);
 		invasionGame.setAttackerColor("blue");
 	});
@@ -183,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setAttackerSize(10);
-		invasionGame.setAttackerSpeed(12.5);
+		invasionGame.setAttackerSpeed(15);
 		invasionGame.setAttackerDelay(500);
 		invasionGame.setAttackerStrength(5);
 		invasionGame.setAttackerColor("red");
@@ -194,6 +214,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		setActiveHud(false);
 		display.getLayer("alertMessage").setActive(false);
 		display.getLayer("invasionGame").setActive(false);
+		display.getLayer("instruction").setActive(false);
 	});
 
 	// Scene 6 : Beginning
@@ -363,14 +384,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Scene 6 : Credits end
-	playback.when(380, function() {
+	playback.when(379.5, function() {
 		playback.pause();
 	});
 
 	// Scene 7 : Beggining
 	playback.when(382, function() {
 		setActiveHud(true);
-
 		display.getLayer("hudClock").setTime("03:35:12");
 	});
 
@@ -386,7 +406,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Scene 7 : Credits end
-	playback.when(498, function() {
+	playback.when(502, function() {
 		playback.pause();
 	});
 });

@@ -28,39 +28,50 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Create and insert the VideoLayer
 	var videoLayer = new VideoLayer();
 	videoLayer.setVideo(video);
+	videoLayer.setActive(true);
 	display.addLayer("video", videoLayer);
-	
-	// Create and insert HudLogoLayer
-	var hudLogoLayer = new HudLogoLayer();
-	hudLogoLayer.setActive(false);
-	display.addLayer("hudLogo", hudLogoLayer);
 
-	// Create and insert HudClockLayer
-	var hudClockLayer = new HudClockLayer();
-	hudClockLayer.setActive(false);
-	display.addLayer("hudClock", hudClockLayer);
+	// Create and insert the Vignette Layer
+	var vignette = new VignetteLayer();
+	display.addLayer("vignette", vignette);
+	
+	// Create and insert HUD logo
+	var hudLogo = new AnimatedSprite();
+	hudLogo.setSpriteImage("./resource/image/hud-logo-putti.png");
+	hudLogo.setSpriteSize(625, 289);
+	hudLogo.setDisplayPosition({ right : 2, bottom : 2 });
+	hudLogo.setDisplayWidth(20);
+	hudLogo.addAnimation("default", [{ sprite : 0, duration : 10000 }]);
+	hudLogo.playAnimation("default");
+	display.addLayer("hudLogo", hudLogo);
+
+	// Create and insert HUD clock
+	var hudClock = new HudClockLayer();
+	hudClock.setFontSize(2);
+	hudClock.setDisplayPosition({ top : 2, right : 2 });
+	display.addLayer("hudClock", hudClock);
 
 	// Create and insert HudAudioLayer
-	var hudAudioLayer = new HudAudioLayer();
-	hudAudioLayer.setMedia(video);
-	hudAudioLayer.setActive(false);
-	display.addLayer("hudAudio", hudAudioLayer);
+	var hudAudio = new HudAudioLayer();
+	hudAudio.setMedia(video);
+	hudAudio.setDisplayPosition({ left : 2, bottom : 2 });
+	hudAudio.setDisplayWidth(20);
+	hudAudio.setDisplayRatio(0.5);
+	display.addLayer("hudAudio", hudAudio);
 
 	// Create and insert HudFilterLayer (filter buttons)
-	var hudFilterLayer = new HudFilterLayer();
-	hudFilterLayer.setActive(false);
-	display.addLayer("hudFilter", hudFilterLayer);
+	var hudFilter = new HudFilterLayer();
+	hudFilter.setDisplayWidth(50);
+	hudFilter.setDisplayRatio(0.2);
+	hudFilter.setDisplayPosition({ bottom : 2 });
+	display.addLayer("hudFilter", hudFilter);
 
 	// Create and insert the doctor speech
 	var drSpeech = new AnimatedSprite();
-	drSpeech.setActive(false);
 	drSpeech.setSpriteImage("./resource/image/dr-speech-sprites.jpg");
 	drSpeech.setSpriteSize(480, 270);
-	drSpeech.setDisplayPosition({
-		left : 20,
-		bottom : 200
-	});
-	drSpeech.setDisplaySize(240, 135);
+	drSpeech.setDisplayPosition({ left : 2, bottom : 20 });
+	drSpeech.setDisplayWidth(20);
 	drSpeech.addAnimation("speak-close", [
 		{ sprite :  0, duration : 100 },
 		{ sprite :  1, duration : 100 },
@@ -110,36 +121,28 @@ document.addEventListener('DOMContentLoaded', function() {
 	display.addLayer("drSpeech", drSpeech);
 
 	var invasionGame = new InvasionGame();
-	invasionGame.setActive(false);
 	display.addLayer("invasionGame", invasionGame);
 
 	var alertMessage = new AlertMessage();
-	alertMessage.setActive(false);
 	display.addLayer("alertMessage", alertMessage);
 
-	// Default HUD glitches are not null
+	var instruction = new AnimatedSprite();
+	instruction.setSpriteImage("./resource/image/instructions.png");
+	instruction.setSpriteSize(512, 512);
+	instruction.setDisplayWidth(10);
+	instruction.setDisplayPosition({ bottom : 2 });
+	instruction.addAnimation("click", [
+		{ sprite : 0, duration : 500 },
+		{ sprite : 1, duration : 500 },
+	]);
+	display.addLayer("instruction", instruction);
+
 	var hudGlitchLayer = new HudGlitchLayer();
-	hudGlitchLayer.setParam("quantity", 1);
-	hudGlitchLayer.setParam("probability", 10);
-	hudGlitchLayer.setParam("width", 10);
-	hudGlitchLayer.setParam("height", 10);
 	//hudGlitchLayer.setActive(false);
 	display.addLayer("hudGlitch", hudGlitchLayer);
 
-	var noiseLayer = new NoiseLayer();
-	noiseLayer.setActive(false);
-	display.addLayer("noise", noiseLayer);
-
-	// Video glitches example
-	/*window.setInterval(function() {
-		var duration = 10 + Math.floor(Math.random() * 250);
-		videoLayer.addGlitch({
-			amount     : 1,
-			seed       : 1,
-			iterations : 3,
-			quality    : 90
-		}, duration);
-	}, 1000);*/
+	/*var noiseLayer = new NoiseLayer();
+	display.addLayer("noise", noiseLayer);*/
 
 	// Display loop and FPS counter handling
 	var fps = 0;

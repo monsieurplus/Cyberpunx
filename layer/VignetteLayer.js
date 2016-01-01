@@ -1,5 +1,5 @@
-var HudLogoLayer = function() {
-	var _active = true;
+var VignetteLayer = function() {
+	var _active = false;
 	var _viewportDimension;
 	var _context;
 
@@ -8,24 +8,14 @@ var HudLogoLayer = function() {
 
 	var _init = function() {
 		_image = new Image();
-		_image.src = "./resource/image/hud-logo-putti.png";
+		_image.src = "./resource/image/vignette-hud.png";
 	};
 
 	/**
 	 * REQUIRED
 	 */
 	this.draw = function() {
-		// Draw the logo
-		var drawWidth = _viewportDimension.width / 5;
-		var drawHeight = (drawWidth * _image.height) / _image.width;
-
-		_context.drawImage(
-			_image,
-			_viewportDimension.width - (drawWidth + 20),
-			_viewportDimension.height - (drawHeight + 20),
-			drawWidth,
-			drawHeight
-		);
+		_context.drawImage(_image, 0, 0, _viewportDimension.width, _viewportDimension.height);
 	};
 
 	/**
