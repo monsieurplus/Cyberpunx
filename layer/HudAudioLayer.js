@@ -9,6 +9,11 @@ var HudAudioLayer = function() {
 	var _audioBufferLength;
 	var _audioData;
 
+	var _displayPosition = {};
+	var _displayWidth = 20; // In percents of the screen width
+	var _displayRatio = 0.5; // Ratio height/width
+	var _color = "#6AFF0B";
+
 	var _init = function() {
 		// Get the AudioContext
 		_audioContext = new (window.AudioContext || window.webkitAudioContext || window.mozAudioContext)();
@@ -22,14 +27,37 @@ var HudAudioLayer = function() {
 		_audioData = new Uint8Array(_audioBufferLength);
 	};
 
+	this.setDisplayWidth = function(width) {
+		_displayWidth = width;
+	};
+
+	this.setDisplayRatio = function(ratio) {
+		_displayRatio = ratio;
+	};
+
+	this.setDisplayPosition = function(position) {
+		_displayPosition = position;
+	};
+
+	this.setColor = function(color) {
+		_color = color;
+	};
+
 	/**
 	 * Set the media that will animate the spectrum
 	 */
 	this.setMedia = function(media) {
+		var sourceCreated = false;
+
 		media.addEventListener("canplay", function() {
-			source = _audioContext.createMediaElementSource(media);
+			if (sourceCreated === true) {
+				return false;
+			}
+
+			var source = _audioContext.createMediaElementSource(media);
 			source.connect(_audioAnalyser);
 			_audioAnalyser.connect(_audioContext.destination);
+			sourceCreated = true;
 		});
 	};
 
@@ -45,20 +73,55 @@ var HudAudioLayer = function() {
 		_audioAnalyser.getByteTimeDomainData(_audioData);
 
 		// Draw the spectrum
-		_context.fillStyle = "#6AFF0B";
+		_context.fillStyle = _color;
 
 		// Compute spectrum position
-		var topMargin = _viewportDimension.height - 216;
-		var spectrumWidth = _viewportDimension.width/6;
-		var spectrumBarWidth = Math.floor(spectrumWidth / _audioBufferLength);
+		var spectrumX, spectrumY;
+		
+		var spectrumW = _viewportDimension.width / 100 * _displayWidth; // Spectrum width
+		var spectrumH = spectrumW * _displayRatio;
+		var spectrumBarW = Math.ceil(spectrumW / _audioBufferLength); // Width of one bar of the spectrum
+		var volumeUnitH = spectrumH / 128; // Height for 1 unit of volume
 
-		var volume;
+		// Positionned from left
+		if (typeof _displayPosition.left !== "undefined") {
+			spectrumX = _displayPosition.left / 100 * _viewportDimension.width;
+		}
+		// Positionned from right
+		else if (typeof _displayPosition.right !== "undefined") {
+			spectrumX = _viewportDimension.width - (_displayPosition.right / 100 * _viewportDimension.width) - spectrumW;
+		}
+		// Horizontally centered
+		else {
+			spectrumX = _viewportDimension.width / 2 - spectrumW / 2;
+		}
+
+		// Positionned from top
+		if (typeof _displayPosition.top !== "undefined") {
+			spectrumY = _displayPosition.top / 100 * _viewportDimension.height;
+		}
+		// Positionned from bottom
+		else if (typeof _displayPosition.bottom !== "undefined") {
+			spectrumY = _viewportDimension.height - (_displayPosition.bottom / 100 * _viewportDimension.height) - spectrumH;
+		}
+		// Vertically centered
+		else {
+			spectrumY = _viewportDimension.height / 2 - spectrumH / 2;
+		}
+
+		var volume, spectrumBarH;
 		for (var i=0; i < _audioBufferLength; i++) {
 			// Compute volume for this frequency (no sound gives 128)
 			volume = Math.abs(_audioData[i] - 128);
+			spectrumBarH = Math.ceil(volume * volumeUnitH);
 
 			// Draw frequency bar
-			_context.fillRect(i * spectrumBarWidth + 20, topMargin + 128 - (volume/2), spectrumBarWidth, volume);
+			_context.fillRect(
+				spectrumX + i * spectrumBarW,
+				spectrumY + (spectrumH - spectrumBarH) / 2,
+				spectrumBarW,
+				spectrumBarH
+			);
 		}
 	};
 

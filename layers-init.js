@@ -54,10 +54,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	display.addLayer("hudClock", hudClock);
 
 	// Create and insert HudAudioLayer
-	var hudAudioLayer = new HudAudioLayer();
-	hudAudioLayer.setMedia(video);
-	hudAudioLayer.setActive(false);
-	display.addLayer("hudAudio", hudAudioLayer);
+	var hudAudio = new HudAudioLayer();
+	hudAudio.setMedia(video);
+	hudAudio.setDisplayPosition({ left : 2, bottom : 2 });
+	hudAudio.setDisplayWidth(20);
+
+	hudAudio.setActive(false);
+	display.addLayer("hudAudio", hudAudio);
 
 	// Create and insert HudFilterLayer (filter buttons)
 	var hudFilterLayer = new HudFilterLayer();
