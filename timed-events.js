@@ -208,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		invasionGame.setAttackerSpeed(10);
 		invasionGame.setAttackerDelay(600);
 		invasionGame.setAttackerStrength(2);
-		invasionGame.setAttackerColor("blue");
+		invasionGame.setAttackerColor("orange");
 	});
 
 	playback.when(275, function() {
@@ -273,7 +273,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			"IMPLANTATION NERVEUSE INCORRECTE"
 		];
 
-		var colors = ["red", "magenta", "pink", "fushia", "white"];
+		var colors = ["red", "magenta", "pink", "orange", "white"];
 
 		var alertMessage = display.getLayer("alertMessage");
 		alertMessage.setMessage(messages[Math.floor(Math.random() * messages.length)]);

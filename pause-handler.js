@@ -1,4 +1,5 @@
 (function() {
+	var pausedBeforeBlur = false;
 	var hidden = "hidden";
 
 	// Standards:
@@ -32,10 +33,14 @@
 
 		if (typeof playback !== "undefined") {
 			if (visibility === "hidden") {
+				pausedBeforeBlur = playback.isPaused();
 				playback.pause();
+
 			}
 			else {
-				playback.play();
+				if (!pausedBeforeBlur) {
+					playback.play();
+				}
 			}
 		}
 	}
