@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		invasionGame.setActive(true);
 		invasionGame.setAttackerSize(5);
 		invasionGame.setAttackerSpeed(7.5);
-		invasionGame.setAttackerDelay(1000);
+		invasionGame.setAttackerDelay(750);
 		invasionGame.setAttackerStrength(1);
 		invasionGame.setAttackerColor("#6AFF0B");
 
@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setAttackerSize(5);
 		invasionGame.setAttackerSpeed(10);
-		invasionGame.setAttackerDelay(750);
+		invasionGame.setAttackerDelay(600);
 		invasionGame.setAttackerStrength(2);
 		invasionGame.setAttackerColor("blue");
 	});
