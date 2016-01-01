@@ -1,5 +1,5 @@
-// Displays the filter buttons and handle them
-var HudFilterLayer = function() {
+// Displays a group of buttons (up to 6 buttons)
+var ButtonGroup = function() {
 	var _active = false;
 	var _viewportDimension;
 	var _context;

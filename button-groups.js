@@ -1,5 +1,8 @@
 /* HUD filter button scripting */
 document.addEventListener('DOMContentLoaded', function() {
+	/***************/
+	/* FILTER MENU */
+	/***************/
 	var hudFilterLayer = display.getLayer("hudFilter");
 	var videoLayer = display.getLayer("video");
 
@@ -41,4 +44,21 @@ document.addEventListener('DOMContentLoaded', function() {
 	hudFilterLayer.addButton("INVERT", function() {
 		toggleFilter("INVERT", "invert");
 	});	
+
+	/************/
+	/* END MENU */
+	/************/
+	display.getLayer("endMenu").addButton("REJOUER", function() {
+		playback.seek(0);
+		playback.play();
+		display.getLayer("endMenu").setActive(false);
+	});
+
+	display.getLayer("endMenu").addButton("PARTAGER", function() {
+		var fbShareUrl = "https://www.facebook.com/sharer/sharer.php";
+		fbShareUrl += "?u=" + encodeURIComponent(window.location.href);
+		fbShareUrl += "&t=" + encodeURIComponent("Punk the System - Un court-métrage cyberpunk interactif");
+
+		window.open(fbShareUrl);
+	})
 });

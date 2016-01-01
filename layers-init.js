@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		playback.seek(0);
 		playback.play();
 	}, 500);
-	
 
 	// Create the Display controller (it will handle the layers)
 	display = new Display();
@@ -59,8 +58,8 @@ document.addEventListener('DOMContentLoaded', function() {
 	hudAudio.setDisplayRatio(0.5);
 	display.addLayer("hudAudio", hudAudio);
 
-	// Create and insert HudFilterLayer (filter buttons)
-	var hudFilter = new HudFilterLayer();
+	// Create and insert filter button
+	var hudFilter = new ButtonGroup();
 	hudFilter.setDisplayWidth(50);
 	hudFilter.setDisplayRatio(0.2);
 	hudFilter.setDisplayPosition({ bottom : 2 });
@@ -68,57 +67,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Create and insert the doctor speech
 	var drSpeech = new AnimatedSprite();
-	drSpeech.setSpriteImage("./resource/image/dr-speech-sprites.jpg");
+	drSpeech.setSpriteImage("./resource/image/dr-sprites.jpg");
 	drSpeech.setSpriteSize(480, 270);
 	drSpeech.setDisplayPosition({ left : 2, bottom : 20 });
 	drSpeech.setDisplayWidth(20);
-	drSpeech.addAnimation("speak-close", [
-		{ sprite :  0, duration : 100 },
-		{ sprite :  1, duration : 100 },
-		{ sprite :  2, duration : 100 },
-		{ sprite :  4, duration : 100 }
-	]);
-	drSpeech.addAnimation("speak-far", [
-		{ sprite :  9, duration : 100 },
-		{ sprite : 10, duration : 100 },
-		{ sprite : 11, duration : 100 },
-		{ sprite : 18, duration : 100 },
-		{ sprite : 20, duration : 100 }
-	]);
-	drSpeech.addAnimation("speak-very-far", [
-		{ sprite : 55, duration : 100 },
-		{ sprite : 57, duration : 100 }
-	]);
-	drSpeech.addAnimation("idle", [
-		//{ sprite : 25, duration : 100 },
-		//{ sprite :  9, duration : 100 },
-		//{ sprite :  8, duration : 100 }
-		{ sprite :  4, duration : 250 },
-		{ sprite :  2, duration : 250 },
-	]);
-	drSpeech.addAnimation("scratch-front", [
-		{ sprite : 28, duration : 100 },
-		{ sprite : 43, duration : 100 },
-		{ sprite : 50, duration : 100 },
-		{ sprite : 54, duration : 100 },
-		{ sprite : 56, duration : 100 }
-	]);
-	drSpeech.addAnimation("scratch-ear", [
-		{ sprite : 15, duration : 100 },
-		{ sprite : 48, duration : 100 },
-		{ sprite : 53, duration : 100 }
-	]);
-	drSpeech.addAnimation("speak-right", [
-		{ sprite : 24, duration : 100 },
-		{ sprite : 26, duration : 100 },
-		{ sprite : 30, duration : 100 },
-		{ sprite : 32, duration : 100 },
-		{ sprite : 12, duration : 100 },
-		{ sprite : 13, duration : 100 },
-		{ sprite : 16, duration : 100 },
-		{ sprite : 17, duration : 100 }
-	]);
 	display.addLayer("drSpeech", drSpeech);
+
+	var puttiSpeech = new AnimatedSprite();
+	puttiSpeech.setSpriteImage("./resource/image/putti-sprites.jpg");
+	puttiSpeech.setSpriteSize(752, 515);
+	puttiSpeech.setDisplayWidth(50);
+	display.addLayer("puttiSpeech", puttiSpeech);	
 
 	var invasionGame = new InvasionGame();
 	display.addLayer("invasionGame", invasionGame);
@@ -138,8 +97,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	display.addLayer("instruction", instruction);
 
 	var hudGlitchLayer = new HudGlitchLayer();
-	//hudGlitchLayer.setActive(false);
 	display.addLayer("hudGlitch", hudGlitchLayer);
+
+	var endMenu = new ButtonGroup();
+	endMenu.setDisplayWidth(100);
+	endMenu.setDisplayRatio(0.5);
+	endMenu.setDisplayPosition({});
+	display.addLayer("endMenu", endMenu);
 
 	/*var noiseLayer = new NoiseLayer();
 	display.addLayer("noise", noiseLayer);*/

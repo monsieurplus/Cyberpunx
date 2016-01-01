@@ -29,7 +29,6 @@ var HudGlitchLayer = function() {
 			return false;
 		}
 
-		// HERE Drawing process of the layer
 		var glitchNumber = Math.ceil(Math.random() * _glitchParams.quantity);
 		for (var i=0; i < glitchNumber; i++) {
 			var xSource = Math.random() * _viewportDimension.width;
@@ -66,6 +65,10 @@ var HudGlitchLayer = function() {
 				_this.setParam(paramName, params[paramName]);
 			}
 		}
+	};
+
+	this.getParams = function() {
+		return _glitchParams;
 	};
 
 	/**
