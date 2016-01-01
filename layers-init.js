@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Create and insert the doctor speech
 	var drSpeech = new AnimatedSprite();
-	drSpeech.setSpriteImage("./resource/image/dr-speech-sprites.jpg");
+	drSpeech.setSpriteImage("./resource/image/dr-sprites.jpg");
 	drSpeech.setSpriteSize(480, 270);
 	drSpeech.setDisplayPosition({ left : 2, bottom : 20 });
 	drSpeech.setDisplayWidth(20);

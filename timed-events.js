@@ -52,13 +52,16 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(43, function() {
 		var drSpeech = display.getLayer("drSpeech");
 		drSpeech.setActive(true);
-		drSpeech.playAnimation("speak-close");
+		drSpeech.playAnimation("idle");
 	});
-	playback.when(45, function() {
-		display.getLayer("drSpeech").playAnimation("scratch-front");
+	playback.when(44, function() {
+		display.getLayer("drSpeech").playAnimation("speak");
+	});
+	playback.when(46, function() {
+		display.getLayer("drSpeech").playAnimation("idle");
 	});
 	playback.when(48, function() {
-		display.getLayer("drSpeech").playAnimation("speak-far");
+		display.getLayer("drSpeech").playAnimation("speak");
 	});
 
 	// Scene 2 : Little monkey !!!
@@ -67,13 +70,22 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	playback.when(52, function() {
-		display.getLayer("drSpeech").playAnimation("scratch-ear");
+		display.getLayer("drSpeech").playAnimation("idle");
 	});
 	playback.when(55, function() {
-		display.getLayer("drSpeech").playAnimation("speak-right");
+		display.getLayer("drSpeech").playAnimation("speak");
 	});
-	playback.when(57, function() {
+	playback.when(58, function() {
 		display.getLayer("drSpeech").playAnimation("idle");
+	});
+	playback.when(60, function() {
+		display.getLayer("drSpeech").playAnimation("speak");
+	});
+	playback.when(67, function() {
+		display.getLayer("drSpeech").playAnimation("idle");
+	});
+	playback.when(70, function() {
+		display.getLayer("drSpeech").playAnimation("speak");
 	});
 
 	// Scene 2 : Dr speech end
@@ -127,7 +139,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		});
 		puttiGame.start();
 
-		puttiSpeech.setClickHandler(function() {
+		display.getLayer("puttiSpeech").setClickHandler(function() {
 			puttiGame.incrementLevel();
 		});
 	});

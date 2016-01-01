@@ -1,5 +1,18 @@
 document.addEventListener('DOMContentLoaded', function() {
 	var drSpeech = display.getLayer("drSpeech");
+	drSpeech.addAnimation("idle", [{ sprite : 7, duration : 100 }]);
+
+	// Generate a random speak animation
+	var drSpeakAnimation = [];
+	var animationLength = 50;
+	for (var i = 0; i < animationLength; i++) {
+		var spriteIndex = Math.floor(Math.random() * 8);
+		var spriteDuration = 50 + Math.random() * 100;
+		drSpeakAnimation.push({ sprite : spriteIndex, duration : spriteDuration });
+	}
+	drSpeech.addAnimation("speak", drSpeakAnimation);
+	
+	/*
 	drSpeech.addAnimation("speak-close", [
 		{ sprite :  0, duration : 100 },
 		{ sprite :  1, duration : 100 },
@@ -46,9 +59,10 @@ document.addEventListener('DOMContentLoaded', function() {
 		{ sprite : 16, duration : 100 },
 		{ sprite : 17, duration : 100 }
 	]);
+	*/
 
 	var puttiSpeech = display.getLayer("puttiSpeech");
-		puttiSpeech.addAnimation("wide", [{ sprite : 0, duration : 100 }]);
+	puttiSpeech.addAnimation("wide", [{ sprite : 0, duration : 100 }]);
 	puttiSpeech.addAnimation("zoom", [
 		{ sprite : 0, duration : 250 },
 		{ sprite : 1, duration : 250 },
@@ -63,12 +77,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	]);
 
 	// Generate a random speak animation
-	var speakAnimation = [];
+	var puttiSpeakAnimation = [];
 	var animationLength = 50;
 	for (var i = 0; i < animationLength; i++) {
 		var spriteIndex = 4 + Math.floor(Math.random() * 5);
 		var spriteDuration = 50 + Math.random() * 250;
-		speakAnimation.push({ sprite : spriteIndex, duration : spriteDuration });
+		puttiSpeakAnimation.push({ sprite : spriteIndex, duration : spriteDuration });
 	}
-	puttiSpeech.addAnimation("speak", speakAnimation);
+	puttiSpeech.addAnimation("speak", puttiSpeakAnimation);
 });
