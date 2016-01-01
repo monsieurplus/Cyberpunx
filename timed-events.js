@@ -88,20 +88,37 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Scene 2 : Music interruption
 	playback.when(85, function() {
 		var alertMessage = display.getLayer("alertMessage");
+		alertMessage.setTop(50);
 		alertMessage.setMessage("ALLOCUTION PRESIDENTIELLE OBLIGATOIRE");
 		alertMessage.setColor("#6AFF0B");
 		alertMessage.setBlinkSpeed(500);
 		alertMessage.setActive(true);
+
+		var puttiSpeech = display.getLayer("puttiSpeech");
+		puttiSpeech.playAnimation("wide");
+		puttiSpeech.setActive(true);
+	});
+
+	playback.when(86.5, function() {
+		display.getLayer("puttiSpeech").playAnimation("zoom");
+	});
+	playback.when(87.8, function() {
+		display.getLayer("puttiSpeech").playAnimation("scary");
 	});
 
 	// Scene 2 : Putti speech begins
-	playback.when(90, function() {
+	playback.when(90.5, function() {
+		display.getLayer("alertMessage").setTop(5);
+
+		display.getLayer("puttiSpeech").playAnimation("speak");
+
 		display.getLayer("instruction").setActive(true);
 		display.getLayer("instruction").playAnimation("click");
 	});
 
 	// Scene 2 : End
 	playback.when(120, function() {
+		display.getLayer("puttiSpeech").setActive(false);
 		display.getLayer("alertMessage").setActive(false);
 		display.getLayer("instruction").setActive(false);
 		setActiveHud(false);
