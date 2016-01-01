@@ -149,6 +149,11 @@ var InvasionGame = function() {
 
 			attacker.x += Math.cos(direction) * distance;
 			attacker.y += Math.sin(direction) * distance;
+
+			// Sinus modificator
+			var now = new Date().getTime();
+			attacker.x += Math.sin(direction) * Math.sin(now/100) * 0.5;
+			attacker.y += Math.cos(direction) * Math.sin(now/100) * 0.5;
 		}
 	};
 
