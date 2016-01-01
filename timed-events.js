@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(249, function() {
 		var alertMessage = display.getLayer("alertMessage");
 		alertMessage.setMessage("MISE A JOUR EN COURS");
-		alertMessage.setColor("#6AFF0B");
+		alertMessage.setColor("red");
 		alertMessage.setBlinkSpeed(500);
 		alertMessage.setActive(true);
 
@@ -201,9 +201,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 	// Scene 5 : Awakening
 	playback.when(255, function() {
-		var alertMessage = display.getLayer("alertMessage");
-		alertMessage.setColor("blue");
-		alertMessage.setBlinkSpeed(250);
+		display.getLayer("alertMessage").setBlinkSpeed(250);
 
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setAttackerSize(5);
@@ -214,9 +212,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	playback.when(275, function() {
-		var alertMessage = display.getLayer("alertMessage");
-		alertMessage.setColor("red");
-		alertMessage.setBlinkSpeed(100);
+		display.getLayer("alertMessage").setBlinkSpeed(100);
 
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setAttackerSize(10);
