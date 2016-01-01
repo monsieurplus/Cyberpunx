@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		display.getLayer("hudAudio").setActive(active);
 		display.getLayer("hudLogo").setActive(active);
 		display.getLayer("vignette").setActive(active);
+		display.getLayer("hudGlitch").setActive(active);
 	};
 
 	// Scene 1 : Hospital : Awakening
@@ -60,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		display.getLayer("drSpeech").playAnimation("speak-far");
 	});
 
-	// Little monkey !!!
+	// Scene 2 : Little monkey !!!
 	playback.when(50, function() {
 		display.getLayer("hudFilter").setActive(true);
 	});
@@ -85,6 +86,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		display.getLayer("drSpeech").setActive(false);
 	});
 
+	
+
 	// Scene 2 : Music interruption
 	playback.when(85, function() {
 		var alertMessage = display.getLayer("alertMessage");
@@ -107,6 +110,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Scene 2 : Putti speech begins
+	var puttiGame; // Create the PuttiGame controller
 	playback.when(90.5, function() {
 		display.getLayer("alertMessage").setTop(5);
 
@@ -114,6 +118,18 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		display.getLayer("instruction").setActive(true);
 		display.getLayer("instruction").playAnimation("click");
+
+		puttiGame = new PuttiGame();
+		puttiGame.setGlitchLayer(display.getLayer("hudGlitch"));
+		puttiGame.setSuccessLevel(10);
+		puttiGame.setSuccessCallback(function() {
+			playback.seek(119.9);
+		});
+		puttiGame.start();
+
+		puttiSpeech.setClickHandler(function() {
+			puttiGame.incrementLevel();
+		});
 	});
 
 	// Scene 2 : End
@@ -122,6 +138,9 @@ document.addEventListener("DOMContentLoaded", function() {
 		display.getLayer("alertMessage").setActive(false);
 		display.getLayer("instruction").setActive(false);
 		setActiveHud(false);
+
+		puttiGame.stop();
+		puttiGame = null;
 	});
 
 	// Scene 3 : Beggining
