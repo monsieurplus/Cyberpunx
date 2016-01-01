@@ -1,5 +1,5 @@
 var InvasionGame = function() {
-	var _active = true;
+	var _active = false;
 	var _viewportDimension;
 	var _context;
 

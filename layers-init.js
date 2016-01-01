@@ -28,16 +28,15 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Create and insert the VideoLayer
 	var videoLayer = new VideoLayer();
 	videoLayer.setVideo(video);
+	videoLayer.setActive(true);
 	display.addLayer("video", videoLayer);
 
 	// Create and insert the Vignette Layer
 	var vignette = new VignetteLayer();
-	vignette.setActive(false);
 	display.addLayer("vignette", vignette);
 	
 	// Create and insert HUD logo
 	var hudLogo = new AnimatedSprite();
-	hudLogo.setActive(false);
 	hudLogo.setSpriteImage("./resource/image/hud-logo-putti.png");
 	hudLogo.setSpriteSize(625, 289);
 	hudLogo.setDisplayPosition({ right : 2, bottom : 2 });
@@ -48,7 +47,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Create and insert HUD clock
 	var hudClock = new HudClockLayer();
-	hudClock.setActive(false);
 	hudClock.setFontSize(2);
 	hudClock.setDisplayPosition({ top : 2, right : 2 });
 	display.addLayer("hudClock", hudClock);
@@ -58,18 +56,18 @@ document.addEventListener('DOMContentLoaded', function() {
 	hudAudio.setMedia(video);
 	hudAudio.setDisplayPosition({ left : 2, bottom : 2 });
 	hudAudio.setDisplayWidth(20);
-
-	hudAudio.setActive(false);
+	hudAudio.setDisplayRatio(0.5);
 	display.addLayer("hudAudio", hudAudio);
 
 	// Create and insert HudFilterLayer (filter buttons)
-	var hudFilterLayer = new HudFilterLayer();
-	hudFilterLayer.setActive(false);
-	display.addLayer("hudFilter", hudFilterLayer);
+	var hudFilter = new HudFilterLayer();
+	hudFilter.setDisplayWidth(50);
+	hudFilter.setDisplayRatio(0.2);
+	hudFilter.setDisplayPosition({ bottom : 2 });
+	display.addLayer("hudFilter", hudFilter);
 
 	// Create and insert the doctor speech
 	var drSpeech = new AnimatedSprite();
-	drSpeech.setActive(false);
 	drSpeech.setSpriteImage("./resource/image/dr-speech-sprites.jpg");
 	drSpeech.setSpriteSize(480, 270);
 	drSpeech.setDisplayPosition({ left : 2, bottom : 20 });
@@ -123,11 +121,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	display.addLayer("drSpeech", drSpeech);
 
 	var invasionGame = new InvasionGame();
-	invasionGame.setActive(false);
 	display.addLayer("invasionGame", invasionGame);
 
 	var alertMessage = new AlertMessage();
-	alertMessage.setActive(false);
 	display.addLayer("alertMessage", alertMessage);
 
 	var instruction = new AnimatedSprite();
@@ -139,16 +135,14 @@ document.addEventListener('DOMContentLoaded', function() {
 		{ sprite : 0, duration : 500 },
 		{ sprite : 1, duration : 500 },
 	]);
-	instruction.setActive(false);
 	display.addLayer("instruction", instruction);
 
 	var hudGlitchLayer = new HudGlitchLayer();
 	//hudGlitchLayer.setActive(false);
 	display.addLayer("hudGlitch", hudGlitchLayer);
 
-	var noiseLayer = new NoiseLayer();
-	noiseLayer.setActive(false);
-	display.addLayer("noise", noiseLayer);
+	/*var noiseLayer = new NoiseLayer();
+	display.addLayer("noise", noiseLayer);*/
 
 	// Display loop and FPS counter handling
 	var fps = 0;
