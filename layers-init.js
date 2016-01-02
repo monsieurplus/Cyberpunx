@@ -13,12 +13,23 @@ document.addEventListener('DOMContentLoaded', function() {
 	videoSourceMp4.src = "./resource/video/punk-the-system.mp4";
 	videoSourceMp4.type = "video/mp4";
 	video.appendChild(videoSourceMp4)
-
+	/*
+	var videoSourceOgg = document.createElement("source");
+	videoSourceOgg.src = "./resource/video/punk-the-system.ogg";
+	videoSourceOgg.type = "video/ogg";
+	video.appendChild(videoSourceOgg)
+	*/
 	// Create the video playback controller
 	playback = new Playback(video);
 	setTimeout(function() {
 		playback.seek(0);
-		playback.play();
+		playback.pause();
+
+		startMenu.setActive(true);
+		startMenu.addButton("COMMENCER", function() {
+			playback.play();
+			startMenu.setActive(false);
+		});
 	}, 500);
 
 	// Create the Display controller (it will handle the layers)
@@ -104,6 +115,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	endMenu.setDisplayRatio(0.5);
 	endMenu.setDisplayPosition({});
 	display.addLayer("endMenu", endMenu);
+
+	var startMenu = new ButtonGroup();
+	startMenu.setDisplayWidth(100);
+	startMenu.setDisplayRatio(0.5);
+	startMenu.setDisplayPosition({});
+	display.addLayer("startMenu", startMenu);
 
 	/*var noiseLayer = new NoiseLayer();
 	display.addLayer("noise", noiseLayer);*/
