@@ -37,7 +37,7 @@ var KaraokeGame = function() {
 		//_alphaThreshold = 0.4;
 		_alphaOnClick = 0.5;
 
-		_fadingSpeed = 1.0;
+		_fadingSpeed = 0.8;
 
 		_currentIndex = 0;
 		//_setLyrics(_currentIndex);
