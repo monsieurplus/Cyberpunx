@@ -32,15 +32,14 @@ var KaraokeGame = function() {
 		_alphaArray = [];
 
 		_alphaMax = 1.0;
-		_alphaMin = 0.2;
+		_alphaMin = 0.1;
 
-		//_alphaThreshold = 0.4;
+		//_alphaThreshold = 0.2;
 		_alphaOnClick = 0.5;
 
-		_fadingSpeed = 0.8;
+		_fadingSpeed = 0.7;
 
 		_currentIndex = 0;
-		//_setLyrics(_currentIndex);
 	};
 
 	/**
@@ -151,15 +150,21 @@ var KaraokeGame = function() {
 		{
 			drawWidth = _ratio * _lyricsArray[lyricsIndex].width;
 
-			if (x >= lyricsX && x <= lyricsX + drawWidth && y >= _baseY && y <= _baseY + _drawHeight)
+			if (_prohibArray[lyricsIndex])
 			{
-				alphaTemp = _alphaArray[alphaIndex] + _alphaOnClick;
-				_alphaArray[alphaIndex] = alphaTemp > _alphaMax ? _alphaMax : alphaTemp;
+				if (x >= lyricsX && x <= lyricsX + drawWidth && y >= _baseY && y <= _baseY + _drawHeight)
+				{
+					alphaTemp = _alphaArray[alphaIndex] + _alphaOnClick;
+					_alphaArray[alphaIndex] = alphaTemp > _alphaMax ? _alphaMax : alphaTemp;
 
-				return true;
+					return true;
+				}
+
+				alphaIndex++;
 			}
 
 			lyricsX += drawWidth;
+			lyricsIndex++;
 		}
 		
 		// If nothing has been hit, return false
@@ -212,7 +217,7 @@ var KaraokeGame = function() {
 				lyricsC.src = "./resource/image/lyrics/3_c.png";
 
 				var lyricsD = new Image();
-				lyricsD.src = "./resource/image/lyrics/3_b_prohib.png";
+				lyricsD.src = "./resource/image/lyrics/3_d_prohib.png";
 
 				_lyricsArray = [lyricsA, lyricsB, lyricsC, lyricsD];
 				_prohibArray = [false, true, false, true];
