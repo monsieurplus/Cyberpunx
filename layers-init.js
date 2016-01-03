@@ -9,32 +9,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	// Create the video (it's not inserted into the page)
 	var video = document.createElement("video");
-	//video.loop = "loop";
 	video.preload = "auto";
 
 	var videoSourceMp4 = document.createElement("source");
 	videoSourceMp4.src = "./resource/video/punk-the-system.mp4";
 	videoSourceMp4.type = "video/mp4";
 	video.appendChild(videoSourceMp4)
+
 	/*
 	var videoSourceOgg = document.createElement("source");
 	videoSourceOgg.src = "./resource/video/punk-the-system.ogg";
 	videoSourceOgg.type = "video/ogg";
 	video.appendChild(videoSourceOgg)
 	*/
+	
 	// Create the video playback controller
 	playback = new Playback(video);
-	setTimeout(function() {
-		playback.seek(0);
-		playback.pause();
-
-		startMenu.setActive(true);
-		startMenu.addButton("COMMENCER", function() {
-			playback.play();
-			startMenu.setActive(false);
-			fullscreen.on();
-		});
-	}, 500);
+	playback.pause();
 
 	// Create the Display controller (it will handle the layers)
 	display = new Display();
@@ -110,6 +101,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		{ sprite : 1, duration : 500 },
 	]);
 	display.addLayer("instruction", instruction);
+
+	var website = new Website();
+	display.addLayer("website", website);
 
 	var hudGlitchLayer = new HudGlitchLayer();
 	display.addLayer("hudGlitch", hudGlitchLayer);
