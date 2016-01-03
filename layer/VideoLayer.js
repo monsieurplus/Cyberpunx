@@ -213,13 +213,3 @@ var VideoLayer = function() {
 
 	_init();
 };
-
-// Auto-include the "glitch" library
-(function() {
-	document.addEventListener('DOMContentLoaded', function() {
-		var glitchScript = document.createElement("script");
-		glitchScript.type = "text/javascript";
-		glitchScript.src = "./lib/glitch-canvas.min.js";
-		document.body.appendChild(glitchScript);
-	});
-}());
