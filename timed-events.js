@@ -112,22 +112,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		var karaokeGame = display.getLayer("karaokeGame");
 		karaokeGame.setActive(true);
+		karaokeGame.nextLyrics();
 	});
 
 	// Scene 3 : Censored lyrics 1
-	playback.when(173, function() {
+	playback.when(172, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
 		karaokeGame.nextLyrics();
 	})
 
 	// Scene 3 : Censored lyrics 2
-	playback.when(176, function() {
+	playback.when(175, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
 		karaokeGame.nextLyrics();
 	})
 
 	// Scene 3 : Censored lyrics 3
-	playback.when(179, function() {
+	playback.when(178, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
 		karaokeGame.nextLyrics();
 	})
@@ -145,19 +146,19 @@ document.addEventListener("DOMContentLoaded", function() {
 	})
 
 	// Scene 3 : Censored lyrics 6
-	playback.when(191, function() {
+	playback.when(190, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
 		karaokeGame.nextLyrics();
 	})
 
 	// Scene 3 : Censored lyrics 7
-	playback.when(194, function() {
+	playback.when(193, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
 		karaokeGame.nextLyrics();
 	})
 
 	// Scene 3 : Censored lyrics 8
-	playback.when(196, function() {
+	playback.when(195, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
 		karaokeGame.nextLyrics();
 	})
