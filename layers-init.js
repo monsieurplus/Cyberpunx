@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	videoSourceOgg.type = "video/ogg";
 	video.appendChild(videoSourceOgg)
 	*/
-	
+
 	// Create the video playback controller
 	playback = new Playback(video);
 	playback.pause();
@@ -35,6 +35,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	videoLayer.setVideo(video);
 	videoLayer.setActive(true);
 	display.addLayer("video", videoLayer);
+
+	var noiseLayer = new NoiseLayer();
+	display.addLayer("noise", noiseLayer);
 
 	// Create and insert the Vignette Layer
 	var vignette = new VignetteLayer();
@@ -108,6 +111,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	var hudGlitchLayer = new HudGlitchLayer();
 	display.addLayer("hudGlitch", hudGlitchLayer);
 
+	var jpegGlitch = new JpegGlitch();
+	display.addLayer("jpegGlitch", jpegGlitch);
+
 	var endMenu = new ButtonGroup();
 	endMenu.setDisplayWidth(100);
 	endMenu.setDisplayRatio(0.5);
@@ -119,9 +125,6 @@ document.addEventListener('DOMContentLoaded', function() {
 	startMenu.setDisplayRatio(0.5);
 	startMenu.setDisplayPosition({});
 	display.addLayer("startMenu", startMenu);
-
-	/*var noiseLayer = new NoiseLayer();
-	display.addLayer("noise", noiseLayer);*/
 
 	// Display loop and FPS counter handling
 	var fps = 0;
