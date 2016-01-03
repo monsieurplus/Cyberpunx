@@ -20,8 +20,7 @@ var KaraokeGame = function() {
 	//	Version 1
 	//var _alphaThreshold;
 	//var _alphaOnClick;
-
-	var _fadingSpeed;
+	//var _fadingSpeed;
 
 	var _lyricsWidth;
 	var _drawHeight;
@@ -52,8 +51,7 @@ var KaraokeGame = function() {
 		//	Version 1
 		//_alphaThreshold = 0.2;
 		//_alphaOnClick = 0.5;
-
-		_fadingSpeed = 0.8;
+		//_fadingSpeed = 0.8;
 
 		_lyricsWidth = 0;
 
@@ -64,7 +62,8 @@ var KaraokeGame = function() {
 	/**
 	 * REQUIRED
 	 */
-	this.draw = function(timeSinceLastDraw) {
+	//	Version 1 : add parameter timeSinceLastDraw
+	this.draw = function() {
 
 		var lyricsIndex = 0;
 		var lyricsLength = _lyricsArray.length;
