@@ -151,14 +151,13 @@ var KaraokeGame = function() {
 		{
 			drawWidth = _ratio * _lyricsArray[lyricsIndex].width;
 
-			if (x >= lyricsX && x <= lyricsX + drawWidth)
-				if (y >= _baseY && y <= _baseY + _drawHeight)
-				{
-					alphaTemp = _alphaArray[alphaIndex] + _alphaOnClick;
-					_alphaArray[alphaIndex] = alphaTemp > _alphaMax ? _alphaMax : alphaTemp;
+			if (x >= lyricsX && x <= lyricsX + drawWidth && y >= _baseY && y <= _baseY + _drawHeight)
+			{
+				alphaTemp = _alphaArray[alphaIndex] + _alphaOnClick;
+				_alphaArray[alphaIndex] = alphaTemp > _alphaMax ? _alphaMax : alphaTemp;
 
-					return true;
-				}
+				return true;
+			}
 
 			lyricsX += drawWidth;
 		}
@@ -255,7 +254,7 @@ var KaraokeGame = function() {
 				lyricsC.src = "./resource/image/lyrics/5_c.png";
 
 				var lyricsD = new Image();
-				lyricsD.src = "./resource/image/lyrics/5_b_prohib.png";
+				lyricsD.src = "./resource/image/lyrics/5_d_prohib.png";
 
 				_lyricsArray = [lyricsA, lyricsB, lyricsC, lyricsD];
 				_prohibArray = [false, true, false, true];
@@ -297,7 +296,7 @@ var KaraokeGame = function() {
 				lyricsC.src = "./resource/image/lyrics/7_c.png";
 
 				var lyricsD = new Image();
-				lyricsD.src = "./resource/image/lyrics/7_b_prohib.png";
+				lyricsD.src = "./resource/image/lyrics/7_d_prohib.png";
 
 				_lyricsArray = [lyricsA, lyricsB, lyricsC, lyricsD];
 				_prohibArray = [false, true, false, true];
