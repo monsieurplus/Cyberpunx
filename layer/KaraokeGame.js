@@ -21,7 +21,8 @@ var KaraokeGame = function() {
 	var _lyricsWidth;
 	var _drawHeight;
 	var _drawWidth;
-	var _ratio;
+	var _ratioHeight;
+	var _ratioWidth;
 	var _offsetX;
 	var _offsetY;
 
@@ -44,6 +45,9 @@ var KaraokeGame = function() {
 		_fadingSpeed = 0.7;
 
 		_lyricsWidth = 0;
+
+		_ratioHeight = 1.0;
+		_ratioWidth = 1.0;
 	};
 
 	/**
@@ -68,7 +72,7 @@ var KaraokeGame = function() {
 		while (lyricsIndex < lyricsLength)
 		{
 			lyrics = _lyricsArray[lyricsIndex];
-			tmpWidth = _ratio * lyrics.width;
+			tmpWidth = _ratioHeight * _ratioWidth * lyrics.width;
 
 			// Changing opacity before drawing
 			if (_prohibArray[lyricsIndex])
@@ -88,7 +92,7 @@ var KaraokeGame = function() {
 			_context.drawImage(
 				lyrics,
 				lyricsX,
-				_baseY,
+				_offsetY,
 				tmpWidth,
 				_drawHeight
 			);
@@ -109,7 +113,10 @@ var KaraokeGame = function() {
 		_viewportDimension = dimension;
 
 		_drawHeight = _viewportDimension.height * 1.0 / 12.0;
-		_ratio = _drawHeight * 1.0 / 75.0;
+		_drawWidth = _viewportDimension.width * 4.0 / 5.0;
+
+		_ratioHeight = _drawHeight * 1.0 / 75.0;
+		_ratioWidth = _lyricsWidth * _ratioHeight > _drawWidth ? _drawWidth * 1.0 / _lyricsWidth : 1.0;
 
 		_offsetX = 0;
 		_offsetY = _viewportDimension.height - 3.0 * _drawHeight;
@@ -152,7 +159,7 @@ var KaraokeGame = function() {
 
 		while (lyricsIndex < lyricsLength)
 		{
-			tmpWidth = _ratio * _lyricsArray[lyricsIndex].width;
+			tmpWidth = _ratioHeight * _ratioWidth * _lyricsArray[lyricsIndex].width;
 
 			if (_prohibArray[lyricsIndex])
 			{
@@ -183,8 +190,6 @@ var KaraokeGame = function() {
 	var _setLyrics = function(index) {
 
 		_lyricsWidth = 0;
-
-		_alphaArray = [_alphaMax, _alphaMax, _alphaMax, _alphaMax];
 
 		switch(index)
 		{
@@ -382,6 +387,10 @@ var KaraokeGame = function() {
 
 			default:
 		}
+
+		_ratioWidth = _lyricsWidth * _ratioHeight > _drawWidth ? _drawWidth * 1.0 / _lyricsWidth : 1.0;
+
+		_alphaArray = [_alphaMax, _alphaMax, _alphaMax, _alphaMax];
 	};
 
 	_init();
