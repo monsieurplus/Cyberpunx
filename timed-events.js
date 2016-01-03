@@ -115,6 +115,12 @@ document.addEventListener("DOMContentLoaded", function() {
 		karaokeGame.nextLyrics();
 	});
 
+	// Scene 3 : Start failure music
+	playback.when(171.5, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.startFailureMusic();
+	})
+
 	// Scene 3 : Censored lyrics 1
 	playback.when(172, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
@@ -137,6 +143,12 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(181, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
 		karaokeGame.nextLyrics();
+	})
+
+	// Scene 3 : Hide lyrics 4
+	playback.when(184, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.hideLyrics();
 	})
 
 	// Scene 3 : Censored lyrics 5

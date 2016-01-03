@@ -64,7 +64,6 @@ var KaraokeGame = function() {
 		//_alphaThreshold = 0.2;
 		//_alphaOnClick = 0.5;
 		//_fadingSpeed = 0.8;
-
 	};
 
 	/**
@@ -221,18 +220,25 @@ var KaraokeGame = function() {
 		return false;
 	};
 
+
+	this.startFailureMusic = function() {
+		//	Do something
+	}
+
+
+	this.hideLyrics = function() {
+
+		_evaluateResult();
+
+		_lyricsArray = [];
+		_prohibArray = [];
+
+		_lyricsWidth = 1;
+	}
+
 	this.nextLyrics = function() {
 
-		var length = _prohibArray.length;
-		var index = 0;
-
-		while (index < length && !_prohibArray[index])
-		{
-			index++;
-		}
-
-		// Do something
-		//if (index < length) {}
+		_evaluateResult();
 
 		if (_currentLyricsLine > 0)
 		{
@@ -251,6 +257,32 @@ var KaraokeGame = function() {
 	};
 
 
+	var _evaluateResult = function() {
+
+		var length = _prohibArray.length;
+		var index = 0;
+
+		while (index < length && !_prohibArray[index])
+		{
+			index++;
+		}
+
+		if (index < length)
+			_success();
+
+		else
+			_failure();
+	}
+
+	var _success = function() {
+		//	Do something
+	}
+
+	var _failure = function() {
+		// 	Do something
+	}
+
+
 	var _setLyricsWidth = function() {
 
 		var index = 0;
@@ -264,7 +296,6 @@ var KaraokeGame = function() {
 			index++;
 		}
 	}
-
 
 	var _setMargins = function() {
 
