@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	// Create the video playback controller
 	playback = new Playback(video);
 	setTimeout(function() {
-		playback.seek(0);
+		playback.seek(164);
 		playback.play();
 	}, 500);
 	
@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	invasionGame.setActive(false);
 	display.addLayer("invasionGame", invasionGame);
 
-	var karaokeGame = new karaokeGame();
+	var karaokeGame = new KaraokeGame();
 	karaokeGame.setActive(false);
 	display.addLayer("karaokeGame", karaokeGame);
 

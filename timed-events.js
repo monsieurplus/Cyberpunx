@@ -100,10 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Scene 3 : Music starts
-	playback.when(150, function() {
-		var karaokeGame = display.getLayer("karaokeGame");
-		karaokeGame.setActive(true);
-	});
+	playback.when(150, function() {});
 
 	// Scene 3 : Censorship start
 	playback.when(165, function() {
@@ -112,7 +109,58 @@ document.addEventListener("DOMContentLoaded", function() {
 		alertMessage.setColor("#6AFF0B");
 		alertMessage.setBlinkSpeed(250);
 		alertMessage.setActive(true);
+
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.setActive(true);
 	});
+
+	// Scene 3 : Censored lyrics 1
+	playback.when(173, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.nextLyrics();
+	})
+
+	// Scene 3 : Censored lyrics 2
+	playback.when(176, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.nextLyrics();
+	})
+
+	// Scene 3 : Censored lyrics 3
+	playback.when(179, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.nextLyrics();
+	})
+
+	// Scene 3 : Censored lyrics 4
+	playback.when(181, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.nextLyrics();
+	})
+
+	// Scene 3 : Censored lyrics 5
+	playback.when(187, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.nextLyrics();
+	})
+
+	// Scene 3 : Censored lyrics 6
+	playback.when(191, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.nextLyrics();
+	})
+
+	// Scene 3 : Censored lyrics 7
+	playback.when(194, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.nextLyrics();
+	})
+
+	// Scene 3 : Censored lyrics 8
+	playback.when(196, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.nextLyrics();
+	})
 
 	// Scene 3 : Music end
 	playback.when(198, function() {
