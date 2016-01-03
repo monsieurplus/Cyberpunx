@@ -91,6 +91,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	var invasionGame = new InvasionGame();
 	display.addLayer("invasionGame", invasionGame);
 
+	var karaokeGame = new KaraokeGame();
+	karaokeGame.setActive(false);
+	display.addLayer("karaokeGame", karaokeGame);
+
 	var alertMessage = new AlertMessage();
 	display.addLayer("alertMessage", alertMessage);
 
