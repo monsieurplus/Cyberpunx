@@ -91,7 +91,7 @@ var KaraokeGame = function() {
 
 
 			// Changing opacity before drawing
-			if (_prohibArray[index])
+			if (index < _prohibArray.length && _prohibArray[index])
 			{
 				if (_flashCountdown == 0)
 				{
@@ -177,7 +177,7 @@ var KaraokeGame = function() {
 		{
 			tmpWidth = _ratioHeight * _ratioWidth * _lyricsArray[index].width;
 
-			if (_prohibArray[index])
+			if (index < _prohibArray.length && _prohibArray[index])
 			{
 				if (x >= lyricsX && x <= lyricsX + tmpWidth && y >= _offsetY && y <= _offsetY + _drawHeight)
 				{
