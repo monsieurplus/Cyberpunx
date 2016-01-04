@@ -173,6 +173,10 @@ document.addEventListener("DOMContentLoaded", function() {
 		alertMessage.setBlinkSpeed(250);
 		alertMessage.setActive(true);
 
+		var instruction = display.getLayer("instruction");
+		instruction.playAnimation("click");
+		instruction.setActive(true);
+
 		var karaokeGame = display.getLayer("karaokeGame");
 		karaokeGame.setActive(true);
 		karaokeGame.nextLyrics();
@@ -242,6 +246,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(198, function() {
 		display.getLayer("alertMessage").setActive(false);
 		display.getLayer("karaokeGame").setActive(false);
+		display.getLayer("instruction").setActive(false);
 	});
 
 	// Scene 3 : End
