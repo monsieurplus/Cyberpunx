@@ -1,31 +1,50 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>PUTTI UNLIMITED</title>
+		<meta charset="UTF-8">
+	
+		<title>Punk the System - Un court-métrage cyberpunk interactif en vue subjective</title>
+		<meta property="og:url" content="http://putti-unlimited.com" />
+		<meta property="og:type" content="website" />
+		<meta property="og:title" content="PUNK the SYSTEM" />
+		<meta property="og:description" content="Un court-métrage cyberpunk interactif en vue subjective qui dénonce les dangers de l'humain augmenté" />
+		<meta property="og:image" content="http://putti-unlimited.com/resource/image/opengraph-preview.jpg" />
 
-		<!-- <link href='https://fonts.googleapis.com/css?family=VT323' rel='stylesheet' type='text/css' /> -->
 		<link href='./resource/font/VT323.css' rel='stylesheet' type='text/css' />
 
+		<!-- Libraries loading -->
+		<script type="text/javascript" src="./lib/glitch-canvas.min.js"></script>
+
+		<!-- Controllers loading -->
 		<script type="text/javascript" src="./controller/Playback.js"></script>
 		<script type="text/javascript" src="./controller/Display.js"></script>
+		<script type="text/javascript" src="./controller/Fullscreen.js"></script>
+		<script type="text/javascript" src="./controller/PuttiGame.js"></script>
 
+		<!-- Layers loading -->
 		<script type="text/javascript" src="./layer/VideoLayer.js"></script>
-		<script type="text/javascript" src="./layer/HudLogoLayer.js"></script>
+		<script type="text/javascript" src="./layer/VignetteLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudClockLayer.js"></script>
 		<script type="text/javascript" src="./layer/HudAudioLayer.js"></script>
-		<script type="text/javascript" src="./layer/HudFilterLayer.js"></script>
+		<script type="text/javascript" src="./layer/ButtonGroup.js"></script>
 		<script type="text/javascript" src="./layer/AnimatedSprite.js"></script>
-		<script type="text/javascript" src="./layer/InvasionGame.js"></script>
 		<script type="text/javascript" src="./layer/AlertMessage.js"></script>
-		<script type="text/javascript" src="./layer/HudGlitchLayer.js"></script>
-		<script type="text/javascript" src="./layer/NoiseLayer.js"></script>
+		<script type="text/javascript" src="./layer/InvasionGame.js"></script>
 		<script type="text/javascript" src="./layer/KaraokeGame.js"></script>
+		<script type="text/javascript" src="./layer/Website.js"></script>
+		<script type="text/javascript" src="./layer/HudGlitchLayer.js"></script>
+		<script type="text/javascript" src="./layer/JpegGlitch.js"></script>
+		<script type="text/javascript" src="./layer/NoiseLayer.js"></script>
 
+		<!-- Init scripts -->
 		<script type="text/javascript" src="./layers-init.js"></script>
+		<script type="text/javascript" src="./sprite-animations.js"></script>
 		<script type="text/javascript" src="./resize-handler.js"></script>
-		<script type="text/javascript" src="./filter-buttons.js"></script>
+		<script type="text/javascript" src="./pause-handler.js"></script>
+		<script type="text/javascript" src="./button-groups.js"></script>
 		<script type="text/javascript" src="./timed-events.js"></script>
-		
+		<script type="text/javascript" src="./start-sequence.js"></script>
+
 		<style type="text/css">
 			html, body {
 				margin : 0;
@@ -34,8 +53,17 @@
 
 				background-color : black;
 			}
-			#canvas-container canvas { position:absolute; top:0; left:0; z-index:1; opacity:0.75 ; }
-			
+			#canvas-container canvas {
+				position:absolute;
+				top:0;
+				left:0;
+				z-index:1;
+			}
+
+			#canvas-container canvas.hud {
+				opacity : 0.75;
+			}
+
 			#video-container {
 				position:absolute;
 				top:0;

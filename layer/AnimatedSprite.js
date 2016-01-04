@@ -1,5 +1,5 @@
 var AnimatedSprite = function() {
-	var _active = true;
+	var _active = false;
 	var _viewportDimension;
 	var _context;
 
@@ -8,9 +8,11 @@ var AnimatedSprite = function() {
 	var _spriteWidth;
 	var _spriteHeight;
 
-	var _displayWidth;
-	var _displayHeight;
-	var _displayPosition = {};
+	var _displayWidth; // Percents of the screen width
+	var _displayPosition = {}; // Wanted display coordinates in percent from top or bottom / left or right
+	var _displayCoordinates = {}; // Real display coordinates in pixels
+
+	var _clickHandler;
 
 	var _animations = {}; // Name indexed animations
 	/* {
@@ -40,19 +42,34 @@ var AnimatedSprite = function() {
 	this.setSpriteSize = function(width, height) {
 		_spriteWidth = width;
 		_spriteHeight = height;
+		_computeDisplayCoordinates();
 	};
 
 	this.setSpriteImage = function(url) {
 		_spriteImage.src = url;
 	};
 
-	this.setDisplaySize = function(width, height) {
-		_displayWidth = width;
-		_displayHeight = height;
+	this.setDisplayWidth = function(percentWidth) {
+		_displayWidth = percentWidth;
+		_computeDisplayCoordinates();
 	};
 
+	this.setClickHandler = function(clickHandler) {
+		_clickHandler = clickHandler;
+	};
+
+	/**
+	 * Defines where the sprite has to be displayed
+	 * @params {object} position Object containing horizontal and vertical position (in percents)
+	 *                  position.top
+	 *                  position.bottom
+	 *                  position.left
+	 *                  position.right
+	 * If no property is set for vertical or horizontal position the element will be centered
+	 */
 	this.setDisplayPosition = function(position) {
 		_displayPosition = position;
+		_computeDisplayCoordinates();
 	};
 
 	/**
@@ -88,44 +105,57 @@ var AnimatedSprite = function() {
 		var sourceW = _spriteWidth;
 		var sourceH = _spriteHeight;
 
-		var targetX, targetY;
-		var targetW = _displayWidth;
-		var targetH = _displayHeight;
-
-		// Positionned from left
-		if (typeof _displayPosition.left !== "undefined") {
-			targetX = _displayPosition.left;
-		}
-		// Positionned from right
-		else if (typeof _displayPosition.right !== "undefined") {
-			targetX = _viewportDimension.width - _displayPosition.right - _displayWidth;
-		}
-		// Horizontally centered
-		else {
-			targetX = Math.ceil(_viewportDimension.width / 2 - _displayWidth / 2);
-		}
-
-		// Positionned from top
-		if (typeof _displayPosition.top !== "undefined") {
-			targetY = _displayPosition.top;
-		}
-		// Positionned from bottom
-		else if (typeof _displayPosition.bottom !== "undefined") {
-			targetY = _viewportDimension.height - _displayPosition.bottom - _displayHeight;
-		}
-		// Vertically centered
-		else {
-			targetY = Math.ceil(_viewportDimension.height / 2 - _displayHeight / 2);
-		}
-
 		// Display the sprite
 		_context.drawImage(
 			_spriteImage,
 			sourceX, sourceY,
 			sourceW, sourceH,
-			targetX, targetY,
-			targetW, targetH
+			_displayCoordinates.x, _displayCoordinates.y,
+			_displayCoordinates.w, _displayCoordinates.h
 		);
+	};
+
+	var _computeDisplayCoordinates = function() {
+		if (!_viewportDimension || !_viewportDimension.width || !_viewportDimension.height) {
+			return false;
+		}
+
+		var targetX, targetY;
+		var targetW = (_displayWidth / 100) * _viewportDimension.width;
+		var targetH = (targetW * _spriteHeight) / _spriteWidth;
+
+		// Positionned from left
+		if (typeof _displayPosition.left !== "undefined") {
+			targetX = _displayPosition.left / 100 * _viewportDimension.width;
+		}
+		// Positionned from right
+		else if (typeof _displayPosition.right !== "undefined") {
+			targetX = _viewportDimension.width - (_displayPosition.right / 100 * _viewportDimension.width) - targetW;
+		}
+		// Horizontally centered
+		else {
+			targetX = (_viewportDimension.width - targetW) / 2;
+		}
+
+		// Positionned from top
+		if (typeof _displayPosition.top !== "undefined") {
+			targetY = _displayPosition.top / 100 * _viewportDimension.height;
+		}
+		// Positionned from bottom
+		else if (typeof _displayPosition.bottom !== "undefined") {
+			targetY = _viewportDimension.height - (_displayPosition.bottom / 100 * _viewportDimension.height) - targetH;
+		}
+		// Vertically centered
+		else {
+			targetY = Math.ceil(_viewportDimension.height / 2 - targetH / 2);
+		}
+
+		_displayCoordinates = {
+			x : targetX,
+			y : targetY,
+			w : targetW,
+			h : targetH
+		};
 	};
 
 	this.addAnimation = function(name, steps) {
@@ -163,6 +193,7 @@ var AnimatedSprite = function() {
 	 */
 	this.setViewportDimension = function(dimension) {
 		_viewportDimension = dimension;
+		_computeDisplayCoordinates();
 	};
 
 	/**
@@ -190,7 +221,18 @@ var AnimatedSprite = function() {
 	 * REQUIRED
 	 */
 	this.click = function(x, y) {
-		// HERE Detect if something has been hit, if so, return true
+		if (!_clickHandler || typeof _clickHandler !== "function") {
+			return false;
+		}
+
+		if (
+			x > _displayCoordinates.x &&
+			x < (_displayCoordinates.x + _displayCoordinates.w) &&
+			y > _displayCoordinates.y &&
+			y < (_displayCoordinates.y + _displayCoordinates.h)
+		) {
+			_clickHandler();
+		}
 		
 		// If nothing has been hit, return false
 		return false;

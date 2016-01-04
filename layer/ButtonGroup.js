@@ -1,11 +1,16 @@
-// Displays the filter buttons and handle them
-var HudFilterLayer = function() {
-	var _active = true;
+// Displays a group of buttons (up to 6 buttons)
+var ButtonGroup = function() {
+	var _active = false;
 	var _viewportDimension;
 	var _context;
 
 	// Local variables
 	var _buttons = [];
+
+	var _displayPosition = {};
+	var _displayWidth = 50;
+	var _displayRatio = 0.5;
+	var _marginWidth = 1;
 
 	var _init = function() {
 		// HERE Initialization of the layer
@@ -80,21 +85,61 @@ var HudFilterLayer = function() {
 		}
 	};
 
+	this.setDisplayPosition = function(position) {
+		_displayPosition = position;
+	};
+
+	this.setDisplayWidth = function(width) {
+		_displayWidth = width;
+	};
+
+	this.setDisplayRatio = function(ratio) {
+		_displayRatio = ratio;
+	};
+
+	this.setMarginWidth = function(margin) {
+		_marginWidth = margin;
+	};
+
 	/**
 	 * Computes the buttons positions considering the current viewport dimension
 	 * This is only called on _init and when the viewport is resized
 	 */
 	var _computeButtonLayout = function() {
 		// Button zone positioning
-		//var buttonZoneHeight = Math.floor(_viewportDimension.height / 4);
-		var buttonZoneHeight = 175;
-		var buttonZoneY = _viewportDimension.height - buttonZoneHeight;
-		var buttonZoneWidth = Math.floor(_viewportDimension.width * 0.5);
-		var buttonZoneX = Math.floor((_viewportDimension.width - buttonZoneWidth) / 2);
+		var buttonZoneW = _viewportDimension.width / 100 * _displayWidth;
+		var buttonZoneH = buttonZoneW * _displayRatio;
+		var buttonZoneX, buttonZoneY;
+
+		// Positionned from left
+		if (typeof _displayPosition.left !== "undefined") {
+			buttonZoneX = _displayPosition.left / 100 * _viewportDimension.width;
+		}
+		// Positionned from right
+		else if (typeof _displayPosition.right !== "undefined") {
+			buttonZoneX = _viewportDimension.width - (_displayPosition.right / 100 * _viewportDimension.width) - buttonZoneW;
+		}
+		// Horizontally centered
+		else {
+			buttonZoneX = _viewportDimension.width / 2 - buttonZoneW / 2;
+		}
+
+		// Positionned from top
+		if (typeof _displayPosition.top !== "undefined") {
+			buttonZoneY = _displayPosition.top / 100 * _viewportDimension.height;
+		}
+		// Positionned from bottom
+		else if (typeof _displayPosition.bottom !== "undefined") {
+			buttonZoneY = _viewportDimension.height - (_displayPosition.bottom / 100 * _viewportDimension.height) - buttonZoneH;
+		}
+		// Vertically centered
+		else {
+			buttonZoneY = _viewportDimension.height / 2 - buttonZoneH / 2;
+		}
 
 		// Button dimension computing
-		var buttonMargin = 20;
-		var buttonWidth = Math.floor((buttonZoneWidth - buttonMargin * 2) / 3);
+		var buttonMargin = _viewportDimension.width / 100 * _marginWidth;
+		var buttonWidth = Math.floor((buttonZoneW - buttonMargin * 2) / 3);
 		var buttonHeight = Math.floor(buttonWidth / 4);
 
 		// Buttons positioning
@@ -110,7 +155,7 @@ var HudFilterLayer = function() {
 			switch (buttonLayout) {
 				// Centered button
 				case "1_0":
-					button.x = buttonZoneX + Math.floor((buttonZoneWidth - buttonWidth) / 2);
+					button.x = buttonZoneX + Math.floor((buttonZoneW - buttonWidth) / 2);
 				break;
 
 				// Two buttons row : first  one
@@ -118,7 +163,7 @@ var HudFilterLayer = function() {
 				case "4_0":
 				case "4_2":
 				case "5_0":
-					button.x = buttonZoneX + Math.floor((buttonZoneWidth - buttonWidth * 2 - buttonMargin) / 2);
+					button.x = buttonZoneX + Math.floor((buttonZoneW - buttonWidth * 2 - buttonMargin) / 2);
 				break;
 
 				// Two buttons row : second  one
@@ -126,7 +171,7 @@ var HudFilterLayer = function() {
 				case "4_1":
 				case "4_3":
 				case "5_1":
-					button.x = buttonZoneX + Math.floor((buttonZoneWidth - buttonWidth * 2 - buttonMargin) / 2) + buttonWidth + buttonMargin;
+					button.x = buttonZoneX + Math.floor((buttonZoneW - buttonWidth * 2 - buttonMargin) / 2) + buttonWidth + buttonMargin;
 				break;
 
 				// Three buttons row : first one
@@ -134,7 +179,7 @@ var HudFilterLayer = function() {
 				case "5_2":
 				case "6_0":
 				case "6_3":
-					button.x = buttonZoneX + Math.floor((buttonZoneWidth - buttonWidth * 3 - buttonMargin * 2) / 2);
+					button.x = buttonZoneX + Math.floor((buttonZoneW - buttonWidth * 3 - buttonMargin * 2) / 2);
 				break;
 
 				// Three buttons row : second one
@@ -142,7 +187,7 @@ var HudFilterLayer = function() {
 				case "5_3":
 				case "6_1":
 				case "6_4":
-					button.x = buttonZoneX + Math.floor((buttonZoneWidth - buttonWidth * 3 - buttonMargin * 2) / 2) + buttonWidth + buttonMargin;
+					button.x = buttonZoneX + Math.floor((buttonZoneW - buttonWidth * 3 - buttonMargin * 2) / 2) + buttonWidth + buttonMargin;
 				break;
 
 				// Three buttons row : third one
@@ -150,7 +195,7 @@ var HudFilterLayer = function() {
 				case "5_4":
 				case "6_2":
 				case "6_5":
-					button.x = Math.floor(buttonZoneX + (buttonZoneWidth - (buttonWidth * 3 + buttonMargin * 2)) / 2) + buttonWidth * 2 + buttonMargin * 2;
+					button.x = Math.floor(buttonZoneX + (buttonZoneW - (buttonWidth * 3 + buttonMargin * 2)) / 2) + buttonWidth * 2 + buttonMargin * 2;
 				break;
 			}
 
@@ -163,7 +208,7 @@ var HudFilterLayer = function() {
 				case "3_0":
 				case "3_1":
 				case "3_2":
-					button.y = buttonZoneY + Math.floor((buttonZoneHeight - buttonHeight) /2);
+					button.y = buttonZoneY + Math.floor((buttonZoneH - buttonHeight) /2);
 				break;
 
 				// Two rows : first one
@@ -174,7 +219,7 @@ var HudFilterLayer = function() {
 				case "6_0":
 				case "6_1":
 				case "6_2":
-					button.y = buttonZoneY + Math.floor((buttonZoneHeight - buttonHeight * 2 - buttonMargin) / 2);
+					button.y = buttonZoneY + Math.floor((buttonZoneH - buttonHeight * 2 - buttonMargin) / 2);
 				break;
 
 				// Two rows : second one
@@ -186,7 +231,7 @@ var HudFilterLayer = function() {
 				case "6_3":
 				case "6_4":
 				case "6_5":
-					button.y = buttonZoneY + Math.floor((buttonZoneHeight - buttonHeight * 2 - buttonMargin) / 2) + buttonHeight + buttonMargin;
+					button.y = buttonZoneY + Math.floor((buttonZoneH - buttonHeight * 2 - buttonMargin) / 2) + buttonHeight + buttonMargin;
 				break;
 			}
 

@@ -1,19 +1,21 @@
-var DefaultLayer = function() {
+var VignetteLayer = function() {
 	var _active = false;
 	var _viewportDimension;
 	var _context;
 
 	// Local variables
+	var _image;
 
 	var _init = function() {
-		// HERE Initialization of the layer
+		_image = new Image();
+		_image.src = "./resource/image/vignette-hud.png";
 	};
 
 	/**
 	 * REQUIRED
 	 */
 	this.draw = function() {
-		// HERE Drawing process of the layer
+		_context.drawImage(_image, 0, 0, _viewportDimension.width, _viewportDimension.height);
 	};
 
 	/**

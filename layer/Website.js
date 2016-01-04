@@ -1,5 +1,5 @@
-var HudLogoLayer = function() {
-	var _active = true;
+var Website = function() {
+	var _active = false;
 	var _viewportDimension;
 	var _context;
 
@@ -8,24 +8,36 @@ var HudLogoLayer = function() {
 
 	var _init = function() {
 		_image = new Image();
-		_image.src = "./resource/image/hud-logo-putti.png";
+		_image.src = "./resource/image/website.jpg";
 	};
 
 	/**
 	 * REQUIRED
 	 */
 	this.draw = function() {
-		// Draw the logo
-		var drawWidth = _viewportDimension.width / 5;
-		var drawHeight = (drawWidth * _image.height) / _image.width;
+		_context.fillStyle = "white";
+		_context.fillRect(0, 0, _viewportDimension.width, _viewportDimension.height);
 
-		_context.drawImage(
-			_image,
-			_viewportDimension.width - (drawWidth + 20),
-			_viewportDimension.height - (drawHeight + 20),
-			drawWidth,
-			drawHeight
-		);
+		if (_checkImageLoading()) {
+			var targetW = _image.naturalWidth / 1.5;
+			var targetH = _image.naturalHeight / 1.5;
+			var targetY = 0;
+			var targetX = (_viewportDimension.width - targetW) / 2;
+
+			_context.drawImage(_image, targetX, targetY, targetW, targetH);
+		}
+	};
+
+	var _checkImageLoading = function() {
+		if (!_image.complete) {
+			return false;
+		}
+
+		if (!_image.naturalWidth || !_image.naturalHeight) {
+			return false;
+		}
+
+		return true;
 	};
 
 	/**

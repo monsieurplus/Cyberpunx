@@ -10,6 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
 		display.getLayer("hudClock").setActive(active);
 		display.getLayer("hudAudio").setActive(active);
 		display.getLayer("hudLogo").setActive(active);
+		display.getLayer("vignette").setActive(active);
+		display.getLayer("hudGlitch").setActive(active);
 	};
 
 	// Scene 1 : Hospital : Awakening
@@ -24,6 +26,13 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(2.35, function() {
 		setActiveHud(true);
 
+		// Default HUD glitch is not null
+		var hudGlitch = display.getLayer("hudGlitch");
+		hudGlitch.setParam("quantity", 1);
+		hudGlitch.setParam("probability", 2);
+		hudGlitch.setParam("width", 5);
+		hudGlitch.setParam("height", 5);
+
 		display.getLayer("hudClock").setTime("08:35:54");
 	});
 
@@ -37,30 +46,46 @@ document.addEventListener("DOMContentLoaded", function() {
 		setActiveHud(true);
 
 		display.getLayer("hudClock").setTime("11:13:41");
-
-		display.getLayer("hudFilter").setActive(true);
 	});
 
 	// Scene 2 : Dr. speech start
 	playback.when(43, function() {
 		var drSpeech = display.getLayer("drSpeech");
 		drSpeech.setActive(true);
-		drSpeech.playAnimation("speak-close");
+		drSpeech.playAnimation("idle");
 	});
-	playback.when(45, function() {
-		display.getLayer("drSpeech").playAnimation("scratch-front");
+	playback.when(44, function() {
+		display.getLayer("drSpeech").playAnimation("speak");
+	});
+	playback.when(46, function() {
+		display.getLayer("drSpeech").playAnimation("idle");
 	});
 	playback.when(48, function() {
-		display.getLayer("drSpeech").playAnimation("speak-far");
+		display.getLayer("drSpeech").playAnimation("speak");
 	});
+
+	// Scene 2 : Little monkey !!!
+	playback.when(50, function() {
+		display.getLayer("hudFilter").setActive(true);
+	});
+
 	playback.when(52, function() {
-		display.getLayer("drSpeech").playAnimation("scratch-ear");
+		display.getLayer("drSpeech").playAnimation("idle");
 	});
 	playback.when(55, function() {
-		display.getLayer("drSpeech").playAnimation("speak-right");
+		display.getLayer("drSpeech").playAnimation("speak");
 	});
-	playback.when(57, function() {
+	playback.when(58, function() {
 		display.getLayer("drSpeech").playAnimation("idle");
+	});
+	playback.when(60, function() {
+		display.getLayer("drSpeech").playAnimation("speak");
+	});
+	playback.when(67, function() {
+		display.getLayer("drSpeech").playAnimation("idle");
+	});
+	playback.when(70, function() {
+		display.getLayer("drSpeech").playAnimation("speak");
 	});
 
 	// Scene 2 : Dr speech end
@@ -73,23 +98,61 @@ document.addEventListener("DOMContentLoaded", function() {
 		display.getLayer("drSpeech").setActive(false);
 	});
 
+	
+
 	// Scene 2 : Music interruption
 	playback.when(85, function() {
 		var alertMessage = display.getLayer("alertMessage");
+		alertMessage.setTop(50);
 		alertMessage.setMessage("ALLOCUTION PRESIDENTIELLE OBLIGATOIRE");
 		alertMessage.setColor("#6AFF0B");
 		alertMessage.setBlinkSpeed(500);
 		alertMessage.setActive(true);
+
+		var puttiSpeech = display.getLayer("puttiSpeech");
+		puttiSpeech.playAnimation("wide");
+		puttiSpeech.setActive(true);
+	});
+
+	playback.when(86.5, function() {
+		display.getLayer("puttiSpeech").playAnimation("zoom");
+	});
+	playback.when(87.8, function() {
+		display.getLayer("puttiSpeech").playAnimation("scary");
 	});
 
 	// Scene 2 : Putti speech begins
-	playback.when(90, function() {});
+	var puttiGame; // Create the PuttiGame controller
+	playback.when(90.5, function() {
+		display.getLayer("alertMessage").setTop(5);
+
+		display.getLayer("puttiSpeech").playAnimation("speak");
+
+		display.getLayer("instruction").setActive(true);
+		display.getLayer("instruction").playAnimation("click");
+
+		puttiGame = new PuttiGame();
+		puttiGame.setGlitchLayer(display.getLayer("hudGlitch"));
+		puttiGame.setSuccessLevel(10);
+		puttiGame.setSuccessCallback(function() {
+			playback.seek(119.9);
+		});
+		puttiGame.start();
+
+		display.getLayer("puttiSpeech").setClickHandler(function() {
+			puttiGame.incrementLevel();
+		});
+	});
 
 	// Scene 2 : End
 	playback.when(120, function() {
+		display.getLayer("puttiSpeech").setActive(false);
 		display.getLayer("alertMessage").setActive(false);
-
+		display.getLayer("instruction").setActive(false);
 		setActiveHud(false);
+
+		puttiGame.stop();
+		puttiGame = null;
 	});
 
 	// Scene 3 : Beggining
@@ -106,7 +169,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(165, function() {
 		var alertMessage = display.getLayer("alertMessage");
 		alertMessage.setMessage("CONTENU PROHIBE DETECTE");
-		alertMessage.setColor("#6AFF0B");
+		alertMessage.setColor("red");
 		alertMessage.setBlinkSpeed(250);
 		alertMessage.setActive(true);
 
@@ -208,47 +271,48 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(249, function() {
 		var alertMessage = display.getLayer("alertMessage");
 		alertMessage.setMessage("MISE A JOUR EN COURS");
-		alertMessage.setColor("#6AFF0B");
+		alertMessage.setColor("red");
 		alertMessage.setBlinkSpeed(500);
 		alertMessage.setActive(true);
 
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setActive(true);
 		invasionGame.setAttackerSize(5);
-		invasionGame.setAttackerSpeed(5);
-		invasionGame.setAttackerDelay(2000);
+		invasionGame.setAttackerSpeed(7.5);
+		invasionGame.setAttackerDelay(750);
 		invasionGame.setAttackerStrength(1);
 		invasionGame.setAttackerColor("#6AFF0B");
 
 		invasionGame.setFailureCallback(function() {
 			// Jump to scene 7
-			invasionGame.setActive(false);
+			display.getLayer("invasionGame").setActive(false);
+			display.getLayer("alertMessage").setActive(false);
+			display.getLayer("instruction").setActive(false);
 			playback.seek(382);
 		});
+
+		display.getLayer("instruction").playAnimation("click");
+		display.getLayer("instruction").setActive(true);
 	});
 
 	// Scene 5 : Awakening
 	playback.when(255, function() {
-		var alertMessage = display.getLayer("alertMessage");
-		alertMessage.setColor("blue");
-		alertMessage.setBlinkSpeed(250);
+		display.getLayer("alertMessage").setBlinkSpeed(250);
 
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setAttackerSize(5);
-		invasionGame.setAttackerSpeed(7.5);
-		invasionGame.setAttackerDelay(1500);
+		invasionGame.setAttackerSpeed(10);
+		invasionGame.setAttackerDelay(600);
 		invasionGame.setAttackerStrength(2);
-		invasionGame.setAttackerColor("blue");
+		invasionGame.setAttackerColor("orange");
 	});
 
 	playback.when(275, function() {
-		var alertMessage = display.getLayer("alertMessage");
-		alertMessage.setColor("red");
-		alertMessage.setBlinkSpeed(100);
+		display.getLayer("alertMessage").setBlinkSpeed(100);
 
 		var invasionGame = display.getLayer("invasionGame");
 		invasionGame.setAttackerSize(10);
-		invasionGame.setAttackerSpeed(12.5);
+		invasionGame.setAttackerSpeed(15);
 		invasionGame.setAttackerDelay(500);
 		invasionGame.setAttackerStrength(5);
 		invasionGame.setAttackerColor("red");
@@ -259,6 +323,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		setActiveHud(false);
 		display.getLayer("alertMessage").setActive(false);
 		display.getLayer("invasionGame").setActive(false);
+		display.getLayer("instruction").setActive(false);
 	});
 
 	// Scene 6 : Beginning
@@ -304,7 +369,7 @@ document.addEventListener("DOMContentLoaded", function() {
 			"IMPLANTATION NERVEUSE INCORRECTE"
 		];
 
-		var colors = ["red", "magenta", "pink", "fushia", "white"];
+		var colors = ["red", "magenta", "pink", "orange", "white"];
 
 		var alertMessage = display.getLayer("alertMessage");
 		alertMessage.setMessage(messages[Math.floor(Math.random() * messages.length)]);
@@ -428,14 +493,15 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Scene 6 : Credits end
-	playback.when(380, function() {
+	playback.when(379.5, function() {
 		playback.pause();
+
+		display.getLayer("endMenu").setActive(true);
 	});
 
 	// Scene 7 : Beggining
 	playback.when(382, function() {
 		setActiveHud(true);
-
 		display.getLayer("hudClock").setTime("03:35:12");
 	});
 
@@ -451,7 +517,9 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 
 	// Scene 7 : Credits end
-	playback.when(498, function() {
+	playback.when(502, function() {
 		playback.pause();
+
+		display.getLayer("endMenu").setActive(true);
 	});
 });
