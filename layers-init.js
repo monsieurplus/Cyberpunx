@@ -1,14 +1,11 @@
 /* Layers init */
 
 // Globals
-var playback, display, fullscreen, howl;
+var playback, display, fullscreen;
 
 document.addEventListener('DOMContentLoaded', function() {
 	// Create the fullscreen instance
 	fullscreen = new Fullscreen();
-
-	// Create the Howler instance
-	howl = new Howler();
 
 	// Create the video (it's not inserted into the page)
 	var video = document.createElement("video");
