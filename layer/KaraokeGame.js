@@ -19,19 +19,11 @@ var KaraokeGame = function() {
 	var _lyricsWidth;
 	var _lyricsNextWidth;
 
-	//	Version 1
-	//var _alphaArray;
-	//	Version 2
 	var _flashPeriod;
 	var _flashCountdown;
 
 	var _alphaMax;
 	var _alphaMin;
-
-	//	Version 1
-	//var _alphaThreshold;
-	//var _alphaOnClick;
-	//var _fadingSpeed;
 
 	var _drawHeight;
 	var _drawWidth;
@@ -50,20 +42,11 @@ var KaraokeGame = function() {
 
 		_lyricsWidth = 1;
 
-		//	Version 1
-		//_alphaArray = [];
-
-		//	Version 2
 		_flashPeriod = 40;	
 		_flashCountdown = _flashPeriod;
 
 		_alphaMax = 1.0;
 		_alphaMin = 0.1;
-
-		//	Version 1
-		//_alphaThreshold = 0.2;
-		//_alphaOnClick = 0.5;
-		//_fadingSpeed = 0.8;
 	};
 
 	/**
@@ -82,12 +65,6 @@ var KaraokeGame = function() {
 
 		var alphaRef = _context.globalAlpha;
 
-		//	Version 1
-		//var alphaTemp = 0.0;
-		//var alphaIndex = 0;
-		//var alphaLength = _alphaArray.length;
-
-		//	Version 2
 		_flashCountdown--;
 
 
@@ -96,20 +73,10 @@ var KaraokeGame = function() {
 			lyrics = _lyricsArray[index];
 			tmpWidth = _ratioHeight * _ratioWidth * lyrics.width;
 
+
 			// Changing opacity before drawing
 			if (_prohibArray[index])
 			{
-				//	Version 1
-				//if (alphaIndex < alphaLength)
-				//{
-					//alphaTemp =  _alphaArray[alphaIndex] - timeSinceLastDraw * _fadingSpeed / 1000;
-					//_alphaArray[alphaIndex] = alphaTemp < _alphaMin ? _alphaMin : alphaTemp;
-
-					//_context.globalAlpha = _alphaArray[alphaIndex];
-					//alphaIndex++;
-				//}
-
-				//	Version 2
 				if (_flashCountdown == 0)
 				{
 					_context.globalAlpha = _alphaMax;
@@ -122,6 +89,7 @@ var KaraokeGame = function() {
 			else
 				_context.globalAlpha = alphaRef;
 
+
 			_context.drawImage(
 				lyrics,
 				lyricsX,
@@ -130,8 +98,8 @@ var KaraokeGame = function() {
 				_drawHeight
 			);
 
-			lyricsX += tmpWidth;
 
+			lyricsX += tmpWidth;
 			index++;
 		}
 
@@ -186,9 +154,6 @@ var KaraokeGame = function() {
 		var lyricsX = _offsetX;
 		var tmpWidth;
 
-		//	Version 1
-		//var alphaIndex = 0;
-		//var alphaTemp;
 
 		while (index < length)
 		{
@@ -198,18 +163,10 @@ var KaraokeGame = function() {
 			{
 				if (x >= lyricsX && x <= lyricsX + tmpWidth && y >= _offsetY && y <= _offsetY + _drawHeight)
 				{
-					//	Version 1
-					//alphaTemp = _alphaArray[alphaIndex] + _alphaOnClick;
-					//_alphaArray[alphaIndex] = alphaTemp > _alphaMax ? _alphaMax : alphaTemp;
-
-					//	Version 2
 					_prohibArray[index] = false;
 
 					return true;
 				}
-
-				//	Version 1
-				//alphaIndex++;
 			}
 
 			lyricsX += tmpWidth;
@@ -305,9 +262,6 @@ var KaraokeGame = function() {
 
 
 	var _loadNextLyrics = function() {
-
-		//	Version 1
-		//_alphaArray = [_alphaMax, _alphaMax, _alphaMax, _alphaMax];
 
 		switch (_currentLyricsLine)
 		{
