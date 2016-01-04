@@ -43,6 +43,10 @@ document.addEventListener('DOMContentLoaded', function() {
 	var vignette = new VignetteLayer();
 	display.addLayer("vignette", vignette);
 	
+	// Create and insert Boot logo
+	var bootLogo = new BootLogo();
+	display.addLayer("bootLogo", bootLogo);
+
 	// Create and insert HUD logo
 	var hudLogo = new AnimatedSprite();
 	hudLogo.setSpriteImage("./resource/image/hud-logo-putti.png");

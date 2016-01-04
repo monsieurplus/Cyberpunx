@@ -26,6 +26,10 @@ document.addEventListener("DOMContentLoaded", function() {
 	playback.when(2.35, function() {
 		setActiveHud(true);
 
+		var bootLogo = display.getLayer("bootLogo");
+		bootLogo.setActive(true);
+		bootLogo.startAnimation();
+
 		// Default HUD glitch is not null
 		var hudGlitch = display.getLayer("hudGlitch");
 		hudGlitch.setParam("quantity", 1);
@@ -265,6 +269,10 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Scene 5 : Implant boot
 	playback.when(246, function() {
 		setActiveHud(true);
+
+		var bootLogo = display.getLayer("bootLogo");
+		bootLogo.setActive(true);
+		bootLogo.startAnimation();
 	});
 
 	// Scene 5 : Update start
