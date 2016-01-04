@@ -198,6 +198,9 @@ var KaraokeGame = function() {
 
 	this.startSongs = function() {
 
+		_successSong.play();
+		_failureSong.play();
+
 		var volumeRef = playback.getVideo().volume;
 
 		_successSong.volume(volumeRef);
@@ -205,9 +208,6 @@ var KaraokeGame = function() {
 
 		_successSong.unmute();
 		_failureSong.mute();
-
-		_successSong.play();
-		_failureSong.play();
 	}
 
 
