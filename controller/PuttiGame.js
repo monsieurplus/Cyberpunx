@@ -69,10 +69,10 @@ var PuttiGame = function() {
 		// width : 0, // Maximum moved area width (% of the viewport width)
 		// height : 0 // Maximum moved area height (% of the viewport height)
 		
-		_glitchLayer.setParam("probability", _level * 10);
-		_glitchLayer.setParam("quantity", _level * 10);
-		_glitchLayer.setParam("width", _level * 2);
-		_glitchLayer.setParam("height", _level * 2);
+		_glitchLayer.setParam("probability", _level * 5);
+		_glitchLayer.setParam("quantity", _level * 4);
+		_glitchLayer.setParam("width", _level * 5);
+		_glitchLayer.setParam("height", _level * 5);
 	};
 
 	var _checkSuccess = function() {
