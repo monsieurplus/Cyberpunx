@@ -7,17 +7,12 @@ var KaraokeGame = function() {
 	var _lyricsMatrix;
 	var _prohibMatrix;
 
-	var _lyricsWidthArray;
 	var _currentLyricsLine;
 
 	var _lyricsArray;
 	var _prohibArray;
 
-	var _lyricsNextArray;
-	var _prohibNextArray;
-
 	var _lyricsWidth;
-	var _lyricsNextWidth;
 
 	var _flashPeriod;
 	var _flashCountdown;
@@ -32,8 +27,13 @@ var KaraokeGame = function() {
 	var _offsetX;
 	var _offsetY;
 
+	var _successSong;
+	var _failureSong;
+
 
 	var _init = function() {
+
+		_initLyrics();
 
 		_currentLyricsLine = 0;
 
@@ -42,11 +42,27 @@ var KaraokeGame = function() {
 
 		_lyricsWidth = 1;
 
-		_flashPeriod = 40;	
+		_flashPeriod = 20;	
 		_flashCountdown = _flashPeriod;
 
 		_alphaMax = 1.0;
 		_alphaMin = 0.1;
+
+		_successSong = new Howl({
+			urls: ['./resource/sound/success-song.mp3'],
+			autoplay: false,
+			loop: false,
+			volume: 1.0
+		});
+		_failureSong = new Howl({
+			urls: ['./resource/sound/failure-song.mp3'],
+			autoplay: false,
+			loop: false,
+			volume: 1.0
+		});
+
+		_successSong.mute();
+		_failureSong.mute();
 	};
 
 	/**
@@ -80,8 +96,6 @@ var KaraokeGame = function() {
 				if (_flashCountdown == 0)
 				{
 					_context.globalAlpha = _alphaMax;
-					//if (_flashCountdown == 0)
-						_flashCountdown = _flashPeriod;
 				}
 				else
 					_context.globalAlpha = _alphaMin;
@@ -102,6 +116,10 @@ var KaraokeGame = function() {
 			lyricsX += tmpWidth;
 			index++;
 		}
+
+		if (_flashCountdown == 0)
+			_flashCountdown = _flashPeriod;
+
 
 		// Changing back opacity
 		_context.globalAlpha = alphaRef;
@@ -178,8 +196,18 @@ var KaraokeGame = function() {
 	};
 
 
-	this.startFailureMusic = function() {
-		//	Do something
+	this.startSongs = function() {
+
+		var volumeRef = playback.getVideo().volume;
+
+		_successSong.volume(volumeRef);
+		_failureSong.volume(volumeRef);
+
+		_successSong.unmute();
+		_failureSong.mute();
+
+		_successSong.play();
+		_failureSong.play();
 	}
 
 
@@ -197,20 +225,13 @@ var KaraokeGame = function() {
 
 		_evaluateResult();
 
-		if (_currentLyricsLine > 0)
-		{
-			_lyricsArray = _lyricsNextArray;
-			_prohibArray = _prohibNextArray;
+		_lyricsArray = _lyricsMatrix[_currentLyricsLine];
+		_prohibArray = _prohibMatrix[_currentLyricsLine];
 
-			_setLyricsWidth();
-			_setMargins();
-
-			console.log(_lyricsWidth);
-
-		}
+		_setLyricsWidth();
+		_setMargins();
 
 		_currentLyricsLine++;
-		_loadNextLyrics()
 	};
 
 
@@ -218,13 +239,20 @@ var KaraokeGame = function() {
 
 		var length = _prohibArray.length;
 		var index = 0;
+		var result = true;
 
-		while (index < length && !_prohibArray[index])
+		while (index < length && result)
 		{
+			if (_prohibArray[index])
+			{
+				result = false;
+				break;
+			}
+
 			index++;
 		}
 
-		if (index < length)
+		if (result)
 			_success();
 
 		else
@@ -232,11 +260,15 @@ var KaraokeGame = function() {
 	}
 
 	var _success = function() {
-		//	Do something
+
+		_successSong.unmute();
+		_failureSong.mute();
 	}
 
 	var _failure = function() {
-		// 	Do something
+
+		_failureSong.unmute();
+		_successSong.mute();
 	}
 
 
@@ -261,202 +293,169 @@ var KaraokeGame = function() {
 	}
 
 
-	var _loadNextLyrics = function() {
+	var _initLyrics = function() {
 
-		switch (_currentLyricsLine)
-		{
-			case 1:
-				//	Load line 1
+		//	Load line 1
 
-				var lyrics1A = new Image();
-				lyrics1A.src = "./resource/image/lyrics/1_a.png";
+		var lyrics1A = new Image();
+		lyrics1A.src = "./resource/image/lyrics/1_a.png";
 
-				var lyrics1B = new Image();
-				lyrics1B.src = "./resource/image/lyrics/1_b_prohib.png";
+		var lyrics1B = new Image();
+		lyrics1B.src = "./resource/image/lyrics/1_b_prohib.png";
 
-				_lyricsNextArray = [lyrics1A, lyrics1B];
-				_prohibNextArray = [false, true];
+		var lyricsLine1 = [lyrics1A, lyrics1B];
+		var prohibLine1 = [false, true];
 
-				//_lyricsNextWidth = lyrics1A.width + lyrics1B.width;
 
-				break;
+		//	Load line 2
 
-			case 2:
-				//	Load line 2
+		var lyrics2A = new Image();
+		lyrics2A.src = "./resource/image/lyrics/2_a.png";
 
-				var lyrics2A = new Image();
-				lyrics2A.src = "./resource/image/lyrics/2_a.png";
+		var lyrics2B = new Image();
+		lyrics2B.src = "./resource/image/lyrics/2_b_prohib.png";
 
-				var lyrics2B = new Image();
-				lyrics2B.src = "./resource/image/lyrics/2_b_prohib.png";
+		var lyrics2C = new Image();
+		lyrics2C.src = "./resource/image/lyrics/2_c.png";
 
-				var lyrics2C = new Image();
-				lyrics2C.src = "./resource/image/lyrics/2_c.png";
+		var lyricsLine2 = [lyrics2A, lyrics2B, lyrics2C];
+		var prohibLine2 = [false, true, false];
 
-				_lyricsNextArray = [lyrics2A, lyrics2B, lyrics2C];
-				_prohibNextArray = [false, true, false];
 
-				//_lyricsNextWidth = lyrics2A.width + lyrics2B.width + lyrics2C.width;
+		//	Load line 3
 
-				break;
+		var lyrics3A = new Image();
+		lyrics3A.src = "./resource/image/lyrics/3_a.png";
 
-			case 3:
-				//	Load line 3
+		var lyrics3B = new Image();
+		lyrics3B.src = "./resource/image/lyrics/3_b_prohib.png";
 
-				var lyrics3A = new Image();
-				lyrics3A.src = "./resource/image/lyrics/3_a.png";
+		var lyrics3C = new Image();
+		lyrics3C.src = "./resource/image/lyrics/3_c.png";
 
-				var lyrics3B = new Image();
-				lyrics3B.src = "./resource/image/lyrics/3_b_prohib.png";
+		var lyrics3D = new Image();
+		lyrics3D.src = "./resource/image/lyrics/3_d_prohib.png";
 
-				var lyrics3C = new Image();
-				lyrics3C.src = "./resource/image/lyrics/3_c.png";
+		var lyricsLine3 = [lyrics3A, lyrics3B, lyrics3C, lyrics3D];
+		var prohibLine3 = [false, true, false, true];
 
-				var lyrics3D = new Image();
-				lyrics3D.src = "./resource/image/lyrics/3_d_prohib.png";
 
-				_lyricsNextArray = [lyrics3A, lyrics3B, lyrics3C, lyrics3D];
-				_prohibNextArray = [false, true, false, true];
+		//	Load line 4
 
-				//_lyricsNextWidth = lyrics3A.width + lyrics3B.width + lyrics3C.width + lyrics3D.width;
+		var lyrics4A = new Image();
+		lyrics4A.src = "./resource/image/lyrics/4_a.png";
 
-				break;
+		var lyrics4B = new Image();
+		lyrics4B.src = "./resource/image/lyrics/4_b_prohib.png";
 
-			case 4:
-				//	Load line 4
+		var lyrics4C = new Image();
+		lyrics4C.src = "./resource/image/lyrics/4_c_prohib.png";
 
-				var lyrics4A = new Image();
-				lyrics4A.src = "./resource/image/lyrics/4_a.png";
+		var lyrics4D = new Image();
+		lyrics4D.src = "./resource/image/lyrics/4_d.png";
 
-				var lyrics4B = new Image();
-				lyrics4B.src = "./resource/image/lyrics/4_b_prohib.png";
+		var lyrics4E = new Image();
+		lyrics4E.src = "./resource/image/lyrics/4_e_prohib.png";
 
-				var lyrics4C = new Image();
-				lyrics4C.src = "./resource/image/lyrics/4_c_prohib.png";
+		var lyrics4F = new Image();
+		lyrics4F.src = "./resource/image/lyrics/4_f.png";
 
-				var lyrics4D = new Image();
-				lyrics4D.src = "./resource/image/lyrics/4_d.png";
+		var lyricsLine4 = [lyrics4A, lyrics4B, lyrics4C, lyrics4D, lyrics4E, lyrics4F];
+		var prohibLine4 = [false, true, true, false, true, false];
 
-				var lyrics4E = new Image();
-				lyrics4E.src = "./resource/image/lyrics/4_e_prohib.png";
 
-				var lyrics4F = new Image();
-				lyrics4F.src = "./resource/image/lyrics/4_f.png";
+		//	Load line 5
 
-				_lyricsNextArray = [lyrics4A, lyrics4B, lyrics4C, lyrics4D, lyrics4E, lyrics4F];
-				_prohibNextArray = [false, true, true, false, true, false];
+		var lyrics5A = new Image();
+		lyrics5A.src = "./resource/image/lyrics/5_a.png";
 
-				//_lyricsNextWidth = lyrics4A.width + lyrics4B.width + lyrics4C.width + lyrics4D.width + lyrics4E.width + lyrics4F.width;
+		var lyrics5B = new Image();
+		lyrics5B.src = "./resource/image/lyrics/5_b_prohib.png";
 
-				break;
+		var lyrics5C = new Image();
+		lyrics5C.src = "./resource/image/lyrics/5_c.png";
 
-			case 5:
-				//	Load line 5
+		var lyrics5D = new Image();
+		lyrics5D.src = "./resource/image/lyrics/5_d_prohib.png";
 
-				var lyrics5A = new Image();
-				lyrics5A.src = "./resource/image/lyrics/5_a.png";
+		var lyricsLine5 = [lyrics5A, lyrics5B, lyrics5C, lyrics5D];
+		var prohibLine5 = [false, true, false, true];
 
-				var lyrics5B = new Image();
-				lyrics5B.src = "./resource/image/lyrics/5_b_prohib.png";
 
-				var lyrics5C = new Image();
-				lyrics5C.src = "./resource/image/lyrics/5_c.png";
+		//	Load line 6
 
-				var lyrics5D = new Image();
-				lyrics5D.src = "./resource/image/lyrics/5_d_prohib.png";
+		var lyrics6A = new Image();
+		lyrics6A.src = "./resource/image/lyrics/6_a.png";
 
-				_lyricsNextArray = [lyrics5A, lyrics5B, lyrics5C, lyrics5D];
-				_prohibNextArray = [false, true, false, true];
+		var lyrics6B = new Image();
+		lyrics6B.src = "./resource/image/lyrics/6_b_prohib.png";
 
-				//_lyricsNextWidth = lyrics5A.width + lyrics5B.width + lyrics5C.width + lyrics5D.width;
+		var lyrics6C = new Image();
+		lyrics6C.src = "./resource/image/lyrics/6_c.png";
 
-				break;
+		var lyrics6D = new Image();
+		lyrics6D.src = "./resource/image/lyrics/6_d_prohib.png";
 
-			case 6:
-				//	Load line 6
+		var lyrics6E = new Image();
+		lyrics6E.src = "./resource/image/lyrics/6_e.png";
 
-				var lyrics6A = new Image();
-				lyrics6A.src = "./resource/image/lyrics/6_a.png";
+		var lyrics6F = new Image();
+		lyrics6F.src = "./resource/image/lyrics/6_f_prohib.png";
 
-				var lyrics6B = new Image();
-				lyrics6B.src = "./resource/image/lyrics/6_b_prohib.png";
+		var lyricsLine6 = [lyrics6A, lyrics6B, lyrics6C, lyrics6D, lyrics6E, lyrics6F];
+		var prohibLine6 = [false, true, false, true, false, true];
 
-				var lyrics6C = new Image();
-				lyrics6C.src = "./resource/image/lyrics/6_c.png";
 
-				var lyrics6D = new Image();
-				lyrics6D.src = "./resource/image/lyrics/6_d_prohib.png";
+		//	Load line 7
 
-				var lyrics6E = new Image();
-				lyrics6E.src = "./resource/image/lyrics/6_e.png";
+		var lyrics7A = new Image();
+		lyrics7A.src = "./resource/image/lyrics/7_a.png";
 
-				var lyrics6F = new Image();
-				lyrics6F.src = "./resource/image/lyrics/6_f_prohib.png";
+		var lyrics7B = new Image();
+		lyrics7B.src = "./resource/image/lyrics/7_b_prohib.png";
 
-				_lyricsNextArray = [lyrics6A, lyrics6B, lyrics6C, lyrics6D, lyrics6E, lyrics6F];
-				_prohibNextArray = [false, true, false, true, false, true];
+		var lyrics7C = new Image();
+		lyrics7C.src = "./resource/image/lyrics/7_c.png";
 
-				//_lyricsNextWidth = lyrics6A.width + lyrics6B.width + lyrics6C.width + lyrics6D.width + lyrics6E.width + lyrics6F.width;
+		var lyrics7D = new Image();
+		lyrics7D.src = "./resource/image/lyrics/7_d_prohib.png";
 
-				break;
+		var lyricsLine7 = [lyrics7A, lyrics7B, lyrics7C, lyrics7D];
+		var prohibLine7 = [false, true, false, true];
 
-			case 7:
-				//	Load line 7
 
-				var lyrics7A = new Image();
-				lyrics7A.src = "./resource/image/lyrics/7_a.png";
+		//	Load line 8
 
-				var lyrics7B = new Image();
-				lyrics7B.src = "./resource/image/lyrics/7_b_prohib.png";
+		var lyrics8A = new Image();
+		lyrics8A.src = "./resource/image/lyrics/8_a.png";
 
-				var lyrics7C = new Image();
-				lyrics7C.src = "./resource/image/lyrics/7_c.png";
+		var lyrics8B = new Image();
+		lyrics8B.src = "./resource/image/lyrics/8_b_prohib.png";
 
-				var lyrics7D = new Image();
-				lyrics7D.src = "./resource/image/lyrics/7_d_prohib.png";
+		var lyrics8C = new Image();
+		lyrics8C.src = "./resource/image/lyrics/8_c_prohib.png";
 
-				_lyricsNextArray = [lyrics7A, lyrics7B, lyrics7C, lyrics7D];
-				_prohibNextArray = [false, true, false, true];
+		var lyrics8D = new Image();
+		lyrics8D.src = "./resource/image/lyrics/8_d.png";
 
-				//_lyricsNextWidth = lyrics7A.width + lyrics7B.width + lyrics7C.width + lyrics7D.width;
+		var lyrics8E = new Image();
+		lyrics8E.src = "./resource/image/lyrics/8_e_prohib.png";
 
-				break;
+		var lyrics8F = new Image();
+		lyrics8F.src = "./resource/image/lyrics/8_f.png";
 
-			case 8:
-				//	Load line 8
+		var lyrics8G = new Image();
+		lyrics8G.src = "./resource/image/lyrics/8_g_prohib.png";
 
-				var lyrics8A = new Image();
-				lyrics8A.src = "./resource/image/lyrics/8_a.png";
+		var lyricsLine8 = [lyrics8A, lyrics8B, lyrics8C, lyrics8D, lyrics8E, lyrics8F, lyrics8G];
+		var prohibLine8 = [false, true, true, false, true, false, true];
 
-				var lyrics8B = new Image();
-				lyrics8B.src = "./resource/image/lyrics/8_b_prohib.png";
 
-				var lyrics8C = new Image();
-				lyrics8C.src = "./resource/image/lyrics/8_c_prohib.png";
 
-				var lyrics8D = new Image();
-				lyrics8D.src = "./resource/image/lyrics/8_d.png";
+		// Init matrices
 
-				var lyrics8E = new Image();
-				lyrics8E.src = "./resource/image/lyrics/8_e_prohib.png";
-
-				var lyrics8F = new Image();
-				lyrics8F.src = "./resource/image/lyrics/8_f.png";
-
-				var lyrics8G = new Image();
-				lyrics8G.src = "./resource/image/lyrics/8_g_prohib.png";
-
-				_lyricsNextArray = [lyrics8A, lyrics8B, lyrics8C, lyrics8D, lyrics8E, lyrics8F, lyrics8G];
-				_prohibNextArray = [false, true, true, false, true, false, true];
-
-				//_lyricsNextWidth = lyrics8A.width + lyrics8B.width + lyrics8C.width + lyrics8D.width + lyrics8E.width + lyrics8F.width + lyrics8F.width;
-
-				break;
-
-			default:
-				_lyricsNextArray = [];
-				_prohibNextArray = [];
-		}
+		_lyricsMatrix = [lyricsLine1, lyricsLine2, lyricsLine3, lyricsLine4, lyricsLine5, lyricsLine6, lyricsLine7, lyricsLine8];
+		_prohibMatrix = [prohibLine1, prohibLine2, prohibLine3, prohibLine4, prohibLine5, prohibLine6, prohibLine7, prohibLine8];
 	};
 
 

@@ -19,7 +19,7 @@ var Playback = function(video) {
 
 	var _init = function() {
 		// Initialize progress eventLister
-		window.setInterval(_timeHandler, 50);
+		window.setInterval(_timeHandler, 20);
 		//_video.addEventListener("progress", _progressHandler); // Not fired often enough
 	};
 

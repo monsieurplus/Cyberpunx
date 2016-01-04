@@ -162,8 +162,12 @@ document.addEventListener("DOMContentLoaded", function() {
 		display.getLayer("hudClock").setTime("19:04:09");
 	});
 
-	// Scene 3 : Music starts
-	playback.when(150, function() {});
+	// Scene 3 : Music and song versions start
+	playback.when(157.02, function() {
+		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.setActive(true);
+		karaokeGame.startSongs();
+	});
 
 	// Scene 3 : Censorship start
 	playback.when(165, function() {
@@ -179,14 +183,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		var karaokeGame = display.getLayer("karaokeGame");
 		karaokeGame.setActive(true);
-		karaokeGame.nextLyrics();
 	});
-
-	// Scene 3 : Start failure music
-	playback.when(171.5, function() {
-		var karaokeGame = display.getLayer("karaokeGame");
-		karaokeGame.startFailureMusic();
-	})
 
 	// Scene 3 : Censored lyrics 1
 	playback.when(172, function() {
@@ -245,8 +242,11 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Scene 3 : Music end
 	playback.when(198, function() {
 		display.getLayer("alertMessage").setActive(false);
-		display.getLayer("karaokeGame").setActive(false);
 		display.getLayer("instruction").setActive(false);
+
+		var karaokeGame = display.getLayer("karaokeGame");
+		//karaokeGame.endFailureMusic();
+		karaokeGame.setActive(false);
 	});
 
 	// Scene 3 : End
