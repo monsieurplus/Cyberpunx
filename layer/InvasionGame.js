@@ -63,6 +63,10 @@ var InvasionGame = function() {
 			_removeAttacker(attackerIndex);
 		}
 
+		if (successfulAttackers.length > 0) {
+			sfx.play("hurt1");
+		}
+
 		// If the brain's health has reach zero, we call the failure callback
 		if (_brainHealth <= 0) {
 			if (typeof _failureCallback === "function") {

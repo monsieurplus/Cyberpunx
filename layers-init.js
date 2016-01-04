@@ -1,9 +1,21 @@
 /* Layers init */
 
 // Globals
-var playback, display, fullscreen;
+var playback, display, fullscreen, sfx;
 
 document.addEventListener('DOMContentLoaded', function() {
+	// Create the sfx Howler instance
+	sfx = new Howl({
+		urls : ["./resource/sound/sfx.mp3", "./resource/sound/sfx.wav"],
+		sprite : {
+			noise_increase : [0, 4600],
+			hurt1 : [4700, 300],
+			hurt2 : [5000, 300],
+			pouic : [5300, 100],
+			prout : [5400, 200]
+		}
+	});
+
 	// Create the fullscreen instance
 	fullscreen = new Fullscreen();
 
@@ -35,6 +47,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	videoLayer.setVideo(video);
 	videoLayer.setActive(true);
 	display.addLayer("video", videoLayer);
+
+	var website = new Website();
+	display.addLayer("website", website);
 
 	var noiseLayer = new NoiseLayer();
 	display.addLayer("noise", noiseLayer);
@@ -112,9 +127,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		{ sprite : 1, duration : 500 },
 	]);
 	display.addLayer("instruction", instruction);
-
-	var website = new Website();
-	display.addLayer("website", website);
 
 	var hudGlitchLayer = new HudGlitchLayer();
 	display.addLayer("hudGlitch", hudGlitchLayer);

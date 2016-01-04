@@ -60,6 +60,8 @@ document.addEventListener("DOMContentLoaded", function() {
 			noise.setActive(true);
 			noise.setOpacity(0.1);
 
+			sfx.play("noise_increase");
+
 			generateGlitch();
 		}, 7000);
 
@@ -96,6 +98,13 @@ document.addEventListener("DOMContentLoaded", function() {
 			display.getLayer("jpegGlitch").setActive(false);
 			display.getLayer("website").setActive(false);
 
+			var whiteNoise = new Howl({
+				urls : ["./resource/sound/white-noise.mp3", "./resource/sound/white-noise.wav"],
+				autoplay : true,
+				loop : true,
+				volume : 0.25
+			});
+
 			// Show the video
 			document.getElementById("video-container").style.display = "block";
 
@@ -112,12 +121,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
 			var noise = display.getLayer("noise");
 			noise.setActive(true);
-			noise.setOpacity(0.5);
+			noise.setOpacity(0.25);
 
 			var startMenu = display.getLayer("startMenu");
 			startMenu.setActive(true);
 			startMenu.addButton("DECODER", function() {
 				playback.play();
+
+				whiteNoise.stop();
+				whiteNoise.unload();
 
 				noise.setActive(false);
 				startMenu.setActive(false);
