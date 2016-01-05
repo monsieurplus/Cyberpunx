@@ -198,18 +198,21 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Scene 3 : Censored lyrics 2
 	playback.when(175, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.hideLyrics();
 		karaokeGame.nextLyrics();
 	})
 
 	// Scene 3 : Censored lyrics 3
 	playback.when(178, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.hideLyrics();
 		karaokeGame.nextLyrics();
 	})
 
 	// Scene 3 : Censored lyrics 4
 	playback.when(181, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.hideLyrics();
 		karaokeGame.nextLyrics();
 	})
 
@@ -228,18 +231,21 @@ document.addEventListener("DOMContentLoaded", function() {
 	// Scene 3 : Censored lyrics 6
 	playback.when(190, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.hideLyrics();
 		karaokeGame.nextLyrics();
 	})
 
 	// Scene 3 : Censored lyrics 7
 	playback.when(193, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.hideLyrics();
 		karaokeGame.nextLyrics();
 	})
 
 	// Scene 3 : Censored lyrics 8
 	playback.when(195, function() {
 		var karaokeGame = display.getLayer("karaokeGame");
+		karaokeGame.hideLyrics();
 		karaokeGame.nextLyrics();
 	})
 
@@ -249,7 +255,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		display.getLayer("instruction").setActive(false);
 
 		var karaokeGame = display.getLayer("karaokeGame");
-		//karaokeGame.endFailureMusic();
+		karaokeGame.hideLyrics();
 		karaokeGame.setActive(false);
 	});
 
