@@ -2,7 +2,7 @@ var PuttiGame = function() {
 	var _level = 0;
 	var _interval = false;
 
-	var _successLevel = 10;
+	var _successLevel = 7;
 	var _successCallback = false;
 
 	var _glitchLayer = false;
@@ -36,7 +36,7 @@ var PuttiGame = function() {
 
 	var _intervalFunction = function() {
 		_level--;
-		if (_level < 0) {
+		if (_level <= 0) {
 			_level = 0;
 		}
 
@@ -46,6 +46,10 @@ var PuttiGame = function() {
 
 	this.incrementLevel = function() {
 		_level++;
+
+		if (_level >= _successLevel) {
+			_level = _successLevel;
+		}
 
 		_updateGlitch();
 		_checkSuccess();
