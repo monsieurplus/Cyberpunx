@@ -136,7 +136,7 @@ var KaraokeGame = function() {
 		_drawWidth = _viewportDimension.width * 4.0 / 5.0;
 
 		_ratioHeight = _drawHeight * 1.0 / 75.0;
-		_offsetY = _viewportDimension.height - 3.0 * _drawHeight;
+		_offsetY = _viewportDimension.height - 4.0 * _drawHeight;
 
 		_setMargins();
 	};
@@ -223,8 +223,6 @@ var KaraokeGame = function() {
 	}
 
 	this.nextLyrics = function() {
-
-		_evaluateResult();
 
 		_lyricsArray = _lyricsMatrix[_currentLyricsLine];
 		_prohibArray = _prohibMatrix[_currentLyricsLine];
