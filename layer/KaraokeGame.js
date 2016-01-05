@@ -16,7 +16,6 @@ var KaraokeGame = function() {
 
 	var _flashPeriod;
 	var _flashCountdown;
-	//var _flashArray;
 
 	var _alphaMax;
 	var _alphaMin;
@@ -45,7 +44,6 @@ var KaraokeGame = function() {
 
 		_flashPeriod = 2;
 		_flashCountdown = _flashPeriod;
-		//_flashArray = [_flashPeriod, _flashPeriod, _flashPeriod, _flashPeriod];
 
 		_alphaMax = 1.0;
 		_alphaMin = 0.1;
@@ -70,7 +68,6 @@ var KaraokeGame = function() {
 	/**
 	 * REQUIRED
 	 */
-	//	Version 1 : add parameter timeSinceLastDraw
 	this.draw = function() {
 
 		var index = 0;
@@ -82,9 +79,6 @@ var KaraokeGame = function() {
 		var lyrics;
 
 		var alphaRef = _context.globalAlpha;
-
-		//var flashIndex = 0;
-		//var flashCountdown;
 
 		_flashCountdown--;
 
@@ -98,17 +92,12 @@ var KaraokeGame = function() {
 			// Changing opacity before drawing
 			if (index < _prohibArray.length && _prohibArray[index])
 			{
-				//flashCountdown = _flashArray[flashIndex] - 1;
-
 				if (_flashCountdown == 0)
 				{
 					_context.globalAlpha = Math.ceil(Math.random() * 3.0) * (_alphaMax - _alphaMin) / 3.0;
-					//_flashArray[flashIndex] = _flashPeriod;
 				}
 				else
 					_context.globalAlpha = _alphaMin;
-
-				//flashIndex++;
 			}
 			else
 				_context.globalAlpha = alphaRef;
