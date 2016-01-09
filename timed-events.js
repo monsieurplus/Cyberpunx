@@ -350,7 +350,7 @@ document.addEventListener("DOMContentLoaded", function() {
 		setActiveHud(true);
 
 		var alertMessage = display.getLayer("alertMessage");
-		alertMessage.setMessage("ECHEC CRITIQUE");
+		alertMessage.setMessage("ECHEC DE LA MISE A JOUR");
 		alertMessage.setColor("red");
 		alertMessage.setBlinkSpeed(100);
 		alertMessage.setActive(true);

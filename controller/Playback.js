@@ -212,7 +212,7 @@ var Playback = function(video) {
 			// Going through all the planned events
 			for (var whenPosition in _whenArray) {
 				// Check if the current "when" has to be executed
-				if (whenPosition > _whenPreviousPosition && whenPosition < position) {
+				if (whenPosition >= _whenPreviousPosition && whenPosition <= position) {
 					var whens = _whenArray[whenPosition];
 					for (var i=0; i < whens.length; i++) {
 						// Execution of the function
