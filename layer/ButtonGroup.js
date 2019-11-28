@@ -254,6 +254,10 @@ var ButtonGroup = function() {
 		_computeButtonLayout();
 	};
 
+	this.removeAllButtons = function() {
+		_buttons = [];
+	}
+
 	/**
 	 * Return a button object by its index
 	 * @params {string} name Button name, this is what is displayed inside the button

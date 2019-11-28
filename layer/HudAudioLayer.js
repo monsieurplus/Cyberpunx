@@ -9,12 +9,20 @@ var HudAudioLayer = function() {
 	var _audioBufferLength;
 	var _audioData;
 
+	var _media;
+	var _mediaReady = false;
+	var _audioSourceCreated = false;
+
 	var _displayPosition = {};
 	var _displayWidth = 20; // In percents of the screen width
 	var _displayRatio = 0.5; // Ratio height/width
 	var _color = "#6AFF0B";
 
 	var _init = function() {
+
+	};
+
+	this.initAfterUserInteraction = function() {
 		// Get the AudioContext
 		_audioContext = new (window.AudioContext || window.webkitAudioContext || window.mozAudioContext)();
 		
@@ -25,7 +33,18 @@ var HudAudioLayer = function() {
 		// Prepare audioData array
 		_audioBufferLength = _audioAnalyser.frequencyBinCount;
 		_audioData = new Uint8Array(_audioBufferLength);
-	};
+
+		var interval = setInterval(function() {
+			if (_audioSourceCreated) {
+				clearInterval(interval);
+			}
+			if (_mediaReady && !_audioSourceCreated) {
+				_initAudioSource();
+				clearInterval(interval);
+			}
+		}, 250);
+		
+	}
 
 	this.setDisplayWidth = function(width) {
 		_displayWidth = width;
@@ -47,19 +66,28 @@ var HudAudioLayer = function() {
 	 * Set the media that will animate the spectrum
 	 */
 	this.setMedia = function(media) {
-		var sourceCreated = false;
+		_media = media;
+		_mediaReady = false;
 
-		media.addEventListener("canplay", function() {
-			if (sourceCreated === true) {
+		_media.addEventListener("canplay", function() {
+			_mediaReady = true;
+			if (_audioSourceCreated === true) {
 				return false;
 			}
 
-			var source = _audioContext.createMediaElementSource(media);
-			source.connect(_audioAnalyser);
-			_audioAnalyser.connect(_audioContext.destination);
-			sourceCreated = true;
+			_initAudioSource();
 		});
 	};
+
+	var _initAudioSource = function() {
+		if (!_audioContext)
+			return false;
+
+		var source = _audioContext.createMediaElementSource(_media);
+		source.connect(_audioAnalyser);
+		_audioAnalyser.connect(_audioContext.destination);
+		_audioSourceCreated = true;
+	}
 
 	/**
 	 * REQUIRED

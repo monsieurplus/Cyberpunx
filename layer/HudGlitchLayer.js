@@ -38,8 +38,18 @@ var HudGlitchLayer = function() {
 			var xTarget = Math.random() * _viewportDimension.width;
 			var yTarget = Math.random() * _viewportDimension.height;
 
-			var extract = _context.getImageData(xSource, ySource, wSource, hSource);
-			_context.putImageData(extract, xTarget, yTarget);
+			if (wSource < 1 || hSource < 1)
+				continue;
+
+			try {
+				var extract = _context.getImageData(xSource, ySource, wSource, hSource);
+				_context.putImageData(extract, xTarget, yTarget);
+			}
+			catch(e) {
+				console.log(e);
+				console.log(wSource + " x " + hSource);
+			}
+
 		}
 	};
 

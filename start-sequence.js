@@ -1,4 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
+	var noise = display.getLayer("noise");
+
 	// START SEQUENCE
 	setTimeout(function() {
 		playback.seek(0);
@@ -6,6 +8,29 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		// Hide the video
 		document.getElementById("video-container").style.display = "none";
+
+		noise.setActive(true);
+		noise.setOpacity(0.5);
+
+		display.getLayer("hudLogo").setActive(true);
+
+		var startMenu = display.getLayer("startMenu");
+		startMenu.setActive(true);
+		startMenu.addButton("OPEN INTERNET", function() {
+			startMenu.removeAllButtons();
+			noise.setActive(false);
+			display.getLayer("hudLogo").setActive(false);
+
+			display.getLayer("hudAudio").initAfterUserInteraction();
+
+			startTheFuckingGame();
+		});
+	}, 500);
+
+
+	var startTheFuckingGame = function() {
+		playback.seek(0);
+		playback.pause();
 
 		// Display the website layer
 		display.getLayer("website").setActive(true);
@@ -20,9 +45,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 		// Get JpegGlitch Layer
 		var jpegGlitch = display.getLayer("jpegGlitch");
-		jpegGlitch.setActive(true);
-
-		var noise = display.getLayer("noise");
+		jpegGlitch.setActive(true);		
 
 		var generateGlitch = function() {
 			var duration = 10 + Math.floor(Math.random() * 250);
@@ -46,48 +69,34 @@ document.addEventListener("DOMContentLoaded", function() {
 			// Default HUD glitch is not null
 			hudGlitch.setParam("quantity", 25);
 			hudGlitch.setParam("probability", 25);
-			hudGlitch.setParam("width", 5);
-			hudGlitch.setParam("height", 5);
-		}, 5000);
+			hudGlitch.setParam("width", 40);
+			hudGlitch.setParam("height", 15);
+		}, 4000);
 
 		setTimeout(function() {
 			// Default HUD glitch is not null
-			hudGlitch.setParam("quantity", 50);
+			hudGlitch.setParam("quantity", 5);
 			hudGlitch.setParam("probability", 50);
-			hudGlitch.setParam("width", 10);
-			hudGlitch.setParam("height", 10);
+			hudGlitch.setParam("width", 100);
+			hudGlitch.setParam("height", 100);
 
 			noise.setActive(true);
 			noise.setOpacity(0.1);
 
 			sfx.play("noise_increase");
-
-			generateGlitch();
-		}, 7000);
+		}, 5000);
 
 		setTimeout(function() {
-			generateGlitch();
-			generateGlitch();
-
 			noise.setActive(true);
 			noise.setOpacity(0.2);
 		}, 8000);
 
 		setTimeout(function() {
-			generateGlitch();
-			generateGlitch();
-			generateGlitch();
-
 			noise.setActive(true);
 			noise.setOpacity(0.3);
 		}, 9000);
 
 		setTimeout(function() {
-			generateGlitch();
-			generateGlitch();
-			generateGlitch();
-			generateGlitch();
-
 			noise.setActive(true);
 			noise.setOpacity(0.4);
 		}, 10000);
@@ -155,5 +164,5 @@ document.addEventListener("DOMContentLoaded", function() {
 			fullscreen.on();
 		});
 		*/
-	}, 500);
+	}
 });
